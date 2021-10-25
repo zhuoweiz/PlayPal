@@ -58,7 +58,7 @@ function App() {
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
 
-        <Paper className={classes.paper}> 
+        <Paper className={classes.paper} square> 
           <Grid container spacing={3}>
             
             <Grid item xs={12}>
