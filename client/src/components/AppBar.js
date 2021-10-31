@@ -180,7 +180,7 @@ export default function NavBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <a href="/">Home</a>
+            <a href="/" text-decoration="none" color="white">Home</a>
           </Typography>
           
           
