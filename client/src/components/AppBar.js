@@ -180,7 +180,10 @@ export default function NavBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <a href="/" text-decoration="none" color="white">Home</a>
+            <a href="/" style={{
+              color:"white",
+              textDecoration: "none"
+            }} >Home</a>
           </Typography>
           
           
@@ -234,11 +237,17 @@ export default function NavBar() {
               <MoreIcon />
             </IconButton>
           </Box>
-          <Button variant="outlined" color="error">
-            <a href="/register">Sign-up</a>
+          <Button variant="default" color="error">
+            <a style={{
+              color:"white",
+              textDecoration: "none"
+            }} href="/register">Sign-up</a>
           </Button>
-          <Button variant="outlined" color="success">
-            <a href="/signin">Sign-in</a>
+          <Button variant="default" color="success">
+            <a style={{
+              color:"white",
+              textDecoration: "none"
+            }} href="/signin">Sign-in</a>
           </Button>
         </Toolbar>
       </AppBar>
