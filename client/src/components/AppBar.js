@@ -16,6 +16,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from '@mui/material';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -104,6 +105,7 @@ export default function NavBar() {
         </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      
     </Menu>
   );
 
@@ -178,8 +180,13 @@ export default function NavBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <a href="/">MUI</a>
+            <a href="/" style={{
+              color:"white",
+              textDecoration: "none"
+            }} >Home</a>
           </Typography>
+          
+          
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -189,6 +196,7 @@ export default function NavBar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
@@ -229,6 +237,18 @@ export default function NavBar() {
               <MoreIcon />
             </IconButton>
           </Box>
+          <Button variant="default" color="error">
+            <a style={{
+              color:"white",
+              textDecoration: "none"
+            }} href="/register">Sign-up</a>
+          </Button>
+          <Button variant="default" color="success">
+            <a style={{
+              color:"white",
+              textDecoration: "none"
+            }} href="/signin">Sign-in</a>
+          </Button>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
