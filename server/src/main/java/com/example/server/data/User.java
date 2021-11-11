@@ -8,19 +8,20 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Pet {
+@Table(name = "Users")
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String owner;
+	private String email;
 
-	public Pet() {
+	public User() {
 	}
 
-	public Pet(String name, String owner) {
+	public User(String name, String email) {
 		this.name = name;
-		this.owner = name;
+		this.email = email;
 	}
 
 	public void setId(Long id) {
@@ -29,17 +30,21 @@ public class Pet {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	public String getName() {
 		return name;
 	}
-	public String getOwner() {
-		return owner;
+	public String getEmail() {
+		return email;
+	}
+
+	@Override
+	public String toString() {
+		return "User: Id: " + id + " name: " + name + " email: " + email;
 	}
 }
