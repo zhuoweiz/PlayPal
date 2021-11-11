@@ -28,4 +28,9 @@ public class PetData {
 	public String getOwner() {
 		return owner;
 	}
+
+	@Override
+	public String toString() {
+		return "Id: " + id + " name: " + name;
+	}
 }

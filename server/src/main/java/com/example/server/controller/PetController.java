@@ -31,6 +31,7 @@ public class PetController {
 	 */
 	@GetMapping("/pet/{id}")
 	public PetData getPet(@PathVariable Long id) {
+		System.out.println("GET PET BY ID");
 		return petService.getPetById(id);
 	}
 
@@ -41,6 +42,7 @@ public class PetController {
 	 */
 	@PostMapping("/pet")
 	public PetData savePet(final @RequestBody PetData petData) {
+		System.out.println("Post new pet === " + petData.toString());
 		return petService.savePet(petData);
 	}
 

@@ -89,6 +89,7 @@ public class DefaultPetService implements PetService {
 	 */
 	private Pet populatePetEntity(PetData petData){
 		Pet pet = new Pet();
+		pet.setId(petData.getId());
 		pet.setName(petData.getName());
 		pet.setOwner(petData.getOwner());
 		return pet;
