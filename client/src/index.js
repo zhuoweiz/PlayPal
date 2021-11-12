@@ -6,8 +6,10 @@ import Profile from './components/Profile';
 import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
 import Register from './pages/Register';
-import Signin from './pages/Signin';
-import Home from './components/Home';
+import Signin from './pages/Signin'
+import Home from './components/Home'
+import Homenew from './components/Homenew'
+
 
 import {
   BrowserRouter as Router,
@@ -72,6 +74,9 @@ ReactDOM.render(
           </Route>
           <Route path="/home">
             <Home />
+          </Route>
+          <Route path="/test">
+            <Homenew />
           </Route>
           <Route path="/">
             <Home />
