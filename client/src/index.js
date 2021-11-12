@@ -8,6 +8,8 @@ import NavBar from './components/AppBar';
 import Register from './components/Register';
 import Signin from './components/Signin'
 import Home from './components/Home'
+import Homenew from './components/Homenew'
+
 
 import {
   BrowserRouter as Router,
@@ -51,6 +53,9 @@ ReactDOM.render(
           </Route>
           <Route path="/home">
             <Home />
+          </Route>
+          <Route path="/test">
+            <Homenew />
           </Route>
           <Route path="/">
             <Home />
