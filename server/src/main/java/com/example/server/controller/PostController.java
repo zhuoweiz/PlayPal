@@ -1,0 +1,57 @@
+package com.example.server.controller;
+
+import com.example.server.dto.PostData;
+import com.example.server.service.PostService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+public class PostController {
+
+    @Resource(name = "postService")
+    private PostService postService;
+
+    /**
+     * <p>Get all user data in the system.For production system you many want to use
+     * pagination.</p>
+     * @return List<UserData>
+     */
+    @GetMapping
+    public List<PostData> getPosts() {
+        return postService.getAllPosts();
+    }
+
+    /**
+     * Method to get the user data based on the ID.
+     * @param id
+     * @return UserData
+     */
+    @GetMapping("/post/{id}")
+    public PostData getPost(@PathVariable Long id) {
+        System.out.println(" === GET POST BY ID ===");
+        return postService.getPostById(id);
+    }
+
+    /**
+     * Post request to create user information int the system.
+     * @param userData
+     * @return
+     */
+    @PostMapping("/post")
+    public PostData savePet(final @RequestBody PostData postData) {
+        System.out.println("Post new post === " + postData.toString());
+        return postService.savePost(postData);
+    }
+
+    /**
+     * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
+     * @DeleteMapping and @GetMapping</p>
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/post/{id}")
+    public Boolean deletePost(@PathVariable Long id) {
+        return postService.deletePost(id);
+    }
+}
