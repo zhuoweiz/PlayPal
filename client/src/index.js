@@ -5,9 +5,9 @@ import App from './App';
 import Profile from './components/Profile';
 import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
-import Register from './components/Register';
-import Signin from './components/Signin'
-import Home from './components/Home'
+import Register from './pages/Register';
+import Signin from './pages/Signin';
+import Home from './components/Home';
 
 import {
   BrowserRouter as Router,
@@ -16,6 +16,27 @@ import {
   Link
 } from "react-router-dom";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBi2tp4Ed-rLk1T-iz527b0CXtzoZGvZ7U",
+  authDomain: "playpal-85bf8.firebaseapp.com",
+  projectId: "playpal-85bf8",
+  storageBucket: "playpal-85bf8.appspot.com",
+  messagingSenderId: "1047945280349",
+  appId: "1:1047945280349:web:0b90f227cc8190d70086b4",
+  measurementId: "G-9EKD8D4D1Y"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 ReactDOM.render(
   <React.StrictMode>
