@@ -5,9 +5,9 @@ import App from './App';
 import Profile from './components/Profile';
 import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
-import Register from './components/Register';
-import Signin from './pages/Signin'
-import Home from './pages/Home'
+import Register from './pages/Register';
+import Signin from './pages/Signin';
+import Home from './components/Home';
 
 import {
   BrowserRouter as Router,

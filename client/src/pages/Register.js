@@ -13,6 +13,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  useHistory
+} from "react-router-dom";
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,6 +34,29 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const auth = getAuth();
+  const history = useHistory();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleSignupAction = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        alert("sign up successful!");
+        history.push("/");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert("sign up error!", errorMessage);
+        // ..
+      });
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -88,6 +116,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e)=>{setEmail(e.target.value)}}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -99,6 +129,8 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(e)=>{setPassword(e.target.value)}}
                 />
               </Grid>
               {/* <Grid item xs={12}>
@@ -113,6 +145,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={handleSignupAction}
             >
               Sign Up
             </Button>
