@@ -52,7 +52,8 @@ export default function SignUp() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert("sign up error!", errorMessage);
+        console.log("error message:", errorMessage)
+        alert("sign up error!");
         // ..
       });
   }
@@ -117,7 +118,9 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   value={email}
-                  onChange={(e)=>{setEmail(e.target.value)}}
+                  onChange={(e)=>{
+                    setEmail(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
