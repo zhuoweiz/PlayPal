@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Profile from './components/Profile';
+import Profile from './pages/Profile';
 import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
 import Register from './pages/Register';
 import Signin from './pages/Signin'
-import Home from './components/Home'
-import Homenew from './components/Homenew'
+import Home from './pages/Home'
+
 
 
 import {
@@ -75,9 +75,7 @@ ReactDOM.render(
           <Route path="/home">
             <Home />
           </Route>
-          <Route path="/test">
-            <Homenew />
-          </Route>
+         
           <Route path="/">
             <Home />
           </Route>
