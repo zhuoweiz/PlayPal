@@ -9,6 +9,8 @@ import Register from './pages/Register';
 import Signin from './pages/Signin'
 import Home from './components/Home'
 import Homenew from './components/Homenew'
+import ViewPost from './pages/ViewPost';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 import {
@@ -39,54 +41,53 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const theme = createTheme({
+  app: {
+    color: 'white',
+    fontFamily: 'Arial'
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <NavBar />
+    <ThemeProvider theme={theme}> 
+      <NavBar />
 
-    <Router>
-      <div>
-        {/* <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav> */}
+      <Router>
+        <div>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/signin">
-            <Signin />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/test">
-            <Homenew />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-         
-        </Switch>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/signin">
+              <Signin />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/home">
+              <Home />
+            </Route>
+            <Route path="/test">
+              <Homenew />
+            </Route>
+            <Route path="/post">
+              <ViewPost />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+            
+          
+          </Switch>
+          
+        </div>
         
-      </div>
-      
-    </Router>
+      </Router>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
