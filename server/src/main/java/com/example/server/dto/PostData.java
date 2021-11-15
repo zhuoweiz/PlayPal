@@ -5,6 +5,7 @@ public class PostData {
     private Long userId;
     private String title;
     private String content;
+    public PostData() {}
 
     public void setId(Long id) {
         this.id = id;

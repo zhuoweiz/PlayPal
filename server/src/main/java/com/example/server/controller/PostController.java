@@ -5,6 +5,7 @@ import com.example.server.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,9 @@ public class PostController {
      * @return
      */
     @PostMapping("/post")
+
     public PostData savePost(final @RequestBody PostData postData) {
+
         System.out.println("Post new post === " + postData.toString());
         return postService.savePost(postData);
     }
@@ -55,5 +58,10 @@ public class PostController {
     @DeleteMapping("/post/{id}")
     public Boolean deletePost(@PathVariable Long id) {
         return postService.deletePost(id);
+    }
+
+    @GetMapping("/post")
+    public List<PostData> searchPosts(@RequestParam(value = "keyword") String keyword) {
+        return postService.searchPosts(keyword);
     }
 }
