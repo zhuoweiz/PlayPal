@@ -106,8 +106,8 @@ export default function ViewPost() {
           </Typography>
         </Grid>
         
-        <Grid item container direction="row">
-          <Grid item container>
+        <Grid item container direction="row" xs={12}>
+          <Grid item container xs={8}>
 
             <Grid container item style={{marginBottom: 12}}>
               <Paper variant="outlined" style={{
@@ -135,7 +135,7 @@ export default function ViewPost() {
               </Paper>
             </Grid>
           </Grid>
-          <Grid container item>
+          <Grid container item xs={4}>
             <Paper variant="outlined" style={{
               width: 600,
               height: 300
