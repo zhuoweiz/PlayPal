@@ -41,7 +41,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/user")
-	public UserData savePet(final @RequestBody UserData userData) {
+	public UserData saveUser(final @RequestBody UserData userData) {
 		System.out.println("Post new user === " + userData.toString());
 		return userService.saveUser(userData);
 	}

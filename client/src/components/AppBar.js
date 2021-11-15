@@ -18,6 +18,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from '@mui/material';
 import { Button } from '@mui/material';
 
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -61,9 +63,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [uid, setUid] = React.useState("");
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      setUid(uid);
+      console.log(uid);
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      setUid("");
+    }
+  });
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -237,18 +256,34 @@ export default function NavBar() {
               <MoreIcon />
             </IconButton>
           </Box>
-          <Button variant="default" color="error">
-            <a style={{
-              color:"white",
-              textDecoration: "none"
-            }} href="/register">Sign-up</a>
-          </Button>
-          <Button variant="default" color="success">
-            <a style={{
-              color:"white",
-              textDecoration: "none"
-            }} href="/signin">Sign-in</a>
-          </Button>
+          {
+            uid === "" ?  
+            <>
+              <Button variant="default" color="error">
+                <a style={{
+                  color:"white",
+                  textDecoration: "none"
+                }} href="/register">Sign-up</a>
+              </Button>
+              <Button variant="default" color="success">
+                <a style={{
+                  color:"white",
+                  textDecoration: "none"
+                }} href="/signin">Sign-in</a>
+              </Button>
+            </>
+            :
+            <Button
+              ariant="default"
+              onClick={() => {
+                signOut(auth);
+              }}
+              style={{color:"white"}}
+            >
+              Sign-Out
+            </Button>
+          }
+          
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
