@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("userService")
+@Service("postService")
 public class DefaultPostService implements PostService {
     @Autowired
     private PostRepository postRepo;

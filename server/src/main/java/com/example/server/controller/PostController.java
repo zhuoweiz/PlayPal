@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
 
     @Resource(name = "postService")
@@ -35,11 +37,11 @@ public class PostController {
 
     /**
      * Post request to create user information int the system.
-     * @param userData
+     * @param postData
      * @return
      */
     @PostMapping("/post")
-    public PostData savePet(final @RequestBody PostData postData) {
+    public PostData savePost(final @RequestBody PostData postData) {
         System.out.println("Post new post === " + postData.toString());
         return postService.savePost(postData);
     }
