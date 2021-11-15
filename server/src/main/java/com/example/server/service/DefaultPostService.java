@@ -56,7 +56,7 @@ public class DefaultPostService implements PostService {
     /**
      * Get user by ID. The service will send the user data else will throw the exception.
      * @param postId
-     * @return UserData
+     * @return PostData
      */
     @Override
     public PostData getPostById(long postId) {
@@ -65,6 +65,42 @@ public class DefaultPostService implements PostService {
         ));
     }
 
+    /*
+    * Search for posts match with the searchKeyword. return empty list if no posts found
+    * @param searchKeyword
+    * return ArrayList<PostData>
+     */
+    @Override
+    public List<PostData> searchPosts(String searchKeyword) {
+        List<PostData> matchPosts = new ArrayList<>();
+        List<Post> postList = postRepo.findAll();
+        for (Post p: postList) {
+            String content = p.getContent();
+            String title = p.getTitle();
+            String[] splitContent = content.split("\\s+");
+            String[] splitTitle = title.split("\\s+");
+            boolean exist = false;
+            for (String s: splitContent) {
+                if (s.equals(searchKeyword)) {
+                    exist = true;
+                    break;
+                }
+            }
+            for (String s: splitTitle) {
+                if (s.equals(searchKeyword)) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (exist) {
+                matchPosts.add(populatePostData(p));
+            }
+        }
+        if (matchPosts.size() == 0) {
+            System.out.println("No matched posts found!");
+        }
+        return matchPosts;
+    }
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
@@ -84,7 +120,7 @@ public class DefaultPostService implements PostService {
     /**
      * Method to map the frontend user object to the JPA customer entity.
      * @param postData
-     * @return User
+     * @return Post
      */
     private Post populatePostEntity(PostData postData){
         Post post = new Post();
