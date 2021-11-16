@@ -16,6 +16,11 @@ public class User {
 	private String name;
 	private String email;
 
+	@OneToOne(mappedBy = "creator",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL)
+	private Post post;
+
 	public User() {
 	}
 
