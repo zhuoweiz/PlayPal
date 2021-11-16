@@ -64,6 +64,7 @@ export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [uid, setUid] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -75,12 +76,12 @@ export default function NavBar() {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       setUid(uid);
-      console.log(uid);
-      // ...
+      setEmail(user.email);
     } else {
       // User is signed out
       // ...
       setUid("");
+      setEmail("");
     }
   });
 
@@ -283,7 +284,12 @@ export default function NavBar() {
               Sign-Out
             </Button>
           }
-          
+          {
+            email==="" ? null : 
+            <Button style={{color:"white"}}>
+              {email}
+            </Button>
+          }
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

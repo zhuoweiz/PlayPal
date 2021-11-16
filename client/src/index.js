@@ -8,7 +8,6 @@ import NavBar from './components/AppBar';
 import Register from './pages/Register';
 import Signin from './pages/Signin'
 import Home from './pages/Home'
-import Homenew from './components/Homenew'
 import ViewPost from './pages/ViewPost';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -55,8 +54,6 @@ ReactDOM.render(
       <NavBar />
 
       <Router>
-        <div>
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
