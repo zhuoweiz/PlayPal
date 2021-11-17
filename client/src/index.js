@@ -10,7 +10,7 @@ import Signin from './pages/Signin'
 import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import CreatePost from './pages/CreatePost'
 
 
 import {
@@ -71,6 +71,9 @@ ReactDOM.render(
           </Route>
           <Route path="/post">
             <ViewPost />
+          </Route>
+          <Route path="/createpost">
+            <CreatePost />
           </Route>
           <Route path="/">
             <Home />
