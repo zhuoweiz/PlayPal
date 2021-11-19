@@ -13,8 +13,6 @@ mysql -u root -p
 CREATE DATABASE playpal;
 use playpal;
 
-
-
     CREATE TABLE users ( 
         id INT unsigned NOT NULL AUTO_INCREMENT,  
         name VARCHAR(150) NOT NULL, 
@@ -25,6 +23,12 @@ use playpal;
        id INT unsigned NOT NULL AUTO_INCREMENT,
        userId INT,
        title VARCHAR(150) NOT NULL,
+       content VARCHAR(150) NOT NULL, PRIMARY KEY (id)
+    );
+
+    CREATE TABLE comments (
+       id INT unsigned NOT NULL AUTO_INCREMENT,
+       userId INT,
        content VARCHAR(150) NOT NULL, PRIMARY KEY (id)
     );
 ```
