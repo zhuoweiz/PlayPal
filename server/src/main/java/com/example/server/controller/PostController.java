@@ -1,6 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.dto.PostData;
+import com.example.server.dto.UserData;
 import com.example.server.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,11 @@ public class PostController {
     public PostData getPost(@PathVariable Long id) {
         System.out.println(" === GET POST BY ID ===");
         return postService.getPostById(id);
+    }
+
+    @GetMapping("/postcreator/{id}")
+    public UserData getCreator(@PathVariable Long id) {
+        return postService.getPostCreator(id);
     }
 
     /**

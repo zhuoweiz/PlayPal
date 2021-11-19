@@ -15,9 +15,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long userId;
     private String title;
     private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private User creator;
 
     public Post() {
     }
@@ -31,7 +33,6 @@ public class Post {
     public void setId(Long id) {
         this.id = id;
     }
-    public void setUserId(Long userId){ this.userId = userId; }
     public void setTitle(String title) {
         this.title = title;
     }
@@ -41,9 +42,6 @@ public class Post {
     public Long getId() {
         return id;
     }
-    public Long getUserId() {
-        return userId;
-    }
     public String getTitle() {
         return title;
     }
@@ -51,8 +49,18 @@ public class Post {
         return content;
     }
 
+    public Long getCreatorId() {
+        return creator.getId();
+    }
+    public void setCreator(User user) {
+        creator = user;
+    }
+    public User getCreator() {
+        return creator;
+    }
+
     @Override
     public String toString() {
-        return "Post: Id: " + id + "userId" + userId + " title: " + title + " content: " + content;
+        return "Post: Id: " + id + "creatorId" + creator.getId() + " title: " + title + " content: " + content;
     }
 }

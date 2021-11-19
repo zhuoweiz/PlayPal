@@ -1,7 +1,9 @@
 package com.example.server.service;
 
 import com.example.server.data.User;
+import com.example.server.dto.PostData;
 import com.example.server.dto.UserData;
+import com.example.server.repository.PostRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 public class DefaultUserService implements UserService {
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private PostRepository postRepo;
 
 	/**
 	 * Create a user based on the data sent to the service class.
@@ -60,9 +64,16 @@ public class DefaultUserService implements UserService {
 	 */
 	@Override
 	public UserData getUserById(long userId) {
+		User testuser = userRepo.getById((long)1);
 		return populateUserData(userRepo.findById(userId).orElseThrow(() ->
 			new EntityNotFoundException("User not found!")
 		));
+	}
+
+	@Override
+	public List<PostData> getUserPosts(long userId) {
+
+		return null;
 	}
 
 	/**

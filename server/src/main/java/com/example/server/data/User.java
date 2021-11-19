@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.Date;
 import java.sql.Time;
 
@@ -26,6 +27,18 @@ public class User extends Auditable<String>{
 	private void onCreate() {
 		publishedDate = new Date();
 	}*/
+
+	// do i really need this
+//	@OneToOne(mappedBy = "creator",
+//		fetch = FetchType.LAZY,
+//		cascade = CascadeType.ALL)
+//	private Post post;
+
+	@OneToMany(mappedBy="creator",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL
+	)
+	private Set<Post> createdPosts;
 
 	public User() {
 	}

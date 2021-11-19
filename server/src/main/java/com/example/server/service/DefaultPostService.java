@@ -1,8 +1,11 @@
 package com.example.server.service;
 
 import com.example.server.data.Post;
+import com.example.server.data.User;
 import com.example.server.dto.PostData;
+import com.example.server.dto.UserData;
 import com.example.server.repository.PostRepository;
+import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import java.util.List;
 public class DefaultPostService implements PostService {
     @Autowired
     private PostRepository postRepo;
+    @Autowired
+    private UserRepository userRepo;
 
     /**
      * Create a user based on the data sent to the service class.
@@ -60,9 +65,16 @@ public class DefaultPostService implements PostService {
      */
     @Override
     public PostData getPostById(long postId) {
-        return populatePostData(postRepo.findById(postId).orElseThrow(() ->
-                new EntityNotFoundException("Post not found!")
-        ));
+        Post post = postRepo.findById(postId).orElseThrow(() ->
+            new EntityNotFoundException("Post not found!"));
+        return populatePostData(post);
+    }
+
+    @Override
+    public UserData getPostCreator(long postId) {
+        Post post = postRepo.findById(postId).orElseThrow(() ->
+          new EntityNotFoundException("Post not found!"));
+        return populatePostData(post).getCreator();
     }
 
     /*
@@ -110,11 +122,24 @@ public class DefaultPostService implements PostService {
     private PostData populatePostData(final Post post){
         PostData postData = new PostData();
         postData.setId(post.getId());
-        postData.setUserId(post.getUserId());
+        postData.setCreatorId(post.getCreatorId());
+
+        User user = userRepo.getById(post.getCreatorId());
+        postData.setCreator(populateUserData(user));
+
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
 
         return postData;
+    }
+
+    private UserData populateUserData(final User user){
+        UserData userData = new UserData();
+        userData.setId(user.getId());
+        userData.setName(user.getName());
+        userData.setEmail(user.getEmail());
+
+        return userData;
     }
 
     /**
@@ -124,9 +149,13 @@ public class DefaultPostService implements PostService {
      */
     private Post populatePostEntity(PostData postData){
         Post post = new Post();
-        post.setUserId(postData.getUserId());
         post.setTitle(postData.getTitle());
         post.setContent(postData.getContent());
+
+//        post.setCreator();
+        User user = userRepo.getById(postData.getCreatorId());
+        post.setCreator(user);
+//        System.out.println("IMPORTANT TEST: " + post.getCreatorId());
         return post;
     }
 }
