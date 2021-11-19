@@ -5,6 +5,7 @@ public class PostData {
     private String title;
     private String content;
     private Long creatorId;
+    private UserData creator;
 
     public PostData() {}
 
@@ -29,6 +30,13 @@ public class PostData {
 
     public void setCreatorId(Long id) { this.creatorId = id; }
     public Long getCreatorId() { return creatorId; }
+
+    public void setCreator(UserData creatorData) {
+        this.creator = creatorData;
+    }
+    public UserData getCreator() {
+        return creator;
+    }
 
     @Override
     public String toString() {

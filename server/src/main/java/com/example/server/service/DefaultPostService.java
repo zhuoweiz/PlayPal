@@ -3,6 +3,7 @@ package com.example.server.service;
 import com.example.server.data.Post;
 import com.example.server.data.User;
 import com.example.server.dto.PostData;
+import com.example.server.dto.UserData;
 import com.example.server.repository.PostRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,13 @@ public class DefaultPostService implements PostService {
         return populatePostData(post);
     }
 
+    @Override
+    public UserData getPostCreator(long postId) {
+        Post post = postRepo.findById(postId).orElseThrow(() ->
+          new EntityNotFoundException("Post not found!"));
+        return populatePostData(post).getCreator();
+    }
+
     /*
     * Search for posts match with the searchKeyword. return empty list if no posts found
     * @param searchKeyword
@@ -115,10 +123,23 @@ public class DefaultPostService implements PostService {
         PostData postData = new PostData();
         postData.setId(post.getId());
         postData.setCreatorId(post.getCreatorId());
+
+        User user = userRepo.getById(post.getCreatorId());
+        postData.setCreator(populateUserData(user));
+
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
 
         return postData;
+    }
+
+    private UserData populateUserData(final User user){
+        UserData userData = new UserData();
+        userData.setId(user.getId());
+        userData.setName(user.getName());
+        userData.setEmail(user.getEmail());
+
+        return userData;
     }
 
     /**
