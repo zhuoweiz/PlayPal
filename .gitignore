@@ -25,3 +25,6 @@ hs_err_pid*
 .idea/
 server/src/main/resources/application.properties
 .idea/misc.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
