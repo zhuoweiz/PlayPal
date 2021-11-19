@@ -4,7 +4,7 @@ import { Link } from '@mui/material';
 
 export default function Footer(props) {
   return (
-    <div>
+    <div sx={{ mt: 8, mb: 4 }}>
       <Typography style={{
         marginTop: 40,
         marginBottom: 40
