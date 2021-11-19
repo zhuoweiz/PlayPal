@@ -1,12 +1,19 @@
 package com.example.server.dto;
 
+import com.example.server.data.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
+
 public class PostData {
     private Long id;
     private String title;
     private String content;
     private Long creatorId;
     private UserData creator;
-
+  
     public PostData() {}
 
     public void setId(Long id) {
@@ -18,6 +25,8 @@ public class PostData {
     public void setContent(String content) {
         this.content = content;
     }
+
+
     public Long getId() {
         return id;
     }
