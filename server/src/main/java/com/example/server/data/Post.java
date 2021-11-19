@@ -15,7 +15,7 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User creator;
 

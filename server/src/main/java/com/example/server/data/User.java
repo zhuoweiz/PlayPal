@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -16,10 +17,17 @@ public class User {
 	private String name;
 	private String email;
 
-	@OneToOne(mappedBy = "creator",
+	// do i really need this
+//	@OneToOne(mappedBy = "creator",
+//		fetch = FetchType.LAZY,
+//		cascade = CascadeType.ALL)
+//	private Post post;
+
+	@OneToMany(mappedBy="creator",
 		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL)
-	private Post post;
+		cascade = CascadeType.ALL
+	)
+	private Set<Post> createdPosts;
 
 	public User() {
 	}

@@ -23,10 +23,10 @@ use playpal;
 
     CREATE TABLE posts (
        id INT unsigned NOT NULL AUTO_INCREMENT,
-       creatorId INT unsigned,
+       creator_id INT unsigned,
        title VARCHAR(150) NOT NULL,
        content VARCHAR(150) NOT NULL, 
        PRIMARY KEY (id),
-       FOREIGN KEY (creatorId) REFERENCES users(id)
+       FOREIGN KEY (creator_id) REFERENCES users(id)
     );
 ```
