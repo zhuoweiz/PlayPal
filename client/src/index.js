@@ -10,6 +10,7 @@ import Signin from './pages/Signin'
 import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
 
 
@@ -80,7 +81,10 @@ ReactDOM.render(
           </Route>
          
         </Switch>
+        
       </Router>
+      <Footer></Footer>
+      
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

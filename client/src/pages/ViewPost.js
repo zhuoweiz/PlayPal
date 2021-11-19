@@ -75,9 +75,6 @@ export default function ViewPost() {
           }} >Like</Button>
           <Button variant="outlined" style={{
             marginRight: 10
-          }}>Comment</Button>
-          <Button variant="outlined" style={{
-            marginRight: 10
           }}>Join/Leave</Button>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
@@ -108,11 +105,10 @@ export default function ViewPost() {
         
         <Grid item container direction="row" xs={12}>
           <Grid item container xs={8}>
-
             <Grid container item style={{marginBottom: 12}}>
               <Paper variant="outlined" style={{
-                width: 500,
-                height: 240
+                width: "90%",
+                height: 300
               }}>
                 Map
               </Paper>
@@ -120,34 +116,78 @@ export default function ViewPost() {
 
             <Grid container item style={{marginBottom: 12}}>
               <Paper variant="outlined" style={{
-                width: 240,
-                height: 300
+                width: "90%",
+                height: 300,
+              }}>
+                <Grid container justifyContent="center" direction="column" textAlign="center">
+                  <Grid item>
+                    <Typography style={{marginTop: 8}}>
+                      Comments
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{
+                    textAlign: "left",
+                    }}>
+                    <Typography
+                      style={{
+                        margin: 20,
+                      }}
+                    >
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                    </Typography>
+
+                    <Typography
+                      style={{
+                        margin: 20,
+                      }}
+                    >
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                    </Typography>
+
+                  </Grid>
+                  <Grid item container alignItems="center" justifyContent="center"  >
+                    <TextField
+                      label="write your comment here"
+                      size="small"
+                      style={{
+                        width: 320
+                      }}
+                    >
+
+                    </TextField>
+                    <Button variant="outlined" style={{
+                      marginLeft: 8,
+                      width: 100
+                    }}>Comment</Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+            
+          </Grid>
+
+          
+          <Grid container item xs={4}>
+            <Grid item style={{marginBottom: 12}} xs={12}>
+              <Paper variant="outlined" style={{
+                width: "100%",
+                height: 200
               }}>
                 Member List
               </Paper>
-              <div style={{width:20}}>
-                </div>
+            </Grid>
+
+            <Grid item style={{marginBottom: 12}} xs={12}>
               <Paper variant="outlined" style={{
-                width: 240,
-                height: 300
+                width: "100%",
+                height: 400
               }}>
-                Comments
+                Chat
               </Paper>
             </Grid>
-          </Grid>
-          <Grid container item xs={4}>
-            <Paper variant="outlined" style={{
-              width: 600,
-              height: 300
-            }}>
-              Chat
-            </Paper>
+            
           </Grid>
         </Grid>
-        
-        
-
-        
 
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
