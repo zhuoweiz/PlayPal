@@ -17,6 +17,7 @@ public class Post {
     private Long id;
     private String title;
     private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User creator;
@@ -24,8 +25,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(int userId, String title, String content) {
-        this.userId = userId;
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
     }
