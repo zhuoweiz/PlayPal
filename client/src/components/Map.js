@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import GoogleMapReact from "google-map-react";
-import { GrMap } from "react-icons/gr";
+import { IconContext } from "react-icons";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import PostCard from "./PostCard";
 
 const postsFromBackend = [
   { text: "basketball", lat: "43.188947", lng: "-76.254480", id: "1" },
@@ -10,27 +12,26 @@ const postsFromBackend = [
 ];
 
 const AnyReactComponent = ({ text }) => {
-  const [color, setColor] = React.useState("white");
-  const styles = {
-    color: "white",
-    background: color,
-    padding: "20px 20px",
-    display: "inline-flex",
-    textAlign: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "70%",
-    transform: "translate(-50%, -50%)",
-  };
+  const [color, setColor] = React.useState("blue");
+  const [size, setSize] = React.useState("1.5rem");
   return (
-    <GrMap
-      color="blue"
-      size="24px"
-      onMouseEnter={() => setColor("green")}
-      onMouseLeave={() => setColor("white")}
-    />
+    <IconContext.Provider value={{ color: color, size: size }}>
+      <div>
+        <FaMapMarkerAlt
+          onMouseEnter={() => {
+            setColor("red");
+            setSize("2rem");
+          }}
+          onMouseLeave={() => {
+            setColor("blue");
+            setSize("1.5rem");
+          }}
+        />
+      </div>
+    </IconContext.Provider>
   );
 };
+
 const postItems = postsFromBackend.map((post) => {
   return (
     <AnyReactComponent
