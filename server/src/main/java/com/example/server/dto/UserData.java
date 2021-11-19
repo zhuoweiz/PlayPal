@@ -1,9 +1,18 @@
 package com.example.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
+
 public class UserData {
 	private Long id;
 	private String name;
 	private String email;
+/*	@Temporal(value = TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
+
 
 	public UserData() {
 	}
@@ -22,6 +31,7 @@ public class UserData {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 
 	public Long getId() {
 		return id;

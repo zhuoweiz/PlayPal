@@ -11,6 +11,8 @@ import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './components/Footer';
+import CreatePost from './pages/CreatePost'
+
 
 import {
   BrowserRouter as Router,
@@ -70,6 +72,9 @@ ReactDOM.render(
           </Route>
           <Route path="/post">
             <ViewPost />
+          </Route>
+          <Route path="/createpost">
+            <CreatePost />
           </Route>
           <Route path="/">
             <Home />

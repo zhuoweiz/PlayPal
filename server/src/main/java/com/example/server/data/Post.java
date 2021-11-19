@@ -1,11 +1,13 @@
 package com.example.server.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Posts")
@@ -22,7 +24,8 @@ public class Post {
     public Post() {
     }
 
-    public Post(String name, String email) {
+    public Post(int userId, String title, String content) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
     }
