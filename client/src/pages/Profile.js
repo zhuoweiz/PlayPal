@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import { useNavigate, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -26,29 +26,6 @@ TabPanel.propTypes = {
   children: PropTypes.node,
 };
 
-function ProfileComponent() {
-  return (
-    <Typography>
-      Profiles
-      <Link to="/profile/setting">setting</Link>
-    </Typography>
-  )
-}
-function SettingComponent() {
-  return (
-    <Typography>
-      Settings
-    </Typography>
-  )
-}
-function NotificationCenterComponent() {
-  return (
-    <Typography>
-      Notification Center
-    </Typography>
-  )
-}
-
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -59,38 +36,54 @@ function a11yProps(index) {
 const Profile = () => {
   const [value, setValue] = React.useState(0);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  
+  React.useEffect(() => {
+    if(location.pathname.split('/')[2] === "setting") {
+      setValue(1);
+    } else if(location.pathname.split('/')[2] === "notification") {
+      setValue(2);
+    } else {
+
+    }
+  });
+
   return (
-    // <Routes>
-      // <Route path="/" element={
-        <Box
-          sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
-        >
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
-            <Link to="setting"><Tab label="Profile" /></Link>
-            
-            <Tab label="Settings" />
-            <Tab label="Notifications" />
-          </Tabs>
-    
-          <TabPanel>
-            <Outlet />
-          </TabPanel>
-        </Box>
-      // } >
-        
-    // </Routes>
-    
+    <Box
+      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
+    >
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        // onChange={handleChange}
+        aria-label="Vertical tabs example"
+        sx={{ borderRight: 1, borderColor: 'divider' }}
+      >
+        <Tab onClick={() => {
+          setValue(0);
+          navigate("");
+        }} label="Profile" />
+        <Tab onClick={() => {
+          setValue(1);
+          navigate("setting");
+        }} label="Setting" />
+        <Tab onClick={() => {
+          setValue(2);
+          navigate("notification");
+        }} label="Notifications" />
+      </Tabs>
+
+      <TabPanel>
+        <Outlet />
+      </TabPanel>
+    </Box>
   );
 }
 

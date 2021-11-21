@@ -12,6 +12,9 @@ import ViewPost from './pages/ViewPost';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
+import NotificationComponent from './components/profile/NotificationComponent';
+import ProfileComponent from './components/profile/ProfileComponent';
+import SettingComponent from './components/profile/SettingComponent';
 
 
 import {
@@ -67,16 +70,13 @@ ReactDOM.render(
             <Profile />
           }>
             <Route index element={
-              // <ProfileComponent></ProfileComponent>
-              <div>fuck</div>
+              <ProfileComponent></ProfileComponent>
             } />
             <Route path="setting" element={
-              // <SettingComponent></SettingComponent>
-              <div>setting</div>
+              <SettingComponent></SettingComponent>
             } />
-            <Route path="notification_center" element={
-              // <NotificationCenterComponent></NotificationCenterComponent>
-              <div>job</div>
+            <Route path="notification" element={
+              <NotificationComponent></NotificationComponent>
             }>
             </Route>
           </Route>
