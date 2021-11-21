@@ -239,8 +239,9 @@ export default function NavBar() {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              // onClick={handleProfileMenuOpen}
               color="inherit"
+              href="/profile"
             >
               <AccountCircle />
             </IconButton>

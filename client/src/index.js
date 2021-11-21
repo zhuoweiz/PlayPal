@@ -15,8 +15,8 @@ import CreatePost from './pages/CreatePost'
 
 
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
@@ -52,38 +52,50 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}> 
-      <NavBar />
-
-      <Router>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/signin">
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          
+          <Route path="/signin" element={
             <Signin />
-          </Route>
-          <Route path="/register">
+          }/>
+
+          <Route path="/register" element={
             <Register />
-          </Route>
-          <Route path="/profile">
+          }/>
+          <Route path="/profile" element={
             <Profile />
+          }>
+            <Route index element={
+              // <ProfileComponent></ProfileComponent>
+              <div>fuck</div>
+            } />
+            <Route path="setting" element={
+              // <SettingComponent></SettingComponent>
+              <div>setting</div>
+            } />
+            <Route path="notification_center" element={
+              // <NotificationCenterComponent></NotificationCenterComponent>
+              <div>job</div>
+            }>
+            </Route>
           </Route>
-          <Route path="/home">
+          <Route path="/home" element={
             <Home />
-          </Route>
-          <Route path="/post">
+          }/>
+
+          <Route path="/post" element={
             <ViewPost />
-          </Route>
-          <Route path="/createpost">
+          }/>
+          <Route path="/createpost" element={
             <CreatePost />
-          </Route>
-          <Route path="/">
+          }/>
+          <Route path="/" element={
             <Home />
-          </Route>
-         
-        </Switch>
-        
-      </Router>
-      <Footer></Footer>
+          }/>
+        </Routes>
+        <Footer></Footer>
+      </BrowserRouter>
       
     </ThemeProvider>
   </React.StrictMode>,

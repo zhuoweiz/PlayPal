@@ -14,13 +14,13 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function SignIn() {
   const auth = getAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,7 +32,7 @@ export default function SignIn() {
       // Signed in 
       const user = userCredential.user;
       alert("Signin successful! " + user.email);
-      history.push("/");
+      navigate("/");
       // ...
     })
     .catch((error) => {

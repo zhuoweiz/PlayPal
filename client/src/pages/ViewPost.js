@@ -14,33 +14,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useHistory } from "react-router-dom";
 
 
 export default function ViewPost() {
-  const auth = getAuth();
-  const history = useHistory();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-
-    signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      alert("Signin successful! " + user.email);
-      history.push("/");
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("Sign in failed...");
-      console.log("Signin error: ", errorMessage);
-    });
-  };
 
   return (
     <Container component="main" maxWidth="md">

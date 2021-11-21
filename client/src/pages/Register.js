@@ -15,14 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
-  useHistory
+  useNavigate
 } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function SignUp() {
   const auth = getAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -33,7 +33,7 @@ export default function SignUp() {
         // Signed in 
         const user = userCredential.user;
         alert("sign up successful!");
-        history.push("/");
+        navigate("/");
         // ...
       })
       .catch((error) => {
