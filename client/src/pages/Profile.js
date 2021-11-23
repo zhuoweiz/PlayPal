@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import { useNavigate, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
 
 function TabPanel(props) {
@@ -55,35 +56,39 @@ const Profile = () => {
   });
 
   return (
-    <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
-    >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        // onChange={handleChange}
-        aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
+    <Container maxWidth="md">
+      <Box
+        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex',
+        }}
       >
-        <Tab onClick={() => {
-          setValue(0);
-          navigate("");
-        }} label="Profile" />
-        <Tab onClick={() => {
-          setValue(1);
-          navigate("setting");
-        }} label="Setting" />
-        <Tab onClick={() => {
-          setValue(2);
-          navigate("notification");
-        }} label="Notifications" />
-      </Tabs>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          // onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{ borderRight: 1, borderColor: 'divider' }}
+        >
+          <Tab onClick={() => {
+            setValue(0);
+            navigate("");
+          }} label="Profile" />
+          <Tab onClick={() => {
+            setValue(1);
+            navigate("setting");
+          }} label="Setting" />
+          <Tab onClick={() => {
+            setValue(2);
+            navigate("notification");
+          }} label="Notifications" />
+        </Tabs>
 
-      <TabPanel>
-        <Outlet />
-      </TabPanel>
-    </Box>
+        <TabPanel>
+          <Outlet />
+        </TabPanel>
+      </Box>
+    </Container>
+    
   );
 }
 
