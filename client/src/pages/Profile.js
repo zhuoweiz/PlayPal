@@ -58,7 +58,9 @@ const Profile = () => {
   return (
     <Container maxWidth="md">
       <Box
-        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex',
+        sx={{ 
+          flexGrow: 1, bgcolor: 'background.paper', display: 'flex',
+          marginTop: 4,
         }}
       >
         <Tabs
