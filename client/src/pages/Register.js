@@ -15,27 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
-  useHistory
+  useNavigate
 } from "react-router-dom";
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        PlayPal
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
 export default function SignUp() {
   const auth = getAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -46,7 +33,7 @@ export default function SignUp() {
         // Signed in 
         const user = userCredential.user;
         alert("sign up successful!");
-        history.push("/");
+        navigate("/");
         // ...
       })
       .catch((error) => {
@@ -161,7 +148,6 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
