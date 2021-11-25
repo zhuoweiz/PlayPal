@@ -39,7 +39,7 @@ function PostCard() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button size="small" href="post">Learn More</Button>
         </CardActions>
       </Card>
     </React.Fragment>

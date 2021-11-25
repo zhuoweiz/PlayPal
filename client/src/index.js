@@ -1,22 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { SnackbarProvider } from 'notistack';
+import reportWebVitals from './reportWebVitals';
+
 import './index.css';
 import App from './App';
 import Profile from './pages/Profile';
-import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
 import Register from './pages/Register';
 import Signin from './pages/Signin'
 import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
+import ViewUser from './pages/ViewUser'
+import NotificationComponent from './components/profile/NotificationComponent';
+import ProfileComponent from './components/profile/ProfileComponent';
+import SettingComponent from './components/profile/SettingComponent';
 
 
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
@@ -52,39 +58,57 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}> 
-      <NavBar />
-
-      <Router>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/signin">
+      <SnackbarProvider maxSnack={3}>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          
+          <Route path="/signin" element={
             <Signin />
-          </Route>
-          <Route path="/register">
+          }/>
+
+          <Route path="/register" element={
             <Register />
-          </Route>
-          <Route path="/profile">
+          }/>
+          <Route path="/profile" element={
             <Profile />
+          }>
+            <Route index element={
+              <ProfileComponent></ProfileComponent>
+            } />
+            <Route path="setting" element={
+              <SettingComponent></SettingComponent>
+            } />
+            <Route path="notification" element={
+              <NotificationComponent></NotificationComponent>
+            }>
+            </Route>
           </Route>
-          <Route path="/home">
+          <Route path="/home" element={
             <Home />
-          </Route>
-          <Route path="/post">
+          }/>
+
+          <Route path="/post" element={
             <ViewPost />
-          </Route>
-          <Route path="/createpost">
+          }/>
+          <Route path="/createpost" element={
             <CreatePost />
-          </Route>
-          <Route path="/">
+          }
+          />
+
+          <Route path="/user" element={
+            <ViewUser />
+          }
+          />
+          <Route path="/" element={
             <Home />
-          </Route>
-         
-        </Switch>
-        
-      </Router>
-      <Footer></Footer>
-      
+          }
+          />
+
+        </Routes>
+        <Footer></Footer>
+      </BrowserRouter>
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
