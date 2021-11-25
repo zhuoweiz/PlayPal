@@ -18,6 +18,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from '@mui/material';
 import { Button } from '@mui/material';
 
+import {useNavigate} from 'react-router-dom';
+
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 const Search = styled('div')(({ theme }) => ({
@@ -69,6 +71,7 @@ export default function NavBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -146,7 +149,16 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={() => {
+        navigate("/")
+        handleMobileMenuClose();
+      }}>
+        <Button >Home</Button>
+      </MenuItem>
+      <MenuItem onClick={() => {
+          navigate("/profile/notification");
+          handleMobileMenuClose();
+        }}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
@@ -154,7 +166,7 @@ export default function NavBar() {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -165,8 +177,14 @@ export default function NavBar() {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      </MenuItem> */}
+      <MenuItem 
+        // onClick={handleProfileMenuOpen}
+        onClick={() => {
+          navigate("/profile");
+          handleMobileMenuClose();
+        }}
+        >
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -185,15 +203,6 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             noWrap
@@ -203,7 +212,7 @@ export default function NavBar() {
             <a href="/" style={{
               color:"white",
               textDecoration: "none"
-            }} >Home</a>
+            }} >PlayPal</a>
           </Typography>
           
           
@@ -219,18 +228,9 @@ export default function NavBar() {
           
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton href="/profile/notification" size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
                 <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
               </Badge>
             </IconButton>
             <IconButton
@@ -239,8 +239,9 @@ export default function NavBar() {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              // onClick={handleProfileMenuOpen}
               color="inherit"
+              href="/profile"
             >
               <AccountCircle />
             </IconButton>
@@ -260,17 +261,11 @@ export default function NavBar() {
           {
             uid === "" ?  
             <>
-              <Button variant="default" color="error">
-                <a style={{
-                  color:"white",
-                  textDecoration: "none"
-                }} href="/register">Sign-up</a>
+              <Button href="/register" variant="default" color="error">
+                Sign-up
               </Button>
-              <Button variant="default" color="success">
-                <a style={{
-                  color:"white",
-                  textDecoration: "none"
-                }} href="/signin">Sign-in</a>
+              <Button href="/signin" variant="default" color="success">
+                Sign-in
               </Button>
             </>
             :
