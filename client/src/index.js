@@ -14,6 +14,7 @@ import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
 import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
+import ViewUser from './pages/ViewUser'
 import NotificationComponent from './components/profile/NotificationComponent';
 import ProfileComponent from './components/profile/ProfileComponent';
 import SettingComponent from './components/profile/SettingComponent';
@@ -92,10 +93,16 @@ ReactDOM.render(
           }/>
           <Route path="/createpost" element={
             <CreatePost />
-          }/>
-          <Route path="/" element={
+          }
+          />
+
+          <Route path="/user">
+            <ViewUser />
+          </Route>
+
+          <Route path="/">
             <Home />
-          }/>
+          </Route>
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
