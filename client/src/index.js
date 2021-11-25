@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { SnackbarProvider } from 'notistack';
+import reportWebVitals from './reportWebVitals';
+
 import './index.css';
 import App from './App';
 import Profile from './pages/Profile';
-import reportWebVitals from './reportWebVitals';
 import NavBar from './components/AppBar';
 import Register from './pages/Register';
 import Signin from './pages/Signin'
 import Home from './pages/Home'
 import ViewPost from './pages/ViewPost';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
 import NotificationComponent from './components/profile/NotificationComponent';
@@ -55,6 +57,7 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}> 
+      <SnackbarProvider maxSnack={3}>
       <BrowserRouter>
         <NavBar />
         <Routes>
@@ -96,7 +99,7 @@ ReactDOM.render(
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
-      
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
