@@ -33,4 +33,15 @@ use playpal;
        userId INT,
        content VARCHAR(150) NOT NULL, PRIMARY KEY (id)
     );
+
+    CREATE TABLE messages (
+        id INT unsigned NOT NULL AUTO_INCREMENT,
+        user_id INT unsigned,
+        post_id INT unsigned,
+        time timestamp,
+        content VARCHAR(150) NOT NULL, 
+        PRIMARY KEY(id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (post_id) REFERENCES posts(id)
+    );   
 ```
