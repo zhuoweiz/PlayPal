@@ -96,13 +96,15 @@ ReactDOM.render(
           }
           />
 
-          <Route path="/user">
+          <Route path="/user" element={
             <ViewUser />
-          </Route>
-
-          <Route path="/">
+          }
+          />
+          <Route path="/" element={
             <Home />
-          </Route>
+          }
+          />
+
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
