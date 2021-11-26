@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/messages")
 public class MessageController {
@@ -16,13 +17,13 @@ public class MessageController {
 
 
 
-    @GetMapping
+    @GetMapping("/bypost/{id}")
     public List<MessageData> getMessages(@PathVariable Long id){
         System.out.println("=== GET Message BY PostID ===");
         return messageService.getMessagesByPostId(id);
     }
 
-    @GetMapping("/messagesbypost/{id}")
+    @GetMapping("/message/{id}")
     public MessageData getMessage(@PathVariable Long id){
         System.out.println("=== GET Message BY ID ===");
         return messageService.getMessageById(id);
