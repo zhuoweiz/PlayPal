@@ -18,7 +18,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable<U> {
 
-   /* @CreatedBy
+/*    @CreatedBy
     protected U createdBy;*/
 
     @CreatedDate
@@ -52,7 +52,8 @@ public abstract class Auditable<U> {
         this.createdDate = createdDate;
     }
 
-   /* public U getLastModifiedBy() {
+
+/*    public U getLastModifiedBy() {
         return lastModifiedBy;
     }
 
@@ -60,6 +61,7 @@ public abstract class Auditable<U> {
         this.lastModifiedBy = lastModifiedBy;
     }
 */
+
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }

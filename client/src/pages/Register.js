@@ -11,19 +11,24 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, deleteUser } from "firebase/auth";
 import {
   useNavigate
 } from "react-router-dom";
 
-const theme = createTheme();
+import { serverUrl } from '../constants';
 
-export default function SignUp() {
+const axios = require('axios');
+
+
+function SignUp() {
   const auth = getAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+  const [firstName, setFirstName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -31,10 +36,32 @@ export default function SignUp() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
+        // setp 1: front end stuff
         const user = userCredential.user;
-        alert("sign up successful!");
-        navigate("/");
-        // ...
+        
+
+        // step 2: send a post request to server
+        // in reality, need to roll back the process if registration on server fails
+        axios.post(serverUrl+"/users/user", {
+          name: firstName,
+          email: email,
+        })
+        .then(function (response) {
+          console.log(response);
+          enqueueSnackbar("Register Sucess!");
+          navigate("/");
+        })
+        .catch(function (error) {
+          enqueueSnackbar("Register Error! Please try again later.");
+          // step 3: roll back firebase registration
+          deleteUser(user).then(() => {
+            // User deleted.
+          }).catch((error) => {
+            // An error ocurred
+            // ... notify admin
+          });
+          
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -56,7 +83,6 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -83,6 +109,8 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   autoFocus
                 />
               </Grid>
@@ -149,6 +177,7 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 }
+
+export default SignUp;
