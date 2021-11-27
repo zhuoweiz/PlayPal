@@ -15,7 +15,9 @@ use playpal;
 
     CREATE TABLE users ( 
         id INT unsigned NOT NULL AUTO_INCREMENT,  
-        name VARCHAR(150) NOT NULL, 
+        name VARCHAR(150) NOT NULL,
+        created_date VARCHAR(255),
+        last_modified_date VARCHAR(255),
         email VARCHAR(150) NOT NULL, PRIMARY KEY (id)  
     );
 
@@ -24,6 +26,8 @@ use playpal;
        creator_id INT unsigned,
        title VARCHAR(150) NOT NULL,
        content VARCHAR(150) NOT NULL, 
+       created_date VARCHAR(255),
+       last_modified_date VARCHAR(255)
        PRIMARY KEY (id),
        FOREIGN KEY (creator_id) REFERENCES users(id)
     );
@@ -31,6 +35,8 @@ use playpal;
     CREATE TABLE comments (
        id INT unsigned NOT NULL AUTO_INCREMENT,
        userId INT,
+       created_date VARCHAR(255),
+       last_modified_date VARCHAR(255),
        content VARCHAR(150) NOT NULL, PRIMARY KEY (id)
     );
 

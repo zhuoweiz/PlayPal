@@ -64,7 +64,7 @@ public class DefaultUserService implements UserService {
 	 */
 	@Override
 	public UserData getUserById(long userId) {
-		User testuser = userRepo.getById((long)1);
+		User user = userRepo.getById((long)1);
 		return populateUserData(userRepo.findById(userId).orElseThrow(() ->
 			new EntityNotFoundException("User not found!")
 		));

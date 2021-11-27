@@ -52,13 +52,15 @@ public abstract class Auditable<U> {
         this.createdDate = createdDate;
     }
 
+
 /*    public U getLastModifiedBy() {
         return lastModifiedBy;
     }
 
     public void setLastModifiedBy(U lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
-    }*/
+    }
+*/
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
