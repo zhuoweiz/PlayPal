@@ -3,6 +3,9 @@ import TextField from "@mui/material/TextField";
 import MUIRichTextEditor from "mui-rte";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
+import * as React from 'react';
+
+const _ = require('lodash');
 
 const handleClick = () => {
   console.info("You clicked the Chip.");
@@ -13,6 +16,10 @@ const handleDelete = () => {
 };
 
 function CreatePost() {
+
+  const [tags, setTags] = React.useState(["ball","game"]);
+  const [tag, setTag] = React.useState("");
+
   return (
     // <Container maxWidth="md" style={{ height: "100vh" }}>
     //   <Grid direction="column" container style={{ marginTop: "12px", height:"80%"}} /*sx={{border:2, borderColor:'grey.500', borderRadius:'1%'}}*/>
@@ -70,21 +77,32 @@ function CreatePost() {
               id="standard-basic"
               label="Standard"
               variant="standard"
+              value={tag}
+              onChange={(event) => {
+                setTag(event.target.value);
+              }}
             />
           </Box>
           <Box style={{ marginTop: "12px" }}>
-            <Chip
-              label="basketball"
-              variant="outlined"
-              onClick={handleClick}
-              onDelete={handleDelete}
-            />
-            <Chip
-              label="football"
-              variant="outlined"
-              onClick={handleClick}
-              onDelete={handleDelete}
-            />
+            <Button onClick={() => {
+              // add tag
+              const currTags = _.cloneDeep(tags);
+              currTags.push(tag);
+              setTags(currTags);
+            }}>Add</Button>
+            {
+              tags.map((element, index) => {
+                return (
+                  <Chip
+                  label={element}
+                  variant="outlined"
+                  onClick={handleClick}
+                  onDelete={handleDelete}
+                />
+                )
+              })
+            }
+          
           </Box>
         </Box>
         <Grid
