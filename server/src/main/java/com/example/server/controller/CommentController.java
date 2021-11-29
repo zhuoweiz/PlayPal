@@ -37,6 +37,12 @@ public class CommentController {
         return commentService.getCommentById(id);
     }
 
+    @GetMapping("/{postId}")
+    public List<CommentData> getCommentsByPostId(@PathVariable Long postId) {
+        System.out.println(" === GET Comment BY POST ID ===");
+        return commentService.getCommentsByPostId(postId);
+    }
+
     /**
      * Post request to create user information int the system.
      * @param commentData

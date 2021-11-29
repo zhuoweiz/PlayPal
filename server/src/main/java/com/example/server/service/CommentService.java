@@ -10,4 +10,6 @@ public interface CommentService {
     boolean deleteComment(final Long commentId);
     List<CommentData> getAllComments();
     CommentData getCommentById(final long commentId);
+
+    List<CommentData> getCommentsByPostId(final long postId);
 }

@@ -1,8 +1,10 @@
 package com.example.server.service;
 
 import com.example.server.data.Comment;
+import com.example.server.data.Post;
 import com.example.server.dto.CommentData;
 import com.example.server.repository.CommentRepository;
+import com.example.server.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.List;
 public class DefaultCommentService implements CommentService {
     @Autowired
     private CommentRepository commentRepo;
+    @Autowired
+    private PostRepository postRepo;
 
     /**
      * Create a user based on the data sent to the service class.
@@ -22,7 +26,11 @@ public class DefaultCommentService implements CommentService {
      */
     @Override
     public CommentData saveComment(CommentData commentData) {
+        final long postId = commentData.getPostId();
         Comment commentInstance = populateCommentEntity(commentData);
+        Post post = postRepo.findById(postId).orElseThrow(
+          () -> new EntityNotFoundException());
+        commentInstance.setPost(post);
         return populateCommentData((commentRepo.save(commentInstance)));
     }
 
@@ -65,6 +73,18 @@ public class DefaultCommentService implements CommentService {
         ));
     }
 
+    @Override
+    public List<CommentData> getCommentsByPostId(long postId) {
+        List<Comment> comments = commentRepo.findByPostId(postId);
+
+        List<CommentData> commentsResponse = new ArrayList<>();
+        comments.forEach(comment -> {
+            commentsResponse.add(populateCommentData(comment));
+        });
+
+        return commentsResponse;
+    }
+
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
@@ -74,8 +94,8 @@ public class DefaultCommentService implements CommentService {
     private CommentData populateCommentData(final Comment comment){
         CommentData commentData = new CommentData();
         commentData.setId(comment.getId());
-        commentData.setUserId(comment.getUserId());
         commentData.setContent(comment.getContent());
+        commentData.setPostId(comment.getPost().getId());
 
         return commentData;
     }
@@ -87,8 +107,8 @@ public class DefaultCommentService implements CommentService {
      */
     private Comment populateCommentEntity(CommentData commentData){
         Comment comment = new Comment();
-        comment.setUserId(commentData.getUserId());
         comment.setContent(commentData.getContent());
         return comment;
     }
+
 }
