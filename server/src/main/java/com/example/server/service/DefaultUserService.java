@@ -33,9 +33,15 @@ public class DefaultUserService implements UserService {
 		Set<Post> newSet = new HashSet<>();
 		newSet.add(tmpPost);
 		newSet.add(tmpPost2);
+
+
 		userInstance.setLikedPosts(newSet);
+
 		return populateUserData((userRepo.save(userInstance)));
 	}
+
+
+	// likedPost(postID)
 
 	/**
 	 * Delete pet based on the user ID.We can also use other option to delete user

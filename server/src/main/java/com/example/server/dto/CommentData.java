@@ -5,41 +5,27 @@ import com.example.server.data.User;
 public class CommentData {
     private Long id;
     private Long postId;
-    private Long senderId;
+    private Long creatorId;
     private String content;
-    private UserData sender;
-    private Long postId;
+    private UserData creator;
     private PostData post;
     public CommentData() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
     public void setPostId(Long creatorId){ this.postId = creatorId; }
-    public void setSender(UserData sender) { this.sender = sender; }
+    public void setSender(UserData sender) { this.creator = sender; }
     public void setPost(PostData post) { this.post = post; }
-    public void setSenderId(Long userId){ this.senderId = userId; }
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public void setPostId(Long postId) {this.postId = postId;}
-    public Long getSenderId() {return sender.getId();}
-    public Long getPostId() {return post.getId();}
-    public UserData getSender() { return sender; }
+    public void setSenderId(Long userId){ this.creatorId = userId; }
+    public void setContent(String content) { this.content = content; }
+    public Long getSenderId() {return creator.getId();}
+    public UserData getSender() { return creator; }
     public PostData getPost() { return post; }
-    public Long getId() {
-        return id;
-    }
-
-    public Long getPostId() {
-        return postId;
-    }
-    public String getContent() {
-        return content;
-    }
+    public Long getId() { return id; }
+    public Long getPostId() { return postId; }
+    public String getContent() { return content; }
 
     @Override
     public String toString() {
-        return "Post: Id: " + id + "senderId" + senderId + " content: " + content;
+        return "Post: Id: " + id + "senderId" + creatorId + " content: " + content;
     }
 }

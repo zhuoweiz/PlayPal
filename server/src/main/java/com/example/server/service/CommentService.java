@@ -11,6 +11,4 @@ public interface CommentService {
     List<CommentData> getAllComments();
     List<CommentData> getCommentsByPostId(final long postId);
     CommentData getCommentById(final long commentId);
-
-    List<CommentData> getCommentsByPostId(final long postId);
 }

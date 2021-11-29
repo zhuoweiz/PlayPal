@@ -95,17 +95,17 @@ public class DefaultCommentService implements CommentService {
         ));
     }
 
-    @Override
-    public List<CommentData> getCommentsByPostId(long postId) {
-        List<Comment> comments = commentRepo.findByPostId(postId);
-
-        List<CommentData> commentsResponse = new ArrayList<>();
-        comments.forEach(comment -> {
-            commentsResponse.add(populateCommentData(comment));
-        });
-
-        return commentsResponse;
-    }
+//    @Override
+//    public List<CommentData> getCommentsByPostId(long postId) {
+//        List<Comment> comments = commentRepo.findByPostId(postId);
+//
+//        List<CommentData> commentsResponse = new ArrayList<>();
+//        comments.forEach(comment -> {
+//            commentsResponse.add(populateCommentData(comment));
+//        });
+//
+//        return commentsResponse;
+//    }
 
     /**
      * Internal method to convert User JPA entity to the DTO object
@@ -117,8 +117,8 @@ public class DefaultCommentService implements CommentService {
         CommentData commentData = new CommentData();
         commentData.setId(comment.getId());
         commentData.setPostId(comment.getPostId());
-        commentData.setSenderId(comment.getSenderId());
-        User sender = userRepo.getById(comment.getSenderId());
+        commentData.setSenderId(comment.getCreatorId());
+        User sender = userRepo.getById(comment.getCreatorId());
         Post post = postRepo.getById((comment.getPostId()));
         commentData.setSender(populateUserData(sender));
         commentData.setPost(populatePostData(post));
@@ -160,7 +160,7 @@ public class DefaultCommentService implements CommentService {
         Comment comment = new Comment();
         comment.setContent(commentData.getContent());
         User sender = userRepo.getById(commentData.getSenderId());
-        comment.setSender(sender);
+        comment.setCreator(sender);
         Post post = postRepo.getById(commentData.getPostId());
         comment.setPost(post);
         return comment;
