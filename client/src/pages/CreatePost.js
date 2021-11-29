@@ -5,7 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import Map from "../components/Map";
-// import Autocomplete from "react-google-autocomplete";
+import { default as GoogleMapsAutoComplete } from "react-google-autocomplete";
 import tagList from "../constants/tagList";
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -45,23 +45,24 @@ function CreatePost() {
           sx={{ border: 2, borderColor: "grey.500", borderRadius: "12px" }}
         >
           <Grid style={{ height: "10%" }}>
-            {/* <Autocomplete
+            <GoogleMapsAutoComplete
               apiKey={"AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc"}
               style={{ width: "90%" }}
               onPlaceSelected={(place) => {
                 console.log(place);
               }}
               options={{
-                types: ["(regions)"],
+                types: ["establishment", "geocode"],
                 componentRestrictions: { country: "us" },
               }}
               defaultValue="syracuse"
-            /> */}
+            />
+            
           </Grid>
           <Grid container direction="row" style={{ height: "90%" }}>
-            <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
+            {/* <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
               <Map />
-            </Grid>
+            </Grid> */}
             <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
               <Grid>
                 Description
@@ -109,7 +110,10 @@ function CreatePost() {
               renderInput={(params) => <TextField {...params} label="Activity" />}
               value ={tag}
               onChange={(event,newValue)=>{
-                setTag(newValue.label);
+                setTag(newValue);
+                if(newValue) {
+                  setTag(newValue.label);
+                }
                 // console.log(tag);
               }}
             />
