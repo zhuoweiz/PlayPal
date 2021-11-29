@@ -32,7 +32,11 @@ public class DefaultCommentService implements CommentService {
      */
     @Override
     public CommentData saveComment(CommentData commentData) {
+        final long postId = commentData.getPostId();
         Comment commentInstance = populateCommentEntity(commentData);
+        Post post = postRepo.findById(postId).orElseThrow(
+          () -> new EntityNotFoundException());
+        commentInstance.setPost(post);
         return populateCommentData((commentRepo.save(commentInstance)));
     }
 
@@ -91,6 +95,18 @@ public class DefaultCommentService implements CommentService {
         ));
     }
 
+    @Override
+    public List<CommentData> getCommentsByPostId(long postId) {
+        List<Comment> comments = commentRepo.findByPostId(postId);
+
+        List<CommentData> commentsResponse = new ArrayList<>();
+        comments.forEach(comment -> {
+            commentsResponse.add(populateCommentData(comment));
+        });
+
+        return commentsResponse;
+    }
+
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
@@ -102,12 +118,12 @@ public class DefaultCommentService implements CommentService {
         commentData.setId(comment.getId());
         commentData.setPostId(comment.getPostId());
         commentData.setSenderId(comment.getSenderId());
-//        messageData.setTime(message.getTime());
         User sender = userRepo.getById(comment.getSenderId());
         Post post = postRepo.getById((comment.getPostId()));
         commentData.setSender(populateUserData(sender));
         commentData.setPost(populatePostData(post));
         commentData.setContent(comment.getContent());
+        commentData.setPostId(comment.getPost().getId());
 
         return commentData;
     }
@@ -149,4 +165,5 @@ public class DefaultCommentService implements CommentService {
         comment.setPost(post);
         return comment;
     }
+
 }

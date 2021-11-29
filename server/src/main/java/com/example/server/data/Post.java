@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.sql.Time;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Posts")
@@ -22,6 +24,11 @@ public class Post extends Auditable<String>{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User creator;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
+
 
     public Post() {
     }

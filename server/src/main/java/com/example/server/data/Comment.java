@@ -31,6 +31,7 @@ public class Comment extends Auditable<String>{
         this.content = content;
     }
 
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -42,6 +43,7 @@ public class Comment extends Auditable<String>{
     public Long getId() {
         return id;
     }
+
     public Long getSenderId() {return sender.getId();}
     public Long getPostId() {return post.getId();}
     public User getSender() { return sender; }
@@ -49,6 +51,9 @@ public class Comment extends Auditable<String>{
     public String getContent() {
         return content;
     }
+
+    public void setPost(Post post) { this.post = post; }
+    public Post getPost() { return this.post; }
 
     @Override
     public String toString() {

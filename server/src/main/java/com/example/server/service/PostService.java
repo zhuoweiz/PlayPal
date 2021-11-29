@@ -1,5 +1,6 @@
 package com.example.server.service;
 
+import com.example.server.dto.CommentData;
 import com.example.server.dto.PostData;
 import com.example.server.dto.UserData;
 

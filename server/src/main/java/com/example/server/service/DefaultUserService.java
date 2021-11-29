@@ -1,5 +1,6 @@
 package com.example.server.service;
 
+import com.example.server.data.Post;
 import com.example.server.data.User;
 import com.example.server.dto.PostData;
 import com.example.server.dto.UserData;
@@ -9,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service("userService")
 public class DefaultUserService implements UserService {
@@ -27,6 +27,13 @@ public class DefaultUserService implements UserService {
 	@Override
 	public UserData saveUser(UserData userData) {
 		User userInstance = populateUserEntity(userData);
+
+		Post tmpPost = postRepo.getById(new Long(1));
+		Post tmpPost2 = postRepo.getById(new Long(2));
+		Set<Post> newSet = new HashSet<>();
+		newSet.add(tmpPost);
+		newSet.add(tmpPost2);
+		userInstance.setLikedPosts(newSet);
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
@@ -64,7 +71,6 @@ public class DefaultUserService implements UserService {
 	 */
 	@Override
 	public UserData getUserById(long userId) {
-		User user = userRepo.getById((long)1);
 		return populateUserData(userRepo.findById(userId).orElseThrow(() ->
 			new EntityNotFoundException("User not found!")
 		));
@@ -74,6 +80,19 @@ public class DefaultUserService implements UserService {
 	public List<PostData> getUserPosts(long userId) {
 
 		return null;
+	}
+
+	@Override
+	public List<PostData> getLikedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getLikedPosts();
+
+		for(Post element : tmp) {
+			responsePosts.add(populatePostData(element));
+		}
+
+		return responsePosts;
 	}
 
 	/**
@@ -98,9 +117,22 @@ public class DefaultUserService implements UserService {
 	 */
 	private User populateUserEntity(UserData userData){
 		User user = new User();
-//		user.setId(userData.getId());
 		user.setName(userData.getName());
 		user.setEmail(userData.getEmail());
 		return user;
+	}
+
+	private PostData populatePostData(final Post post){
+		PostData postData = new PostData();
+		postData.setId(post.getId());
+		postData.setCreatorId(post.getCreatorId());
+
+		User user = userRepo.getById(post.getCreatorId());
+		postData.setCreator(populateUserData(user));
+
+		postData.setTitle(post.getTitle());
+		postData.setContent(post.getContent());
+
+		return postData;
 	}
 }

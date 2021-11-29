@@ -1,7 +1,10 @@
 package com.example.server.controller;
 
+import com.example.server.dto.PostData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,9 +34,14 @@ public class UserController {
 	 * @return UserData
 	 */
 	@GetMapping("/user/{id}")
-	public UserData getUser(@PathVariable Long id) {
+	public ResponseEntity<UserData> getUser(@PathVariable Long id) {
 		System.out.println(" === GET USER BY ID ===");
-		return userService.getUserById(id);
+		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/user/likedPosts/{id}")
+	public ResponseEntity<List<PostData>> getLikedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
 	}
 
 	/**
@@ -44,7 +52,6 @@ public class UserController {
 	@PostMapping("/user")
 
 	public UserData saveUser(final @RequestBody UserData userData) {
-
 		System.out.println("Post new user === " + userData.toString());
 		return userService.saveUser(userData);
 	}
