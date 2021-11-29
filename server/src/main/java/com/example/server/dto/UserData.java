@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 
 public class UserData {
 	private Long id;
 	private String name;
 	private String email;
+	//private List<Long> followedbys;
+	//private List<Long> followings;
 /*	@Temporal(value = TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
 

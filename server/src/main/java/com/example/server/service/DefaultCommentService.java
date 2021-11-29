@@ -1,8 +1,14 @@
 package com.example.server.service;
 
 import com.example.server.data.Comment;
+import com.example.server.data.Post;
+import com.example.server.data.User;
 import com.example.server.dto.CommentData;
+import com.example.server.dto.PostData;
+import com.example.server.dto.UserData;
 import com.example.server.repository.CommentRepository;
+import com.example.server.repository.PostRepository;
+import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,10 @@ import java.util.List;
 public class DefaultCommentService implements CommentService {
     @Autowired
     private CommentRepository commentRepo;
+    @Autowired
+    private PostRepository postRepo;
+    @Autowired
+    private UserRepository userRepo;
 
     /**
      * Create a user based on the data sent to the service class.
@@ -53,6 +63,22 @@ public class DefaultCommentService implements CommentService {
         return commentData;
     }
 
+    @Override
+    public List<CommentData> getCommentsByPostId(long postId) {
+        List<CommentData> commentData = new ArrayList<>();
+        List<Comment> commentList = commentRepo.findAll();
+        List<Comment> commentList_PostId = new ArrayList<>();
+        commentList.forEach(comment -> {
+            if (comment.getPostId() == postId){
+                commentList_PostId.add(comment);
+            }
+        });
+        commentList_PostId.forEach(comment->{
+            commentData.add(populateCommentData(comment));
+        });
+        return commentData;
+    }
+
     /**
      * Get user by ID. The service will send the user data else will throw the exception.
      * @param commentId
@@ -74,10 +100,39 @@ public class DefaultCommentService implements CommentService {
     private CommentData populateCommentData(final Comment comment){
         CommentData commentData = new CommentData();
         commentData.setId(comment.getId());
-        commentData.setUserId(comment.getUserId());
+        commentData.setPostId(comment.getPostId());
+        commentData.setSenderId(comment.getSenderId());
+//        messageData.setTime(message.getTime());
+        User sender = userRepo.getById(comment.getSenderId());
+        Post post = postRepo.getById((comment.getPostId()));
+        commentData.setSender(populateUserData(sender));
+        commentData.setPost(populatePostData(post));
         commentData.setContent(comment.getContent());
 
         return commentData;
+    }
+
+    private UserData populateUserData(final User user){
+        UserData userData = new UserData();
+        userData.setId(user.getId());
+        userData.setName(user.getName());
+        userData.setEmail(user.getEmail());
+
+        return userData;
+    }
+
+    private PostData populatePostData(final Post post){
+        PostData postData = new PostData();
+        postData.setId(post.getId());
+        postData.setCreatorId(post.getCreatorId());
+
+        User user = userRepo.getById(post.getCreatorId());
+        postData.setCreator(populateUserData(user));
+
+        postData.setTitle(post.getTitle());
+        postData.setContent(post.getContent());
+
+        return postData;
     }
 
     /**
@@ -87,8 +142,11 @@ public class DefaultCommentService implements CommentService {
      */
     private Comment populateCommentEntity(CommentData commentData){
         Comment comment = new Comment();
-        comment.setUserId(commentData.getUserId());
         comment.setContent(commentData.getContent());
+        User sender = userRepo.getById(commentData.getSenderId());
+        comment.setSender(sender);
+        Post post = postRepo.getById(commentData.getPostId());
+        comment.setPost(post);
         return comment;
     }
 }

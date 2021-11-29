@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.Date;
 import java.sql.Time;
@@ -19,6 +21,9 @@ public class User extends Auditable<String>{
 	private Long id;
 	private String name;
 	private String email;
+/*	private List<Long> followedbys;
+	private List<Long> followings;*/
+
 /*	@Temporal(value = TemporalType.TIMESTAMP)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")
 	private Date publishedDate;*/
@@ -68,7 +73,6 @@ public class User extends Auditable<String>{
 	public String getEmail() {
 		return email;
 	}
-
 
 	@Override
 	public String toString() {

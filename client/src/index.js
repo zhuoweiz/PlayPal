@@ -15,6 +15,7 @@ import ViewPost from './pages/ViewPost';
 import Footer from './components/Footer';
 import CreatePost from './pages/CreatePost'
 import ViewUser from './pages/ViewUser'
+import ViewMyPost from './pages/ViewMyPost';
 import NotificationComponent from './components/profile/NotificationComponent';
 import ProfileComponent from './components/profile/ProfileComponent';
 import SettingComponent from './components/profile/SettingComponent';
@@ -104,6 +105,17 @@ ReactDOM.render(
             <Home />
           }
           />
+
+          <Route path="/mypost" element={
+            <ViewMyPost />
+          }
+          />
+          <Route path="/" element={
+            <Home />
+          }
+          />
+
+          
 
         </Routes>
         <Footer></Footer>
