@@ -1,5 +1,6 @@
 package com.example.server.controller;
 
+import com.example.server.dto.PostData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,11 @@ public class UserController {
 	public ResponseEntity<UserData> getUser(@PathVariable Long id) {
 		System.out.println(" === GET USER BY ID ===");
 		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/user/likedPosts/{id}")
+	public ResponseEntity<List<PostData>> getLikedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
 	}
 
 	/**

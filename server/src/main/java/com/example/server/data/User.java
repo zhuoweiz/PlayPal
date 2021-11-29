@@ -19,26 +19,19 @@ public class User extends Auditable<String>{
 	private Long id;
 	private String name;
 	private String email;
-/*	@Temporal(value = TemporalType.TIMESTAMP)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")
-	private Date publishedDate;*/
-
-	/*@PrePersist
-	private void onCreate() {
-		publishedDate = new Date();
-	}*/
-
-	// do i really need this
-//	@OneToOne(mappedBy = "creator",
-//		fetch = FetchType.LAZY,
-//		cascade = CascadeType.ALL)
-//	private Post post;
 
 	@OneToMany(mappedBy="creator",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
 	private Set<Post> createdPosts;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "likes",
+		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
+	)
+	private Set<Post> likedPosts;
 
 	public User() {
 	}
@@ -48,26 +41,23 @@ public class User extends Auditable<String>{
 		this.email = email;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	public void setId(Long id) { this.id = id; }
 	public void setName(String name) {
 		this.name = name;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
-	public Long getId() {
-		return id;
-	}
+	public Long getId() { return id; }
 	public String getName() {
 		return name;
 	}
 	public String getEmail() {
 		return email;
 	}
+
+	public Set<Post> getLikedPosts() { return likedPosts; }
+	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
 
 
 	@Override

@@ -28,6 +28,8 @@ public class Post extends Auditable<String>{
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
+
+
     public Post() {
     }
 
