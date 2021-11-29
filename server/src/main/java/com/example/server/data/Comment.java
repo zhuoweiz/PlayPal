@@ -18,12 +18,16 @@ public class Comment extends Auditable<String>{
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    private User sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
     public Comment(){
     }
-    public Comment(String content) {
+    public Comment(int userId, String content) {
         this.content = content;
     }
 
@@ -31,12 +35,19 @@ public class Comment extends Auditable<String>{
     public void setId(Long id) {
         this.id = id;
     }
+    public void setSender(User user) { sender = user; }
     public void setContent(String content) {
         this.content = content;
     }
+    public void setPost(Post post_instance) {post = post_instance;}
     public Long getId() {
         return id;
     }
+
+    public Long getSenderId() {return sender.getId();}
+    public Long getPostId() {return post.getId();}
+    public User getSender() { return sender; }
+    public Post getPost(){return post;}
     public String getContent() {
         return content;
     }
@@ -46,6 +57,6 @@ public class Comment extends Auditable<String>{
 
     @Override
     public String toString() {
-        return "Comment: Id: " + id + " content: " + content;
+        return "Comment: Id: " + id + "senderId" + sender.getId() + "postId" + post.getId() + " content: " + content;
     }
 }

@@ -21,6 +21,11 @@ public class CommentController {
         return commentService.getAllComments();
     }
 
+    @GetMapping("/bypost/{id}")
+    public List<CommentData> getCommentsByPostId(@PathVariable Long id) {
+        System.out.println("== GET Comment BY PostID ==");
+        return commentService.getCommentsByPostId(id);
+    }
     @GetMapping("/comment/{id}")
     public CommentData getComment(@PathVariable Long id) {
         System.out.println(" === GET Comment BY ID ===");
