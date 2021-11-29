@@ -6,9 +6,20 @@ import Tab from "@mui/material/Tab";
 import { Grid } from "@mui/material";
 // import { TabPanel } from '@mui/lab';
 import PostCard from "./PostCard";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  gridContainer: { 
+    marginTop: "30px", 
+    paddingRight: 6,
+    paddingLeft: 2,
+  },
+}));
 
 export default function CenteredTabs() {
   const [value, setValue] = React.useState(0);
+
+  const classes = useStyles();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -27,12 +38,11 @@ export default function CenteredTabs() {
         <Grid
             item
             container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-            style={{ marginTop: "30px" }}
+            spacing={{ xs: 2 }}
+            className={classes.gridContainer}
           >
             {Array.from(Array(6)).map((_, index) => (
-              <Grid item xs={2} sm={4} md={4} key={index}>
+              <Grid item xs={6} md={4} key={index}>
                 <PostCard />
               </Grid>
             ))}
@@ -43,12 +53,11 @@ export default function CenteredTabs() {
         <Grid
               item
               container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-              style={{ marginTop: "30px" }}
+              spacing={{ xs: 2}}
+              className={classes.gridContainer}
             >
               {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
+                <Grid item xs={6} md={4} key={index}>
                   <PostCard />
                 </Grid>
               ))}
@@ -59,12 +68,11 @@ export default function CenteredTabs() {
         <Grid
               item
               container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-              style={{ marginTop: "30px" }}
+              spacing={{ xs: 2}}
+              className={classes.gridContainer}
             >
               {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
+                <Grid item xs={6} md={4} key={index}>
                   <PostCard />
                 </Grid>
               ))}
