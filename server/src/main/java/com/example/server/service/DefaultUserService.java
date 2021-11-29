@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("userService")
 public class DefaultUserService implements UserService {
@@ -32,7 +29,11 @@ public class DefaultUserService implements UserService {
 		User userInstance = populateUserEntity(userData);
 
 		Post tmpPost = postRepo.getById(new Long(1));
-		userInstance.setLikedPosts(Collections.singleton(tmpPost));
+		Post tmpPost2 = postRepo.getById(new Long(2));
+		Set<Post> newSet = new HashSet<>();
+		newSet.add(tmpPost);
+		newSet.add(tmpPost2);
+		userInstance.setLikedPosts(newSet);
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
