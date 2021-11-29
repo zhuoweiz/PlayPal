@@ -5,7 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import Map from "../components/Map";
-import { default as GoogleMapsAutoComplete } from "react-google-autocomplete";
+import { default as GoogleMapsAutoComplete, usePlacesWidget } from "react-google-autocomplete";
 import tagList from "../constants/tagList";
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -27,12 +27,45 @@ function CreatePost() {
   const [tag, setTag] = React.useState("");
   // const [options, setOptions] = React.useState(tagList);
 
+  const { ref: materialRef } = usePlacesWidget({
+    apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+    onPlaceSelected: (place) => {
+      console.log(place);
+    },
+    options: {
+      types: ["establishment", "geocode"],
+      componentRestrictions: { country: "us" },
+    },
+    defaultValue: "syracuse"
+  });
+
   return (
     <Container maxWidth="md" style={{ height: "100vh" }}>
       <Box style={{ marginTop: "36px", height: "80%" }}>
         <Box style={{ width: "100%", marginTop: "12px" }}>
           <TextField fullWidth label="Title"></TextField>
         </Box>
+
+        <Grid style={{ height: "10%" }}>
+            {/* <GoogleMapsAutoComplete
+              apiKey={"AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc"}
+              style={{ width: "90%" }}
+              onPlaceSelected={(place) => {
+                console.log(place);
+              }}
+              options={{
+                types: ["establishment", "geocode"],
+                componentRestrictions: { country: "us" },
+              }}
+              defaultValue="syracuse"
+            /> */}
+              <TextField
+              fullWidth
+              color="secondary"
+              variant="outlined"
+              inputRef={materialRef}
+            />
+          </Grid>
         <Grid
           container
           direction="column"
@@ -44,21 +77,7 @@ function CreatePost() {
           }}
           sx={{ border: 2, borderColor: "grey.500", borderRadius: "12px" }}
         >
-          <Grid style={{ height: "10%" }}>
-            <GoogleMapsAutoComplete
-              apiKey={"AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc"}
-              style={{ width: "90%" }}
-              onPlaceSelected={(place) => {
-                console.log(place);
-              }}
-              options={{
-                types: ["establishment", "geocode"],
-                componentRestrictions: { country: "us" },
-              }}
-              defaultValue="syracuse"
-            />
-            
-          </Grid>
+          
           <Grid container direction="row" style={{ height: "90%" }}>
             {/* <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
               <Map />
