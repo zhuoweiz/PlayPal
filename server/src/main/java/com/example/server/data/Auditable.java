@@ -34,16 +34,6 @@ public abstract class Auditable<U> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")
     protected Date lastModifiedDate;
 
-    // getters and setter here
-
-/*    public U getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(U createdBy) {
-        this.createdBy = createdBy;
-    }*/
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -51,16 +41,6 @@ public abstract class Auditable<U> {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-
-
-/*    public U getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(U lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-*/
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;

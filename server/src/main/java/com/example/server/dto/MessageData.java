@@ -28,8 +28,6 @@ public class MessageData {
 
     public void setPost(PostData post) { this.post = post; }
     public PostData getPost() { return post; }
-    //    public void setTime(Timestamp time) {this.time = time;}
-//    public Timestamp getTime() {return time;}
 
     public void setContent(String content) {this.content = content;}
     public String getContent() {return content;}

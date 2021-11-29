@@ -28,6 +28,12 @@ public class User extends Auditable<String>{
 	)
 	private Set<Post> createdPosts;
 
+	@OneToMany(mappedBy="creator",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL
+	)
+	private Set<Comment> createdComments;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "likes",
 		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -44,19 +50,12 @@ public class User extends Auditable<String>{
 	}
 
 	public void setId(Long id) { this.id = id; }
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	public void setName(String name) { this.name = name; }
+	public void setEmail(String email) { this.email = email; }
+
 	public Long getId() { return id; }
-	public String getName() {
-		return name;
-	}
-	public String getEmail() {
-		return email;
-	}
+	public String getName() { return name; }
+	public String getEmail() { return email; }
 
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }

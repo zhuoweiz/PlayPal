@@ -27,34 +27,29 @@ public class Comment extends Auditable<String>{
 
     public Comment(){
     }
-    public Comment(int userId, String content) {
+    public Comment(String content) {
         this.content = content;
     }
-
-
-    public void setId(Long id) {
+    public Comment(Long id, String content, User creator, Post post) {
         this.id = id;
-    }
-    public void setCreator(User user) { creator = user; }
-    public void setContent(String content) {
         this.content = content;
-    }
-    public Long getId() {
-        return id;
+        this.creator = creator;
+        this.post = post;
     }
 
-    public Long getCreatorId() {return creator.getId();}
-    public Long getPostId() {return post.getId();}
-    public User getCreator() { return creator; }
-    public String getContent() {
-        return content;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setContent(String content) { this.content = content; }
+    public Long getId() { return id; }
+    public String getContent() { return content; }
 
     public void setPost(Post post) { this.post = post; }
     public Post getPost() { return this.post; }
 
+    public void setCreator(User creator) { this.creator = creator; }
+    public User getCreator() { return this.creator; }
+
     @Override
     public String toString() {
-        return "Comment: Id: " + id + "senderId" + creator.getId() + "postId" + post.getId() + " content: " + content;
+        return "Comment: Id: " + id + " content: " + content;
     }
 }

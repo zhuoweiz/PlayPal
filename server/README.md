@@ -46,9 +46,9 @@ CREATE TABLE comments (
    id INT unsigned NOT NULL AUTO_INCREMENT,
    creator_id INT unsigned,
    post_id INT unsigned,
+   content VARCHAR(255) NOT NULL,
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
-   content VARCHAR(150) NOT NULL,
    PRIMARY KEY (id),
    FOREIGN KEY (creator_id) REFERENCES users(id),
    FOREIGN KEY (post_id) REFERENCES posts(id)
