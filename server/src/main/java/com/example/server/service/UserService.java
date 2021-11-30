@@ -10,6 +10,7 @@ public interface UserService {
 	List<UserData> getAllUsers();
 	UserData getUserById(final long userId);
 	List<PostData> getUserPosts(final long userId);
+	long getUserId(String fid);
 
 	List<PostData> getLikedPosts(final long userId);
 }

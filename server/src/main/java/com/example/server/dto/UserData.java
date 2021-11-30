@@ -11,6 +11,7 @@ public class UserData {
 	private Long id;
 	private String name;
 	private String email;
+	private String fid;
 	//private List<Long> followedbys;
 	//private List<Long> followings;
 /*	@Temporal(value = TemporalType.TIMESTAMP)
@@ -34,7 +35,7 @@ public class UserData {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	public void setFid(String fid) { this.fid = fid; }
 
 	public Long getId() {
 		return id;
@@ -45,6 +46,7 @@ public class UserData {
 	public String getEmail() {
 		return email;
 	}
+	public String getFid() { return fid; }
 
 	@Override
 	public String toString() {
