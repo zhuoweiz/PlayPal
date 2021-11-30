@@ -16,6 +16,7 @@ use playpal;
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE users ( 
     id INT unsigned NOT NULL AUTO_INCREMENT,  
+    fid VARCHAR(150) NOT NULL,
     name VARCHAR(150) NOT NULL,
     created_date VARCHAR(255),
     last_modified_date VARCHAR(255),

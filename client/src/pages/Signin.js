@@ -31,9 +31,9 @@ export default function SignIn() {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      alert("Signin successful! " + user.email);
+      
+      alert("Signin successful!");
       navigate("/");
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
