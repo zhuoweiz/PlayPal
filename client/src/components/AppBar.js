@@ -15,8 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Link } from '@mui/material';
+import { Divider, FormControl, Link, List, ListItemButton, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Button } from '@mui/material';
+import {Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 
 import {useNavigate} from 'react-router-dom';
 
@@ -62,16 +63,109 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+function SimpleDialog(props) {
+  const { onClose, selectedValue, open } = props;
+
+  const [alignment, setAlignment] = React.useState('left');
+  const [searchType, setSearchType] = React.useState(0);
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
+  const handleClose = () => {
+    onClose(1);
+  };
+
+  const data = [
+    "yes",
+    "no",
+  ]
+
+  const handleListItemClick = (value) => {
+    // onClose(value);
+    // go to a post page or person page (target blank)
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Search</DialogTitle>
+      <DialogContent>
+        <ToggleButtonGroup
+          value={alignment}
+          exclusive
+          onChange={handleAlignment}
+          aria-label="text alignment"
+        >
+          <ToggleButton value="left" aria-label="left aligned">
+            Post Activity
+          </ToggleButton>
+          <ToggleButton value="center" aria-label="centered">
+            User
+          </ToggleButton>
+        </ToggleButtonGroup>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log("submitted...")
+          }}
+        >
+          <TextField
+            label="Search here"
+            sx={{
+              marginTop: 2,
+              width: 400
+            }}
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+          ></TextField>
+          {/* <Button variant="outlined">Search</Button> */}
+        </form>
+
+        <div>
+          <List component="nav" aria-label="main mailbox folders">
+            {
+              data.map((element) => {
+                return (
+                  <ListItemButton
+                    onClick={(event) => handleListItemClick(event, 0)}
+                  >
+                    <ListItemText primary={element} />
+                  </ListItemButton>
+                )
+              })
+            }
+          </List>
+        </div>
+      </DialogContent>
+      
+    </Dialog>
+  );
+}
+
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [uid, setUid] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const auth = getAuth();
   const navigate = useNavigate();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -216,13 +310,15 @@ export default function NavBar() {
           </Typography>
           
           
-          <Search>
+          <Search onClick={() => {
+            handleClickOpen();
+          }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ 'aria-label': 'search', 'disabled': 'true' }}
             />
           </Search>
           
@@ -289,6 +385,10 @@ export default function NavBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <SimpleDialog
+        open={open}
+        onClose={handleClose}
+      />
     </Box>
   );
 }
