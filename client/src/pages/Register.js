@@ -45,9 +45,11 @@ function SignUp() {
         axios.post(serverUrl+"/users/user", {
           name: firstName,
           email: email,
+          fid: user.uid,
         })
         .then(function (response) {
           console.log(response);
+          localStorage.setItem("uid", response.data.id);
           enqueueSnackbar("Register Sucess!");
           navigate("/");
         })

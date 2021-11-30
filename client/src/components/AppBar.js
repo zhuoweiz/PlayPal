@@ -369,6 +369,7 @@ export default function NavBar() {
               ariant="default"
               onClick={() => {
                 signOut(auth);
+                localStorage.removeItem("uid");
               }}
               style={{color:"white"}}
             >

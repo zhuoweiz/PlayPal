@@ -44,6 +44,11 @@ public class UserController {
 		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/uid")
+	public ResponseEntity<Long> getLikedPosts(@RequestParam(value = "fid") String fid) {
+		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);
+	}
+
 	/**
 	 * Post request to create user information int the system.
 	 * @param userData

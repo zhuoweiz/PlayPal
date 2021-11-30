@@ -19,6 +19,7 @@ public class User extends Auditable<String>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String fid;
 	private String name;
 	private String email;
 
@@ -52,10 +53,12 @@ public class User extends Auditable<String>{
 	public void setId(Long id) { this.id = id; }
 	public void setName(String name) { this.name = name; }
 	public void setEmail(String email) { this.email = email; }
+	public void setFid(String fid) { this.fid = fid; }
 
 	public Long getId() { return id; }
 	public String getName() { return name; }
 	public String getEmail() { return email; }
+	public String getFid() { return fid; }
 
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }

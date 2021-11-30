@@ -34,9 +34,7 @@ public class DefaultUserService implements UserService {
 		newSet.add(tmpPost);
 		newSet.add(tmpPost2);
 
-
 		userInstance.setLikedPosts(newSet);
-
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
@@ -101,6 +99,11 @@ public class DefaultUserService implements UserService {
 		return responsePosts;
 	}
 
+	@Override
+	public long getUserId(String fid) {
+		return userRepo.getUserByFid(fid).getId();
+	}
+
 	/**
 	 * Internal method to convert User JPA entity to the DTO object
 	 * for frontend data
@@ -112,6 +115,7 @@ public class DefaultUserService implements UserService {
 		userData.setId(user.getId());
 		userData.setName(user.getName());
 		userData.setEmail(user.getEmail());
+		// Do not return fid to the client.
 
 		return userData;
 	}
@@ -125,6 +129,7 @@ public class DefaultUserService implements UserService {
 		User user = new User();
 		user.setName(userData.getName());
 		user.setEmail(userData.getEmail());
+		user.setFid(userData.getFid());
 		return user;
 	}
 

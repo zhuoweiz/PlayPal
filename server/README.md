@@ -106,3 +106,10 @@ CREATE TABLE follows (
 );
     
 ```
+
+Alter
+```sql
+-- Nov 30 2021
+ALTER TABLE users
+ADD fid VARCHAR(150) NOT NULL;
+```

@@ -16,7 +16,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+import { serverUrl } from '../constants';
+
 const theme = createTheme();
+const axios = require('axios');
 
 export default function SignIn() {
   const auth = getAuth();
@@ -31,9 +34,20 @@ export default function SignIn() {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      
-      alert("Signin successful!");
-      navigate("/");
+
+      axios.get(serverUrl+"/users/uid", {
+        params: {
+          fid: user.uid
+        }
+      })
+      .then(function (response) {
+        localStorage.setItem("uid", response.data)
+        alert("Signin successful!");
+        navigate("/");
+      })
+      .catch(function (error) {
+        alert("Signin error, pls try again or contact us!");
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
