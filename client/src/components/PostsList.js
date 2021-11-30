@@ -29,6 +29,7 @@ const postsFromBackend = [
     secondary: "Ali Connors",
     text: " — I'll be in your neighborhood doing errands this…",
   },
+  
 ];
 
 function AlignItemsList() {

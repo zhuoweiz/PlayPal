@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { Chip, Paper } from '@mui/material';
+import { Chip, Paper, List, ListSubheader, ListItem, ListItemText } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -120,7 +120,7 @@ export default function ViewPost() {
         <Grid item container direction="row" xs={12} spacing={2
         }>
           <Grid item container xs={12} sm={6}>
-            <Grid container item style={{marginBottom: 12}}>
+            <Grid container item xs={12} style={{marginBottom: 12}}>
               <Paper variant="outlined" style={{
                 width: "100%",
                 height: 300
@@ -129,8 +129,9 @@ export default function ViewPost() {
               </Paper>
             </Grid>
 
-            <Grid container item style={{marginBottom: 12}}>
+            <Grid container item xs={12} style={{marginBottom: 12}}>
               <Paper variant="outlined" style={{
+                width: "100%",
               }}>
                 <Grid container justifyContent="center" direction="column" textAlign="center">
                   <Grid item>
@@ -141,22 +142,37 @@ export default function ViewPost() {
                   <Grid item style={{
                     textAlign: "left",
                     }}>
+
+                    <List
+                      sx={{
+                        width: '100%',
+                        bgcolor: 'background.paper',
+                        position: 'relative',
+                        overflow: 'auto',
+                        maxHeight: 320,
+                        '& ul': { padding: 0 },
+                      }}
+                      subheader={<li />}
+                    >
+                      {[0, 1, 2, 3, 4].map((sectionId) => (
+                        <li key={`section-${sectionId}`}>
+                          <ul>
+                            <ListSubheader>{`Author: `}</ListSubheader>
+                            <ListItem key={`item-${sectionId}-item`}>
+                              <ListItemText 
+                                primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te" 
+                              />
+                            </ListItem>
+                          </ul>
+                        </li>
+                      ))}
+                    </List>
                     
-                    <Comment
+                    {/* <Comment
                       author="Alex"
                       content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te"
                       time=""
-                    />
-                    <Comment
-                      author="Robert"
-                      time=""
-                      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te"
-                    />
-                    <Comment
-                      author="Jessica"
-                      time=""
-                      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te"
-                    />
+                    /> */}
 
                   </Grid>
                   <Grid item container alignItems="center" justifyContent="center"  >
@@ -209,12 +225,57 @@ export default function ViewPost() {
             <Grid item style={{marginBottom: 12}} xs={12}>
               <Paper variant="outlined" style={{
                 width: "100%",
-                height: 400
+                height: 500
               }}>
                 Chat
                 
                 <ChatList 
                   data={[
+                    {
+                      senderId: 2,
+                      content: "Champ",
+                      sendTime: "11.22.2021-21:00",
+                    },
+                    {
+                      senderId: 5,
+                      content: "Pog",
+                      sendTime: "11.22.2021-22:00",
+                    },
+                    {
+                      senderId: 1,
+                      content: "Hello my fellow men of culture.",
+                      sendTime: "11.22.2021-22:50",
+                    },
+                    {
+                      senderId: 2,
+                      content: "Champ",
+                      sendTime: "11.22.2021-21:00",
+                    },
+                    {
+                      senderId: 5,
+                      content: "Pog",
+                      sendTime: "11.22.2021-22:00",
+                    },
+                    {
+                      senderId: 1,
+                      content: "Hello my fellow men of culture.",
+                      sendTime: "11.22.2021-22:50",
+                    },
+                    {
+                      senderId: 2,
+                      content: "Champ",
+                      sendTime: "11.22.2021-21:00",
+                    },
+                    {
+                      senderId: 5,
+                      content: "Pog",
+                      sendTime: "11.22.2021-22:00",
+                    },
+                    {
+                      senderId: 1,
+                      content: "Hello my fellow men of culture.",
+                      sendTime: "11.22.2021-22:50",
+                    },
                     {
                       senderId: 2,
                       content: "Champ",

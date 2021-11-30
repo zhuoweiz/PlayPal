@@ -45,10 +45,10 @@ export default function ChatList(props) {
 
   return (
     <Box
-      sx={{ width: '100%', height: 330, bgcolor: 'background.paper' }}
+      sx={{ width: '100%', height: 430, bgcolor: 'background.paper' }}
     >
       <FixedSizeList
-        height={330}
+        height={420}
         itemSize={46}
         itemCount={data.length}
         itemData={data}
