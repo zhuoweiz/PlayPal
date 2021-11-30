@@ -12,8 +12,8 @@ function Home() {
       maxWidth="lg"
       style={{ height: "100vh",  }}
     >
-      <Grid container direction="row" style={{ marginTop: "12px" }} noWrap>
-        <Grid item sx={11} xm={11} md={11} lg={11} xl={11}>
+      <Grid container direction="row" style={{ marginTop: "12px" }}>
+        <Grid item xs={11} xm={11} md={11} lg={11} xl={11}>
           <Box >
             <Typography variant="h5" gutterBottom component="div">
               Activities Near You
@@ -77,7 +77,7 @@ function Home() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item  sx={1} xm={1} md={1} lg={1} xl={1}>
+        <Grid item  xs={1} xm={1} md={1} lg={1} xl={1}>
           <FloatingActionButton />
         </Grid>
       </Grid>

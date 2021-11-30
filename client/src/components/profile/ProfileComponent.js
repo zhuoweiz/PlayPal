@@ -76,9 +76,11 @@ export default function ProfileComponent() {
       </Typography>
       <div className={classes.tagBox}>
         {
-          interests.map((element) => {
+          interests.map((element, index) => {
             return (
-              <Chip className={classes.tag} label={element.value} variant="outlined" />
+              <Chip 
+                key={index}
+                className={classes.tag} label={element.value} variant="outlined" />
             )
           })
         }

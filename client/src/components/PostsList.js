@@ -39,9 +39,9 @@ function AlignItemsList() {
       lg={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
       xl={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
     >
-      {postsFromBackend.map((post) => {
+      {postsFromBackend.map((post, index) => {
         return (
-          <React.Fragment>
+          <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt={post.name} src={post.src} />

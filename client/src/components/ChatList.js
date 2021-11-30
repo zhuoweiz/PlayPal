@@ -17,19 +17,19 @@ function renderRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      { data[index].senderId == currentUserId ? null : 
+      { data[index].senderId === currentUserId ? null : 
         <ListItemAvatar>
           <Avatar sx={{ width: 36, height: 36 }} src="../../public/profile_avatar.png" />
         </ListItemAvatar>
       }
       
       <ListItemText 
-        align={data[index].senderId == currentUserId ? "right" : "left"} 
-        primary={(data[index].senderId == currentUserId ? "" : `User ${data[index].senderId}: `) + `${data[index].content}`} 
+        align={data[index].senderId === currentUserId ? "right" : "left"} 
+        primary={(data[index].senderId === currentUserId ? "" : `User ${data[index].senderId}: `) + `${data[index].content}`} 
         secondary={`${data[index].sendTime}`}
       />
 
-      { data[index].senderId != currentUserId ? null : 
+      { data[index].senderId !== currentUserId ? null : 
         <ListItemAvatar
           align={"right"} 
         >

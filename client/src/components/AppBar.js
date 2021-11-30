@@ -129,9 +129,10 @@ function SimpleDialog(props) {
         <div>
           <List component="nav" aria-label="main mailbox folders">
             {
-              data.map((element) => {
+              data.map((element,index) => {
                 return (
                   <ListItemButton
+                    key={index}
                     onClick={(event) => handleListItemClick(event, 0)}
                   >
                     <ListItemText primary={element} />
@@ -299,7 +300,6 @@ export default function NavBar() {
         <Toolbar>
           <Typography
             variant="h6"
-            noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
@@ -318,7 +318,7 @@ export default function NavBar() {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search', 'disabled': 'true' }}
+              inputProps={{ 'aria-label': 'search', 'disabled': true }}
             />
           </Search>
           
