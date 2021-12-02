@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS `tags`;
 CREATE TABLE tags (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     label VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id),
+    PRIMARY KEY(id)
 );
 
 DROP TABLE IF EXISTS `likes`;

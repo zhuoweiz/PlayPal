@@ -6,9 +6,20 @@ import Tab from "@mui/material/Tab";
 import { Grid } from "@mui/material";
 // import { TabPanel } from '@mui/lab';
 import PostCard from "./PostCard";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  gridContainer: { 
+    marginTop: "30px", 
+    paddingRight: 6,
+    paddingLeft: 2,
+  },
+}));
 
 export default function CenteredTabs() {
   const [value, setValue] = React.useState(0);
+
+  const classes = useStyles();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -20,8 +31,36 @@ export default function CenteredTabs() {
         <Tab label="Created" />
         <Tab label="Joined" />
       </Tabs>
-      <TabPanel value={value} index={0}>Posts List 1</TabPanel>
-      <TabPanel value={value} index={1}>Posts List 2</TabPanel>
+      <TabPanel value={value} index={0}>
+        Posts List 1
+        <Grid
+            item
+            container
+            spacing={{ xs: 2 }}
+            className={classes.gridContainer}
+          >
+            {Array.from(Array(6)).map((_, index) => (
+              <Grid item xs={6} md={4} key={index}>
+                <PostCard />
+              </Grid>
+            ))}
+          </Grid>
+        </TabPanel>
+      <TabPanel value={value} index={1}>
+        Posts List 2
+        <Grid
+            item
+            container
+            spacing={{ xs: 2 }}
+            className={classes.gridContainer}
+          >
+            {Array.from(Array(6)).map((_, index) => (
+              <Grid item xs={6} md={4} key={index}>
+                <PostCard />
+              </Grid>
+            ))}
+          </Grid>
+        </TabPanel>
     </Box>
   );
 }

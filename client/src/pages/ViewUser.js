@@ -5,14 +5,48 @@ import {
   Typography,
   Button,
   Stack,
+  Chip
 } from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import CenteredTabs  from "../components/CenteredTabs";
 import PostCardMatrix from "../components/PostCardMatrix";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  tag: {
+    marginRight: theme.spacing(1),
+  },
+  tagBox: {
+    width: "100%", 
+    marginTop: theme.spacing(1),
+  },
+}));
+
+
+const interests = [
+  {
+    value: "Game"
+  },
+  {
+    value: "Sport"
+  },
+  {
+    value: "Read"
+  },
+  {
+    value: "Coding"
+  },
+  {
+    value: "Movie"
+  },
+]
 
 function ViewUser() {
+
+  const classes = useStyles();
+
   return (
     <Container maxWidth="md" style={{}}>
       <Grid
@@ -61,6 +95,17 @@ function ViewUser() {
           </Grid>
           <Grid item md={4} style={{}}>
             interest tags
+            <div className={classes.tagBox}>
+              {
+                interests.map((element, index) => {
+                  return (
+                    <Chip 
+                      key={index}
+                      className={classes.tag} label={element.value} variant="outlined" />
+                  )
+                })
+              }
+            </div>
           </Grid>
         </Paper>
 
