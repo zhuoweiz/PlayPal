@@ -61,6 +61,15 @@ public class UserController {
 		return userService.saveUser(userData);
 	}
 
+	@GetMapping("/like")
+	public boolean likePost(
+			@RequestParam(value = "postId") Long postId,
+			@RequestParam(value = "userId") Long userId)
+	{
+		return userService.likePost(userId, postId);
+
+	}
+
 	/**
 	 * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
 	 * @DeleteMapping and @GetMapping</p>
