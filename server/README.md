@@ -13,7 +13,15 @@ mysql -u root -p
 CREATE DATABASE playpal;
 use playpal;
 
+DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `follows`;
+DROP TABLE IF EXISTS `messages`;
+DROP TABLE IF EXISTS `joins`;
+DROP TABLE IF EXISTS `likes`;
+DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `posts`;
 DROP TABLE IF EXISTS `users`;
+
 CREATE TABLE users ( 
     id INT unsigned NOT NULL AUTO_INCREMENT,  
     fid VARCHAR(150) NOT NULL,
@@ -23,7 +31,6 @@ CREATE TABLE users (
     email VARCHAR(150) NOT NULL, PRIMARY KEY (id)  
 );
 
-DROP TABLE IF EXISTS `posts`;
 CREATE TABLE posts (
    id INT unsigned NOT NULL AUTO_INCREMENT,
    creator_id INT unsigned,
@@ -40,7 +47,6 @@ CREATE TABLE posts (
    FOREIGN KEY (creator_id) REFERENCES users(id)
 );
 
-DROP TABLE IF EXISTS `comments`;
 CREATE TABLE comments (
    id INT unsigned NOT NULL AUTO_INCREMENT,
    creator_id INT unsigned,
@@ -53,7 +59,6 @@ CREATE TABLE comments (
    FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-DROP TABLE IF EXISTS `messages`;
 CREATE TABLE messages (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     sender_id INT unsigned,
@@ -66,7 +71,6 @@ CREATE TABLE messages (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-DROP TABLE IF EXISTS `tags`;
 CREATE TABLE tags (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     label VARCHAR(255) NOT NULL,
@@ -77,7 +81,6 @@ CREATE TABLE tags (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-DROP TABLE IF EXISTS `likes`;
 CREATE TABLE likes (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     user_id INT unsigned,
@@ -87,7 +90,6 @@ CREATE TABLE likes (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-DROP TABLE IF EXISTS `joins`;
 CREATE TABLE joins (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     user_id INT unsigned,
@@ -97,7 +99,6 @@ CREATE TABLE joins (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-DROP TABLE IF EXISTS `follows`;
 CREATE TABLE follows (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     follower_id INT unsigned,
