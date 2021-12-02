@@ -45,7 +45,7 @@ public class UserController {
 	}
 
 	@GetMapping("/uid")
-	public ResponseEntity<Long> getLikedPosts(@RequestParam(value = "fid") String fid) {
+	public ResponseEntity<Long> getUid(@RequestParam(value = "fid") String fid) {
 		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);
 	}
 
