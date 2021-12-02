@@ -68,7 +68,7 @@ function CreatePost() {
   });
 
   const handleCreatePostAction= () =>{
-    axios.post("localhost:8080/posts/post",{
+    axios.post("http://localhost:8080/posts/post",{
         creatorId: localStorage.getItem("uid"),
         title: title,
         content: content,
