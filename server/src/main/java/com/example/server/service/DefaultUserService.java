@@ -48,7 +48,12 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
-/*	@Override
+	@Override
+	public boolean followUser(long followerId, long followeeId) {
+		return false;
+	}
+
+	/*	@Override
 	public boolean */
 
 

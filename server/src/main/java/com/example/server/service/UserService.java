@@ -14,4 +14,6 @@ public interface UserService {
 
 	List<PostData> getLikedPosts(final long userId);
 	boolean likePost(final long userId, final long postId);
+
+	boolean followUser(final long followerId, final long followeeId);
 }

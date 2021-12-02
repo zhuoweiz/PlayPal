@@ -48,6 +48,13 @@ public class User extends Auditable<String>{
 	)
 	private Set<Post> likedPosts;
 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "follows",
+		joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "id")
+	)
+	private Set<User> usersFollowed;
+
 	public User() {
 	}
 
@@ -68,9 +75,10 @@ public class User extends Auditable<String>{
 
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
-	public Set<Tag> getTags() {
-		return tags;
-	}
+	public Set<Tag> getTags() { return tags; }
+	public void setTags(Set<Tag> tags) { this.tags = tags; }
+	public Set<User> getUsersFollowed() { return usersFollowed; }
+	public void setUsersFollowed(Set<User> usersFollowed) { this.usersFollowed = usersFollowed; }
 
 	@Override
 	public String toString() {
