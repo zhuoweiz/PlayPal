@@ -27,14 +27,6 @@ public class DefaultUserService implements UserService {
 	@Override
 	public UserData saveUser(UserData userData) {
 		User userInstance = populateUserEntity(userData);
-
-		/*Post tmpPost = postRepo.getById(new Long(1));
-		Post tmpPost2 = postRepo.getById(new Long(2));
-		Set<Post> newSet = new HashSet<>();
-		newSet.add(tmpPost);
-		newSet.add(tmpPost2);*/
-
-		/*userInstance.setLikedPosts(newSet);*/
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
