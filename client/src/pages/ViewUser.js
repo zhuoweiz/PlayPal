@@ -5,16 +5,16 @@ import {
   Typography,
   Button,
   Stack,
+  Chip
 } from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import CenteredTabs  from "../components/CenteredTabs";
 import PostCardMatrix from "../components/PostCardMatrix";
-<<<<<<< Updated upstream
-=======
-import { makeStyles } from '@mui/styles';
 import { typography } from "@mui/system";
+import { makeStyles } from '@mui/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   tag: {
@@ -44,9 +44,11 @@ const interests = [
     value: "Movie"
   },
 ]
->>>>>>> Stashed changes
 
 function ViewUser() {
+
+  const classes = useStyles();
+
   return (
     <Container maxWidth="md" style={{}}>
       <Grid
@@ -98,10 +100,6 @@ function ViewUser() {
               Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.
             </Typography>
           </Grid>
-<<<<<<< Updated upstream
-          <Grid item md={4} style={{}}>
-            interest tags
-=======
           <Grid item md={12} style={{}}>
             <Typography variant = "h6">
               interest tags
@@ -117,7 +115,6 @@ function ViewUser() {
                 })
               }
             </div>
->>>>>>> Stashed changes
           </Grid>
         </Paper>
 
