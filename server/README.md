@@ -30,8 +30,8 @@ CREATE TABLE posts (
    title VARCHAR(150) NOT NULL,
    content VARCHAR(150) NOT NULL, 
    location VARCHAR(255),
-   is_virtual BIT NOT NULL,
-   date_time VARCHAR(255) NOT NULL,
+   is_virtual BIT,
+   date_time VARCHAR(255),
    
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
