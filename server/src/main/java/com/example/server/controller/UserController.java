@@ -70,6 +70,15 @@ public class UserController {
 
 	}
 
+	@GetMapping("/unlike")
+	public boolean unlikePost(
+			@RequestParam(value = "postId") Long postId,
+			@RequestParam(value = "userId") Long userId)
+	{
+		return userService.unlikePost(userId, postId);
+
+	}
+
 	/**
 	 * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
 	 * @DeleteMapping and @GetMapping</p>
