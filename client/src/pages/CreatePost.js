@@ -68,13 +68,13 @@ function CreatePost() {
   });
 
   const handleCreatePostAction= () =>{
-    axios.post("http://localhost:8080/posts/post",{
+    axios.post(serverUrl + "/posts/post",{
         creatorId: localStorage.getItem("uid"),
         title: title,
         content: content,
-        // location: location,
-        // isVirtural: isVirtual,
-        // dateTime: date,
+        location: location,
+        isVirtural: isVirtual,
+        dateTime: date,
     }).then(function(response) {
         console.log(response);
         enqueueSnackbar("Create Post Sucess!")
@@ -93,7 +93,7 @@ function CreatePost() {
     <Container maxWidth="md" style={{ height: "100vh" }}>
       <Box style={{ marginTop: "24px", height: "80%" }}>
         <Box style={{ width: "100%", marginTop: "12px" }}>
-          <TextField fullWidth label="Title" onChange={(newValue)=>setTitle(newValue)}></TextField>
+          <TextField fullWidth label="Title" onChange={(e)=>setTitle(e.target.value)}></TextField>
         </Box>
 
         <Grid style={{ height: "10%", marginTop:"16px"}}>
@@ -114,7 +114,7 @@ function CreatePost() {
             color="secondary"
             variant="outlined"
             inputRef={materialRef}
-            onChange={(newValue)=> setLocation(newValue)}
+            onChange={(e)=> setLocation(e.target.value)}
           />
         </Grid>
         <div style={{ height: "24px" }}></div>
@@ -125,14 +125,14 @@ function CreatePost() {
                 <DateTimePicker
                   label="Date&Time picker"
                   value={date}
-                  onChange={(newValue)=> setDate(newValue)}
+                  onChange={(e)=> setDate(e.target.value)}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
             <Grid>
               <FormControlLabel
-                control={<Checkbox defaultChecked={false} onChange={(isVirtual)=>setIsVirtual(!isVirtual)} />}
+                control={<Checkbox defaultChecked={false} onChange={()=>setIsVirtual(!isVirtual)} />}
                 label="is a Virtual Activity?"
               />
             </Grid>
@@ -144,10 +144,10 @@ function CreatePost() {
           style={{
             fontSize: "18px",
             marginTop: "20px",
-            height: "60%",
+            // height: "60%",
             padding: "4px",
           }}
-          sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
+          // sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
         >
           <Grid container direction="row" style={{ height: "90%" }}>
             {/* <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
@@ -157,20 +157,11 @@ function CreatePost() {
               <Grid>
                 Description
                 {/* <Divider /> */}
-                <MUIRichTextEditor
-                  maxLength={400}
-                  controls={[
-                    "title",
-                    "bold",
-                    "strikethrough",
-                    "undo",
-                    "redo",
-                    "link",
-                    "numberList",
-                    "bulletList",
-                    "quote",
-                  ]}
-                  onChange={(newValue)=>setContent(newValue)}
+                <TextField
+                  multiline
+                  fullWidth
+                  minRows={4}
+                  onChange={(e)=>setContent(e.target.value)}
                 />
               </Grid>
             </Grid>
