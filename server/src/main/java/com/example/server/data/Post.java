@@ -74,6 +74,15 @@ public class Post extends Auditable<String>{
     public Set<Tag> getTags() {
         return tags;
     }
+    public boolean equals(Post post) {
+        if (this.id == post.getId()){
+            return true;
+        }
+        return false;
+    }
+    public int hashcode(){
+        return id.hashCode();
+    }
 
     @Override
     public String toString() {

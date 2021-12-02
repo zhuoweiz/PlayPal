@@ -30,6 +30,27 @@ public class DefaultUserService implements UserService {
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
+	@Override
+	public boolean likePost(final long userId, final long postId) {
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> likedPost = tmpuser.getLikedPosts();
+
+		if (likedPost.contains(tmppost)){
+			return false;
+		}
+		else {
+			likedPost.add(tmppost);
+			tmpuser.setLikedPosts(likedPost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+	}
+
+/*	@Override
+	public boolean */
+
 
 	// likedPost(postID)
 

@@ -115,4 +115,9 @@ Alter
 -- Nov 30 2021
 ALTER TABLE users
 ADD fid VARCHAR(150) NOT NULL;
+ALTER TABLE posts
+DROP COLUMN is_virtual;
+ALTER TABLE posts
+DROP COLUMN date_time;
+
 ```
