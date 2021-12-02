@@ -31,10 +31,7 @@ CREATE TABLE posts (
    content VARCHAR(150) NOT NULL, 
    location VARCHAR(255),
    is_virtual BIT NOT NULL,
-   
-   liked_user_ids VARCHAR(255),
-   joined_user_ids VARCHAR(255),
-   
+
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
    
@@ -72,7 +69,11 @@ DROP TABLE IF EXISTS `tags`;
 CREATE TABLE tags (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     label VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id),
+    post_id INT unsigned,
+    user_id INT unsigned,
+    FOREIGN KEY (post_id) REFERENCES posts(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    PRIMARY KEY(id)
 );
 
 DROP TABLE IF EXISTS `likes`;
@@ -112,4 +113,15 @@ Alter
 -- Nov 30 2021
 ALTER TABLE users
 ADD fid VARCHAR(150) NOT NULL;
+
+DROP TABLE IF EXISTS `tags`;
+CREATE TABLE tags (
+  id INT unsigned NOT NULL AUTO_INCREMENT,
+  label VARCHAR(255) NOT NULL,
+  post_id INT unsigned,
+  user_id INT unsigned,
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  PRIMARY KEY(id)
+);
 ```

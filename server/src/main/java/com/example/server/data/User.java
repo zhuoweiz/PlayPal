@@ -35,6 +35,12 @@ public class User extends Auditable<String>{
 	)
 	private Set<Comment> createdComments;
 
+	@OneToMany(mappedBy="user",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL
+	)
+	private Set<Tag> tags;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "likes",
 		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -62,7 +68,9 @@ public class User extends Auditable<String>{
 
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
-
+	public Set<Tag> getTags() {
+		return tags;
+	}
 
 	@Override
 	public String toString() {

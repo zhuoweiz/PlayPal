@@ -1,6 +1,7 @@
 import React from 'react';
-import { Typography, Grid, TextField, Chip } from '@mui/material';
+import { Typography, Button, TextField, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   tag: {
@@ -9,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   tagBox: {
     width: "100%", 
     marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -33,8 +35,21 @@ const interests = [
 export default function ProfileComponent() {
 
   const [bio, setBio] = React.useState("Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.");
-  
+  const [prevBio, setPrevBio] = React.useState("");
+  const [tags, setTags] = React.useState([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+
   const classes = useStyles();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const editStartHandler = () => {
+    setPrevBio(bio);
+    setIsEditing(true);
+  }
+
+  const editFinishHandler = () => {
+    setIsEditing(false);
+  }
 
   return (
     <div>
@@ -49,6 +64,11 @@ export default function ProfileComponent() {
         inputProps={{
           readOnly: true,
         }}
+        onSelect={() => {
+          if (isEditing) {
+            enqueueSnackbar("Read only at the moment");
+          }
+        }}
       />
       <TextField 
         label="Email"
@@ -57,6 +77,11 @@ export default function ProfileComponent() {
         margin="normal"
         inputProps={{
           readOnly: true,
+        }}
+        onSelect={() => {
+          if (isEditing) {
+            enqueueSnackbar("Read only at the moment");
+          }
         }}
       />
       <TextField
@@ -67,8 +92,10 @@ export default function ProfileComponent() {
         margin="normal"
         minRows={2}
         value={bio}
+        variant= {isEditing ? "standard" : "outlined"}
+        onChange={(e) => { setBio(e.target.value) }}
         inputProps={{
-          readOnly: true,
+          readOnly: isEditing !== true,
         }}
       />
       <Typography>
@@ -85,6 +112,21 @@ export default function ProfileComponent() {
           })
         }
       </div>
+
+      {
+        isEditing ?
+        <Button
+          variant="outlined"
+          onClick={editFinishHandler}
+        >
+          Save Changes
+        </Button>
+        :
+        <Button 
+          variant="outlined"
+          onClick={editStartHandler}
+        >Edit</Button>
+      }
     </div>
   )
 }

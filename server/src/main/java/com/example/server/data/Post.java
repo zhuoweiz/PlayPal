@@ -28,6 +28,11 @@ public class Post extends Auditable<String>{
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy="post",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL
+    )
+    private Set<Tag> tags;
 
 
     public Post() {
@@ -65,6 +70,9 @@ public class Post extends Auditable<String>{
     }
     public User getCreator() {
         return creator;
+    }
+    public Set<Tag> getTags() {
+        return tags;
     }
 
     @Override
