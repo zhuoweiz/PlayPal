@@ -32,6 +32,7 @@ CREATE TABLE posts (
    location VARCHAR(255),
    is_virtual BIT NOT NULL,
    date_time VARCHAR(255) NOT NULL,
+   
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
    
@@ -69,7 +70,11 @@ DROP TABLE IF EXISTS `tags`;
 CREATE TABLE tags (
     id INT unsigned NOT NULL AUTO_INCREMENT,
     label VARCHAR(255) NOT NULL,
+    user_id INT unsigned,
+    post_id INT unsigned,
     PRIMARY KEY(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
 DROP TABLE IF EXISTS `likes`;
