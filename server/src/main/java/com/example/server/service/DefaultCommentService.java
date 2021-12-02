@@ -26,7 +26,6 @@ public class DefaultCommentService implements CommentService {
 
     @Override
     public CommentData saveComment(CommentData commentData) {
-        final long postId = commentData.getPostId();
         Comment commentInstance = DataMappingUtils.populateCommentEntity(postRepo, userRepo, commentData);
 
         return DataMappingUtils.populateCommentData((commentRepo.save(commentInstance)));
