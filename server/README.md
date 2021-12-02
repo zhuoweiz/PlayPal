@@ -31,6 +31,7 @@ CREATE TABLE posts (
    content VARCHAR(150) NOT NULL, 
    location VARCHAR(255),
    is_virtual BIT NOT NULL,
+   date_time VARCHAR(255) NOT NULL,
 
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
