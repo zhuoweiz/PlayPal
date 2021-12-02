@@ -12,7 +12,9 @@ import { deepOrange, deepPurple } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import CenteredTabs  from "../components/CenteredTabs";
 import PostCardMatrix from "../components/PostCardMatrix";
+import { typography } from "@mui/system";
 import { makeStyles } from '@mui/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   tag: {
@@ -89,12 +91,19 @@ function ViewUser() {
             </Button>
           </Grid>
         </Paper>
-        <Paper container item md={3} style={{marginTop:"24px" , padding:"12px"}} direction="column" component={Grid}>
-          <Grid item md={8} style={{}}>
-            bio
+        <Paper container item md={3} style={{marginTop:"24px" , padding:"12px"}} component={Grid}>
+          <Grid item md={12} style={{}}>
+            <Typography variant = "h6">
+              bio
+            </Typography>
+            <Typography>
+              Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.
+            </Typography>
           </Grid>
-          <Grid item md={4} style={{}}>
-            interest tags
+          <Grid item md={12} style={{}}>
+            <Typography variant = "h6">
+              interest tags
+            </Typography>
             <div className={classes.tagBox}>
               {
                 interests.map((element, index) => {
