@@ -52,6 +52,7 @@ public class UserController {
 	@GetMapping("/user/usersFollowing/{uid}")
 	public ResponseEntity<List<UserData>> getUsersFollowing(@PathVariable Long uid) {
 		return new ResponseEntity<List<UserData>>(userService.getUsersFollowing(uid), HttpStatus.ACCEPTED);
+	}
 
 	@GetMapping("/user/joinedPosts/{id}")
 	public ResponseEntity<List<PostData>> getJoinedPosts(@PathVariable Long id) {
@@ -61,15 +62,6 @@ public class UserController {
 	@GetMapping("/uid")
 	public ResponseEntity<Long> getUid(@RequestParam(value = "fid") String fid) {
 		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);
-	}
-
-	@GetMapping("/like")
-	public boolean likePost(
-			@RequestParam(value = "postId") Long postId,
-			@RequestParam(value = "userId") Long userId)
-	{
-		return userService.likePost(userId, postId);
-
 	}
 
 	@PostMapping("/follow/{followerId}/{followeeId}")
@@ -86,7 +78,6 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/user")
-
 	public UserData saveUser(final @RequestBody UserData userData) {
 		System.out.println("Post new user === " + userData.toString());
 		return userService.saveUser(userData);
@@ -98,7 +89,6 @@ public class UserController {
 			@RequestParam(value = "userId") Long userId)
 	{
 		return userService.likePost(userId, postId);
-
 	}
 
 	@GetMapping("/unlike")
@@ -118,8 +108,8 @@ public class UserController {
 		return userService.joinPost(userId, postId);
 	}
 
-	@GetMapping("/unjoin")
-	public boolean unjoinPost(
+	@GetMapping("/unJoin")
+	public boolean unJoinPost(
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{
