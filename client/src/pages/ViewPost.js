@@ -12,24 +12,12 @@ import { Chip, Paper, List, ListSubheader, ListItem, ListItemText } from '@mui/m
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { makeStyles } from '@mui/styles';
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import ChatList from '../components/ChatList';
+import MemberBox from '../components/MemberBox';
 
-const useStyles = makeStyles((theme) => ({
-
-  memberBox: {
-    transition: "all .5s",
-    boxShadow: "none",
-    border: "solid 2px white",
-    '&:hover': {
-      border: "solid 2px DodgerBlue",
-      boxShadow: "3px 3px 3px teal",
-    }
-  },
-}));
 
 function Comment(props) {
   const { author, content, time, ...otherProps } = props;
@@ -43,26 +31,6 @@ function Comment(props) {
       </Typography>
     </div>
     
-  )
-}
-
-function MemberBox(props) {
-  const classes = useStyles();
-
-  return (
-    <Paper className={classes.memberBox}>
-      <Grid container direction="row" alignItems="center">
-        <Grid item>
-          <Avatar 
-            sx={{ width: 40, height: 40 }}
-            src="../../public/profile_avatar.png"
-          ></Avatar>
-        </Grid>
-        <Grid item>
-          sdha ljkohaf
-        </Grid>
-      </Grid>
-    </Paper>
   )
 }
 
