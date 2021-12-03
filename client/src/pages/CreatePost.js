@@ -43,7 +43,7 @@ function CreatePost() {
   const [tag, setTag] = React.useState("");
   // const [options, setOptions] = React.useState(tagList);
 
-  const [date, setDate] = React.useState(new Date("2021-12-01T21:11:54"));
+  const [date, setDate] = React.useState(new Date("2021-12-02T21:11:54"));
   // 1. convert dateString to ms method Date.parse(dateString) 
   // 2. convertr ms to Date first var date = new Date(time) then date.toString()
   
@@ -77,6 +77,8 @@ function CreatePost() {
         dateTime: date,
     }).then(function(response) {
         console.log(response);
+        let getData = response.data;
+        console.log(getData);
         enqueueSnackbar("Create Post Sucess!")
         // navigate("/post")
         // alert("success")

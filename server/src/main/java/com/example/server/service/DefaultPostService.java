@@ -129,6 +129,9 @@ public class DefaultPostService implements PostService {
 
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
+        postData.setLocation(post.getLocation());
+        postData.setIsVirtual(post.getIsVirtual());
+        postData.setDateTime(post.getDateTime());
 
         return postData;
     }
@@ -156,6 +159,10 @@ public class DefaultPostService implements PostService {
         User user = userRepo.getById(postData.getCreatorId());
         post.setCreator(user);
 //        System.out.println("IMPORTANT TEST: " + post.getCreatorId());
+        post.setLocation(postData.getLocation());
+        post.setIsVirtual(postData.getIsVirtual());
+        post.setDateTime(postData.getDateTime());
+
         return post;
     }
 }
