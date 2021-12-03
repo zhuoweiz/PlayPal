@@ -100,9 +100,16 @@ ReactDOM.render(
             }
             />
             <Route path="user" element={
-              <ViewUser />
-            }
-            />
+                <Outlet></Outlet>
+              }
+            >
+              <Route index element={
+                <>User Not Specified</>
+              }></Route>
+              <Route path=":userId" element={
+                <ViewUser />
+              }></Route>
+            </Route>
             <Route path="mypost" element={
               <ViewMyPost />
             }

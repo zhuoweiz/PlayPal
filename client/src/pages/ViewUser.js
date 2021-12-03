@@ -54,7 +54,7 @@ function ViewUser() {
       <Grid
         container
         direction="column"
-        style={{ marginTop: "18px", height: "600px" }}
+        style={{ marginTop: "18px"}}
         wrap="nowrap"
       >
         <Paper
