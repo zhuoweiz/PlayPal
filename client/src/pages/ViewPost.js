@@ -12,6 +12,7 @@ import { Chip, Paper, List, ListSubheader, ListItem, ListItemText } from '@mui/m
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useParams } from "react-router-dom";
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -36,6 +37,11 @@ function Comment(props) {
 
 
 export default function ViewPost() {
+
+  const params = useParams();
+
+  const postId = params.postId;
+  console.log("Post Id is: ", postId);
 
   return (
     <Container maxWidth="md">
