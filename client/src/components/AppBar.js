@@ -168,6 +168,12 @@ export default function NavBar() {
     setOpen(false);
   };
 
+  const handleSignOut = () => {
+    signOut(auth);
+    localStorage.removeItem("uid");
+    navigate("/")
+  }
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
@@ -356,10 +362,7 @@ export default function NavBar() {
             <>
               <Button
                 ariant="default"
-                onClick={() => {
-                  signOut(auth);
-                  localStorage.removeItem("uid");
-                }}
+                onClick={handleSignOut}
                 style={{color:"white"}}
               >
                 Sign-Out
