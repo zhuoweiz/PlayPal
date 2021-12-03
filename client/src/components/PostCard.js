@@ -10,6 +10,11 @@ import Typography from "@mui/material/Typography";
 
 function PostCard(props) {
   const { postData, ...otherProps } = props;
+
+  const handleViewPost = () => {
+
+  }
+
   return (
     <React.Fragment>
       <Card sx={{ minWidth: 275 }}>
@@ -40,7 +45,10 @@ function PostCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" href="post">Learn More</Button>
+          <Button size="small" 
+            href={postData ? `post/${postData.id}` : "#"}
+            onClick={handleViewPost}
+          >Learn More</Button>
         </CardActions>
       </Card>
     </React.Fragment>
