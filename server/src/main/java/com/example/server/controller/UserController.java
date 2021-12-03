@@ -72,6 +72,15 @@ public class UserController {
 		return userService.followUser(followerId, followeeId);
 	}
 
+	@PostMapping("/unfollow/{followerId}/{followeeId}")
+	public boolean unfollowUser(
+		@PathVariable Long followerId,
+		@PathVariable Long followeeId
+	) {
+		return userService.unfollowUser(followerId, followeeId);
+	}
+
+
 	/**
 	 * Post request to create user information int the system.
 	 * @param userData
@@ -108,8 +117,8 @@ public class UserController {
 		return userService.joinPost(userId, postId);
 	}
 
-	@GetMapping("/unJoin")
-	public boolean unJoinPost(
+	@GetMapping("/unjoin")
+	public boolean unjoinPost(
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{

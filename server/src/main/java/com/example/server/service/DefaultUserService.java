@@ -53,20 +53,35 @@ public class DefaultUserService implements UserService {
 		User follower = userRepo.getById(followerId);
 		User followee = userRepo.getById(followeeId);
 
-		Set<User> usersFollowed = follower.getUsersFollowing();
+		Set<User> usersFollowing = follower.getUsersFollowing();
 
-		if (usersFollowed.contains(followee)){
+		if (usersFollowing.contains(followee)){
 			return false;
 		}
 		else {
-			usersFollowed.add(followee);
-			follower.setUsersFollowing(usersFollowed);
+			usersFollowing.add(followee);
+			follower.setUsersFollowing(usersFollowing);
 			userRepo.save(follower);
 			return true;
     }
 	}
 
-  @Override
+	@Override
+	public boolean unfollowUser(long followerId, long followeeId) {
+		User follower = userRepo.getById(followerId);
+		User followee = userRepo.getById(followeeId);
+		Set<User> usersFollowing = follower.getUsersFollowing();
+
+		if (usersFollowing.contains(followee)) {
+			usersFollowing.remove(followee);
+			userRepo.save(follower);
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean unlikePost(final long userId, final long postId) {
 		Post tmppost = postRepo.getById(postId);
 		User tmpuser = userRepo.getById(userId);
