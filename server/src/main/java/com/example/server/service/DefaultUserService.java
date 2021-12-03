@@ -49,6 +49,24 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
+	public boolean followUser(long followerId, long followeeId) {
+		User follower = userRepo.getById(followerId);
+		User followee = userRepo.getById(followeeId);
+
+		Set<User> usersFollowed = follower.getUsersFollowing();
+
+		if (usersFollowed.contains(followee)){
+			return false;
+		}
+		else {
+			usersFollowed.add(followee);
+			follower.setUsersFollowing(usersFollowed);
+			userRepo.save(follower);
+			return true;
+    }
+	}
+
+  @Override
 	public boolean unlikePost(final long userId, final long postId) {
 		Post tmppost = postRepo.getById(postId);
 		User tmpuser = userRepo.getById(userId);
@@ -99,8 +117,17 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
-	// likedPost(postID)
+	@Override
+	public List<UserData> getUsersFollowing(long userId) {
+		User user = userRepo.getById(userId);
+		Set<User> usersFollowed = user.getUsersFollowing();
 
+		List<UserData> responeList = new ArrayList<>();
+		for(User tmpUser : usersFollowed) {
+			responeList.add(populateUserData(tmpUser));
+		}
+		return responeList;
+	}
 	/**
 	 * Delete pet based on the user ID.We can also use other option to delete user
 	 * based on the entity (passing JPA entity class as method parameter)

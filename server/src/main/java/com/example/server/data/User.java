@@ -49,6 +49,13 @@ public class User extends Auditable<String>{
 	private Set<Post> likedPosts;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "follows",
+		joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "id")
+	)
+	private Set<User> usersFollowing;
+
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "joins",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
@@ -75,15 +82,32 @@ public class User extends Auditable<String>{
 	public Set<Post> getCreatedPosts() {return createdPosts; }
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
+	public Set<Tag> getTags() { return tags; }
+	public void setTags(Set<Tag> tags) { this.tags = tags; }
+	public Set<User> getUsersFollowing() { return usersFollowing; }
+	public void setUsersFollowing(Set<User> usersFollowing) { this.usersFollowing = usersFollowing; }
 	public Set<Post> getJoinedPosts() {return joinedPosts;}
 	public void setJoinedPosts(Set<Post> joinedPosts) {this.joinedPosts = joinedPosts;}
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
 
 	@Override
 	public String toString() {
 		return "User: Id: " + id + " name: " + name + " email: " + email;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof User))
+			return false;
+		User other = (User) o;
+		if (this.id == other.getId()) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public int hashCode(){
+		return id.hashCode();
 	}
 }

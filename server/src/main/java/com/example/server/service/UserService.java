@@ -14,6 +14,8 @@ public interface UserService {
 	List<PostData> getCreatedPosts(final long postId);
 	List<PostData> getLikedPosts(final long userId);
 	boolean likePost(final long userId, final long postId);
+	boolean followUser(final long followerId, final long followeeId);
+	List<UserData> getUsersFollowing(final long userId);
 	boolean unlikePost(final long userId, final long postId);
 	List<PostData> getJoinedPosts(final long userId);
 	boolean joinPost(final long userId, final long postId);
