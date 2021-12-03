@@ -175,6 +175,7 @@ export default function NavBar() {
   }
 
   onAuthStateChanged(auth, (user) => {
+    console.log('oh shit....')
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
@@ -349,7 +350,7 @@ export default function NavBar() {
             </IconButton>
           </Box>
           {
-            uid === "" ?  
+            localStorage.getItem("uid") === null ?  
             <>
               <Button href="/register" variant="default" color="error">
                 Sign-up
@@ -376,12 +377,12 @@ export default function NavBar() {
               </Button>
             </>
           }
-          {
-            email==="" ? null : 
+          {/* {
+            localStorage.getItem("uid") === null ? null : 
             <Button style={{color:"white"}} href="/profile">
               {email}
             </Button>
-          }
+          } */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
