@@ -12,8 +12,6 @@ public class UserData {
 	private String name;
 	private String email;
 	private String fid;
-	//private List<Long> followedbys;
-	//private List<Long> followings;
 /*	@Temporal(value = TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
 

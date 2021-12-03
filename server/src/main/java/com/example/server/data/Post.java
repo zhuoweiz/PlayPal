@@ -74,13 +74,20 @@ public class Post extends Auditable<String>{
     public Set<Tag> getTags() {
         return tags;
     }
-    public boolean equals(Post post) {
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Post))
+            return false;
+        Post post = (Post)o;
         if (this.id == post.getId()){
             return true;
         }
         return false;
     }
-    public int hashcode(){
+    @Override
+    public int hashCode(){
         return id.hashCode();
     }
 

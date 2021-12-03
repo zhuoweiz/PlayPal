@@ -53,7 +53,7 @@ public class User extends Auditable<String>{
 		joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "id"),
 		inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "id")
 	)
-	private Set<User> usersFollowed;
+	private Set<User> usersFollowing;
 
 	public User() {
 	}
@@ -77,11 +77,28 @@ public class User extends Auditable<String>{
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
 	public Set<Tag> getTags() { return tags; }
 	public void setTags(Set<Tag> tags) { this.tags = tags; }
-	public Set<User> getUsersFollowed() { return usersFollowed; }
-	public void setUsersFollowed(Set<User> usersFollowed) { this.usersFollowed = usersFollowed; }
+	public Set<User> getUsersFollowing() { return usersFollowing; }
+	public void setUsersFollowing(Set<User> usersFollowing) { this.usersFollowing = usersFollowing; }
 
 	@Override
 	public String toString() {
 		return "User: Id: " + id + " name: " + name + " email: " + email;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof User))
+			return false;
+		User other = (User) o;
+		if (this.id == other.getId()) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public int hashCode(){
+		return id.hashCode();
 	}
 }

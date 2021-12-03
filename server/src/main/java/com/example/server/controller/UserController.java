@@ -44,9 +44,31 @@ public class UserController {
 		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/user/usersFollowing/{uid}")
+	public ResponseEntity<List<UserData>> getUsersFollowing(@PathVariable Long uid) {
+		return new ResponseEntity<List<UserData>>(userService.getUsersFollowing(uid), HttpStatus.ACCEPTED);
+	}
+
 	@GetMapping("/uid")
 	public ResponseEntity<Long> getLikedPosts(@RequestParam(value = "fid") String fid) {
 		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/like")
+	public boolean likePost(
+			@RequestParam(value = "postId") Long postId,
+			@RequestParam(value = "userId") Long userId)
+	{
+		return userService.likePost(userId, postId);
+
+	}
+
+	@PostMapping("/follow/{followerId}/{followeeId}")
+	public boolean followUser(
+		@PathVariable Long followerId,
+		@PathVariable Long followeeId
+	) {
+		return userService.followUser(followerId, followeeId);
 	}
 
 	/**
@@ -59,15 +81,6 @@ public class UserController {
 	public UserData saveUser(final @RequestBody UserData userData) {
 		System.out.println("Post new user === " + userData.toString());
 		return userService.saveUser(userData);
-	}
-
-	@GetMapping("/like")
-	public boolean likePost(
-			@RequestParam(value = "postId") Long postId,
-			@RequestParam(value = "userId") Long userId)
-	{
-		return userService.likePost(userId, postId);
-
 	}
 
 	/**
