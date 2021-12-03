@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import com.example.server.utils.DataMappingUtils;
 @Service("postService")
 public class DefaultPostService implements PostService {
     @Autowired
@@ -86,6 +86,7 @@ public class DefaultPostService implements PostService {
     public PostData getPostById(long postId) {
         Post post = postRepo.findById(postId).orElseThrow(() ->
             new EntityNotFoundException("Post not found!"));
+
         return populatePostData(post);
     }
 
@@ -145,12 +146,18 @@ public class DefaultPostService implements PostService {
 
         User user = userRepo.getById(post.getCreatorId());
         postData.setCreator(populateUserData(user));
-
+        List<TagData> temp_tagList = new ArrayList<>();
+        post.getTags().forEach(tag -> {
+            TagData temp_tagData = DataMappingUtils.populateTagData(tag);
+            temp_tagList.add(temp_tagData);
+        });
+        postData.setTags(temp_tagList);
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
         postData.setLocation(post.getLocation());
         postData.setIsVirtual(post.getIsVirtual());
         postData.setDateTime(post.getDateTime());
+
 
         return postData;
     }

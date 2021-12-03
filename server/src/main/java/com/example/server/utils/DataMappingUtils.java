@@ -40,8 +40,8 @@ public class DataMappingUtils {
 		TagData tagData = new TagData();
 		tagData.setId(tag.getId());
 		tagData.setLabel(tag.getLabel());
-		tagData.setUserId(tag.getUser().getId());
-		tagData.setPostId(tag.getPost().getId());
+//		tagData.setUserId(tag.getUser().getId());
+//		tagData.setPostId(tag.getPost().getId());
 
 		return tagData;
 	}
@@ -59,4 +59,5 @@ public class DataMappingUtils {
 
 		return tag;
 	}
+
 }

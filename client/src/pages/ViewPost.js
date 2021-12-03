@@ -82,7 +82,14 @@ export default function ViewPost() {
           }}>Join/Leave</Button>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
-          <Chip label="Tag 1" style={{
+          {postInfo.tags?postInfo.tags.map((element,index) =>{
+            return (
+              <Chip label={element.label} style={{
+                marginRight: 10
+              }} size="small" variant="outlined" />
+            )
+          }):null}
+          {/* <Chip label={post} style={{
             marginRight: 10
           }} size="small" variant="outlined" />
           <Chip label="Tag x" style={{
@@ -90,7 +97,7 @@ export default function ViewPost() {
           }} size="small" variant="outlined" />
           <Chip label="Tag r" style={{
             marginRight: 10
-          }} size="small" variant="outlined" />
+          }} size="small" variant="outlined" /> */}
         </Grid>
 
         <Grid container item xs={12} sm={8}>
