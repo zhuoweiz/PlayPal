@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CenteredTabsMyPost(props) {
   const [value, setValue] = React.useState(0);
-  const { posts, ...otherProps } = props;
+  const { createdPosts, likedPosts, joinedPosts, ...otherProps } = props;
   const classes = useStyles();
-  console.log("test", posts);
+  //console.log("test", likedposts);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -44,11 +44,13 @@ export default function CenteredTabsMyPost(props) {
             spacing={{ xs: 2 }}
             className={classes.gridContainer}
           >
-            {Array.from(Array(6)).map((_, index) => (
-              <Grid item xs={6} md={4} key={index}>
-                <PostCard />
-              </Grid>
-            ))}
+            {
+                createdPosts.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
           </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -59,11 +61,13 @@ export default function CenteredTabsMyPost(props) {
               spacing={{ xs: 2}}
               className={classes.gridContainer}
             >
-              {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={6} md={4} key={index}>
-                  <PostCard />
-                </Grid>
-              ))}
+              {
+                joinedPosts.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
             </Grid>
       </TabPanel>
       <TabPanel value={value} index={2}>
@@ -75,7 +79,7 @@ export default function CenteredTabsMyPost(props) {
               className={classes.gridContainer}
             >
               {
-                posts.map((element, index) => {
+                likedPosts.map((element, index) => {
                   return <Grid item xs={6} md={4} key={index}>
                     <PostCard postData={element}/>
                   </Grid>

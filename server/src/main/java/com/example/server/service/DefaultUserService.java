@@ -65,6 +65,39 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
+	@Override
+	public boolean joinPost(final long userId, final long postId){
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> joinedPost = tmpuser.getJoinedPosts();
+		if (joinedPost.contains(tmppost)){
+			return false;
+		}
+		else {
+			joinedPost.add(tmppost);
+			tmpuser.setJoinedPosts(joinedPost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+	}
+
+	@Override
+	public boolean unjoinPost(final long userId, final long postId) {
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> joinedPost = tmpuser.getJoinedPosts();
+
+		if (joinedPost.contains(tmppost)) {
+			joinedPost.remove(tmppost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	// likedPost(postID)
 
@@ -108,9 +141,16 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
-	public List<PostData> getUserPosts(long userId) {
+	public List<PostData> getCreatedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getCreatedPosts();
 
-		return null;
+		for(Post element : tmp) {
+			responsePosts.add(populatePostData(element));
+		}
+
+		return responsePosts;
 	}
 
 	@Override
@@ -118,6 +158,19 @@ public class DefaultUserService implements UserService {
 		List<PostData> responsePosts = new ArrayList<>();
 		User user = userRepo.getById(userId);
 		Set<Post> tmp = user.getLikedPosts();
+
+		for(Post element : tmp) {
+			responsePosts.add(populatePostData(element));
+		}
+
+		return responsePosts;
+	}
+
+	@Override
+	public List<PostData> getJoinedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getJoinedPosts();
 
 		for(Post element : tmp) {
 			responsePosts.add(populatePostData(element));

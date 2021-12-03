@@ -39,9 +39,19 @@ public class UserController {
 		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/user/createdPosts/{id}")
+	public ResponseEntity<List<PostData>> getCreatedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getCreatedPosts(id), HttpStatus.ACCEPTED);
+	}
+
 	@GetMapping("/user/likedPosts/{id}")
 	public ResponseEntity<List<PostData>> getLikedPosts(@PathVariable Long id) {
 		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/user/joinedPosts/{id}")
+	public ResponseEntity<List<PostData>> getJoinedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getJoinedPosts(id), HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/uid")
@@ -77,6 +87,22 @@ public class UserController {
 	{
 		return userService.unlikePost(userId, postId);
 
+	}
+
+	@GetMapping("/join")
+	public boolean joinPost(
+			@RequestParam(value = "postId") Long postId,
+			@RequestParam(value = "userId") Long userId)
+	{
+		return userService.joinPost(userId, postId);
+	}
+
+	@GetMapping("/unjoin")
+	public boolean unjoinPost(
+			@RequestParam(value = "postId") Long postId,
+			@RequestParam(value = "userId") Long userId)
+	{
+		return userService.unjoinPost(userId, postId);
 	}
 
 	/**
