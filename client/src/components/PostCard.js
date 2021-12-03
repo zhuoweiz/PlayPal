@@ -8,7 +8,8 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-function PostCard() {
+function PostCard(props) {
+  const { postData, ...otherProps } = props;
   return (
     <React.Fragment>
       <Card sx={{ minWidth: 275 }}>
@@ -20,7 +21,7 @@ function PostCard() {
                 color="text.first"
                 gutterBottom
               >
-                titleTest
+                {postData ? postData.title : null}
               </Typography>
             </Grid>
             <Grid item>
@@ -29,10 +30,10 @@ function PostCard() {
             </Grid>
           </Grid>
           <Typography variant="subtitle1" >
-            Description:
+            Detail: {postData ? postData.content : null}
           </Typography>
           <Typography variant="body2" >
-            Host:
+            Host: {postData ? postData.creator.name : null}
           </Typography>
           <Typography variant="body2" >
             Date:
