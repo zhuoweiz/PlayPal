@@ -8,6 +8,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PostData {
@@ -19,9 +20,9 @@ public class PostData {
 
     private String location;
 //    @Type(type = "numeric_boolean")
-    private boolean isVirtual;
+    private Boolean isVirtual;
     private String dateTime;
-
+    private List<TagData> tags;
 
 //    private Set<CommentData> comments;
 //    private Set<TagData> tags;
@@ -55,16 +56,25 @@ public class PostData {
     public void setCreator(UserData creatorData) {
         this.creator = creatorData;
     }
+
+    public List<TagData> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TagData> tags) {
+        this.tags = tags;
+    }
+
     public UserData getCreator() {
         return creator;
     }
 
     public void setLocation(String location) {this.location = location;}
-    public void setIsVirtual(boolean isVirtual) {this.isVirtual = isVirtual; }
+    public void setIsVirtual(Boolean isVirtual) {this.isVirtual = isVirtual; }
     public void setDateTime(String dateTime) {this.dateTime = dateTime; }
 
     public String getLocation() { return location; }
-    public boolean getIsVirtual() { return isVirtual; }
+    public Boolean getIsVirtual() { return isVirtual; }
     public String getDateTime() { return dateTime; }
 
     @Override

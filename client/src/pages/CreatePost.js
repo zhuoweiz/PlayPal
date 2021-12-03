@@ -68,13 +68,15 @@ function CreatePost() {
   });
 
   const handleCreatePostAction= () =>{
+    
     axios.post(serverUrl + "/posts/post",{
         creatorId: localStorage.getItem("uid"),
         title: title,
         content: content,
         location: location,
-        isVirtural: isVirtual,
+        isVirtual: isVirtual,
         dateTime: date,
+        tags: tags,
     }).then(function(response) {
         console.log(response);
         let getData = response.data;
@@ -88,6 +90,7 @@ function CreatePost() {
       // console.log(error.message);
       // alert("failed")
     })
+    
   }
 
 
@@ -127,7 +130,12 @@ function CreatePost() {
                 <DateTimePicker
                   label="Date&Time picker"
                   value={date}
-                  onChange={(e)=> setDate(e.target.value)}
+                  onChange={(newValue)=> {
+                    setDate(newValue)
+                    console.log(newValue);
+                  }}
+                  
+                
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -209,7 +217,9 @@ function CreatePost() {
               onClick={() => {
                 // add tag
                 const currTags = _.cloneDeep(tags);
-                currTags.push(tag);
+                currTags.push({
+                  label:tag
+                });
                 setTags(currTags);
                 // let newOptions = _.remove(options,function(n){
                 //   return n === tag;
@@ -222,7 +232,7 @@ function CreatePost() {
             {tags.map((element, index) => {
               return (
                 <Chip
-                  label={element}
+                  label={element.label}
                   variant="outlined"
                   onClick={handleClick}
                   onDelete={handleDelete}

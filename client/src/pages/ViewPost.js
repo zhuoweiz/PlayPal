@@ -19,6 +19,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import ChatList from '../components/ChatList';
 import MemberBox from '../components/MemberBox';
 
+import { serverUrl } from '../constants';
+import axios from 'axios';
 
 function Comment(props) {
   const { author, content, time, ...otherProps } = props;
@@ -42,7 +44,21 @@ export default function ViewPost() {
 
   const postId = params.postId;
   console.log("Post Id is: ", postId);
+  const [postInfo, setPostInfo] = React.useState({});
 
+  React.useEffect(()=>{
+    if(Object.keys(postInfo).length === 0){
+      axios.get(serverUrl+"/posts/post/"+postId)
+    .then(response => {
+      console.log(response.data);
+      setPostInfo(response.data)
+    })
+    .catch(error=>{
+      console.log(error);
+    })
+    }
+    
+  })
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -55,7 +71,7 @@ export default function ViewPost() {
         }}
       >
         <Typography component="h1" variant="h5" style={{marginBottom: 12}}>
-          Project Title
+          {postInfo.title}
         </Typography>
         <Grid container item style={{marginBottom: 12}}>
           <Button variant="outlined" style={{
@@ -80,14 +96,14 @@ export default function ViewPost() {
         <Grid container item xs={12} sm={8}>
 
           <Typography style={{marginBottom: 12}}>
-            Description: Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+           {postInfo.content}
           </Typography>
 
         </Grid>
 
         <Grid item>
           <Typography style={{marginBottom: 12}}>
-            Location: Lorem ipsum/
+            {postInfo.location}
           </Typography>
         </Grid>
         

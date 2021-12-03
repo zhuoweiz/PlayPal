@@ -25,7 +25,7 @@ public class Post extends Auditable<String>{
     private String location;
 
     @Type(type = "numeric_boolean")
-    private boolean isVirtual;
+    private Boolean isVirtual;
 
     private String dateTime;
 
@@ -44,10 +44,11 @@ public class Post extends Auditable<String>{
     private Set<Tag> tags;
 
 
+
     public Post() {
     }
 
-    public Post(String title, String content,  String location, boolean isVirtual, String dateTime) {
+    public Post(String title, String content,  String location, Boolean isVirtual, String dateTime) {
         this.title = title;
         this.content = content;
 //        this.creatorId = creatorId;
@@ -76,10 +77,10 @@ public class Post extends Auditable<String>{
     }
 
     public void setLocation(String location) { this.location = location; }
-    public void setIsVirtual(boolean isVirtual) {this.isVirtual = isVirtual; }
+    public void setIsVirtual(Boolean isVirtual) {this.isVirtual = isVirtual; }
     public void setDateTime(String dateTime) {this.dateTime = dateTime; }
     public String getLocation() {return location;}
-    public boolean getIsVirtual() {return isVirtual; }
+    public Boolean getIsVirtual() {return isVirtual; }
     public String getDateTime() {return dateTime; }
 
     public Long getCreatorId() {
@@ -94,6 +95,10 @@ public class Post extends Auditable<String>{
     public Set<Tag> getTags() {
         return tags;
     }
+    public void setTags(Set<Tag> tags){this.tags = tags;}
+    public Set<Comment> getComments() {return comments;}
+    public void setComments(Set<Comment> comments) {this.comments = comments;}
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
