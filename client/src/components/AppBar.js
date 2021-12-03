@@ -376,12 +376,12 @@ export default function NavBar() {
               </Button>
             </>
           }
-          {/* {
+          {
             localStorage.getItem("uid") === null ? null : 
             <Button style={{color:"white"}} href="/profile">
               {email}
             </Button>
-          } */}
+          }
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

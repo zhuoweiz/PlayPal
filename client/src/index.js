@@ -93,8 +93,16 @@ ReactDOM.render(
               </Route>
             </Route>
             <Route path="post" element={
-              <ViewPost />
-            }/>
+                <Outlet></Outlet>
+              }
+            >
+              <Route index element={
+                <>Post Not Specified</>
+              }></Route>
+              <Route path=":postId" element={
+                <ViewPost />
+              }></Route>
+            </Route>
             <Route path="createpost" element={
               <CreatePost />
             }
