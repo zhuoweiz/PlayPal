@@ -8,6 +8,7 @@ import { Grid } from "@mui/material";
 import PostCard from "./PostCard";
 import { makeStyles } from '@mui/styles';
 
+const axios = require('axios');
 const useStyles = makeStyles((theme) => ({
   gridContainer: { 
     marginTop: "30px", 
@@ -16,14 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CenteredTabs() {
+export default function CenteredTabsMyPost(props) {
   const [value, setValue] = React.useState(0);
-
+  const { createdPosts, likedPosts, joinedPosts, ...otherProps } = props;
   const classes = useStyles();
+  //console.log("test", likedposts);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
 
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
@@ -41,11 +44,13 @@ export default function CenteredTabs() {
             spacing={{ xs: 2 }}
             className={classes.gridContainer}
           >
-            {Array.from(Array(6)).map((_, index) => (
-              <Grid item xs={6} md={4} key={index}>
-                <PostCard />
-              </Grid>
-            ))}
+            {
+                createdPosts.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
           </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -56,11 +61,13 @@ export default function CenteredTabs() {
               spacing={{ xs: 2}}
               className={classes.gridContainer}
             >
-              {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={6} md={4} key={index}>
-                  <PostCard />
-                </Grid>
-              ))}
+              {
+                joinedPosts.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
             </Grid>
       </TabPanel>
       <TabPanel value={value} index={2}>
@@ -71,11 +78,14 @@ export default function CenteredTabs() {
               spacing={{ xs: 2}}
               className={classes.gridContainer}
             >
-              {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={6} md={4} key={index}>
-                  <PostCard />
-                </Grid>
-              ))}
+              {
+                likedPosts.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
+              
             </Grid>
         </TabPanel>
       <TabPanel value={value} index={3}>Following users List</TabPanel>
