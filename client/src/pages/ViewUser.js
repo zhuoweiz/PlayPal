@@ -14,6 +14,7 @@ import CenteredTabs  from "../components/CenteredTabs";
 import PostCardMatrix from "../components/PostCardMatrix";
 import { typography } from "@mui/system";
 import { makeStyles } from '@mui/styles';
+import { useParams } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,13 +49,17 @@ const interests = [
 function ViewUser() {
 
   const classes = useStyles();
+  const params = useParams();
+
+  const userId = params.userId;
+  console.log("User Id is: ", userId);
 
   return (
     <Container maxWidth="md" style={{}}>
       <Grid
         container
         direction="column"
-        style={{ marginTop: "18px", height: "600px" }}
+        style={{ marginTop: "18px"}}
         wrap="nowrap"
       >
         <Paper

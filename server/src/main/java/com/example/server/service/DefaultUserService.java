@@ -48,12 +48,101 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
-/*	@Override
-	public boolean */
+	@Override
+	public boolean followUser(long followerId, long followeeId) {
+		User follower = userRepo.getById(followerId);
+		User followee = userRepo.getById(followeeId);
 
+		Set<User> usersFollowing = follower.getUsersFollowing();
 
-	// likedPost(postID)
+		if (usersFollowing.contains(followee)){
+			return false;
+		}
+		else {
+			usersFollowing.add(followee);
+			follower.setUsersFollowing(usersFollowing);
+			userRepo.save(follower);
+			return true;
+    }
+	}
 
+	@Override
+	public boolean unfollowUser(long followerId, long followeeId) {
+		User follower = userRepo.getById(followerId);
+		User followee = userRepo.getById(followeeId);
+		Set<User> usersFollowing = follower.getUsersFollowing();
+
+		if (usersFollowing.contains(followee)) {
+			usersFollowing.remove(followee);
+			userRepo.save(follower);
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean unlikePost(final long userId, final long postId) {
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> likedPost = tmpuser.getLikedPosts();
+
+		if (likedPost.contains(tmppost)) {
+			likedPost.remove(tmppost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean joinPost(final long userId, final long postId){
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> joinedPost = tmpuser.getJoinedPosts();
+		if (joinedPost.contains(tmppost)){
+			return false;
+		}
+		else {
+			joinedPost.add(tmppost);
+			tmpuser.setJoinedPosts(joinedPost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+	}
+
+	@Override
+	public boolean unjoinPost(final long userId, final long postId) {
+		Post tmppost = postRepo.getById(postId);
+		User tmpuser = userRepo.getById(userId);
+
+		Set<Post> joinedPost = tmpuser.getJoinedPosts();
+
+		if (joinedPost.contains(tmppost)) {
+			joinedPost.remove(tmppost);
+			userRepo.save(tmpuser);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public List<UserData> getUsersFollowing(long userId) {
+		User user = userRepo.getById(userId);
+		Set<User> usersFollowed = user.getUsersFollowing();
+
+		List<UserData> responeList = new ArrayList<>();
+		for(User tmpUser : usersFollowed) {
+			responeList.add(populateUserData(tmpUser));
+		}
+		return responeList;
+	}
 	/**
 	 * Delete pet based on the user ID.We can also use other option to delete user
 	 * based on the entity (passing JPA entity class as method parameter)
@@ -94,9 +183,16 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
-	public List<PostData> getUserPosts(long userId) {
+	public List<PostData> getCreatedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getCreatedPosts();
 
-		return null;
+		for(Post element : tmp) {
+			responsePosts.add(populatePostData(element));
+		}
+
+		return responsePosts;
 	}
 
 	@Override
@@ -104,6 +200,19 @@ public class DefaultUserService implements UserService {
 		List<PostData> responsePosts = new ArrayList<>();
 		User user = userRepo.getById(userId);
 		Set<Post> tmp = user.getLikedPosts();
+
+		for(Post element : tmp) {
+			responsePosts.add(populatePostData(element));
+		}
+
+		return responsePosts;
+	}
+
+	@Override
+	public List<PostData> getJoinedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getJoinedPosts();
 
 		for(Post element : tmp) {
 			responsePosts.add(populatePostData(element));

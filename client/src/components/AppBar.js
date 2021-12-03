@@ -168,6 +168,12 @@ export default function NavBar() {
     setOpen(false);
   };
 
+  const handleSignOut = () => {
+    signOut(auth);
+    localStorage.removeItem("uid");
+    navigate("/")
+  }
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
@@ -261,18 +267,6 @@ export default function NavBar() {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      {/* <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem> */}
       <MenuItem 
         // onClick={handleProfileMenuOpen}
         onClick={() => {
@@ -355,7 +349,7 @@ export default function NavBar() {
             </IconButton>
           </Box>
           {
-            uid === "" ?  
+            localStorage.getItem("uid") === null ?  
             <>
               <Button href="/register" variant="default" color="error">
                 Sign-up
@@ -365,23 +359,29 @@ export default function NavBar() {
               </Button>
             </>
             :
-            <Button
-              ariant="default"
-              onClick={() => {
-                signOut(auth);
-                localStorage.removeItem("uid");
-              }}
-              style={{color:"white"}}
-            >
-              Sign-Out
-            </Button>
+            <>
+              <Button
+                ariant="default"
+                onClick={handleSignOut}
+                style={{color:"white"}}
+              >
+                Sign-Out
+              </Button>
+              <Button
+                ariant="default"
+                href="/mypost"
+                style={{color:"white"}}
+              >
+                My Posts
+              </Button>
+            </>
           }
-          {
-            email==="" ? null : 
-            <Button style={{color:"white"}}>
+          {/* {
+            localStorage.getItem("uid") === null ? null : 
+            <Button style={{color:"white"}} href="/profile">
               {email}
             </Button>
-          }
+          } */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

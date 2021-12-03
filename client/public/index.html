@@ -39,5 +39,21 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      var head = document.getElementsByTagName('head')[0];
+
+      // Save the original method
+      var insertBefore = head.insertBefore;
+
+      // Replace it!
+      head.insertBefore = function (newElement, referenceElement) {
+
+          if (newElement.href && newElement.href.indexOf('https://fonts.googleapis.com/css?family=Roboto') === 0) {
+              return;
+          }
+
+          insertBefore.call(head, newElement, referenceElement);
+      };
+    </script>
   </body>
 </html>

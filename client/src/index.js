@@ -25,7 +25,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link
+  Outlet,
 } from "react-router-dom";
 
 // Import the functions you need from the SDKs you need
@@ -52,7 +52,6 @@ const analytics = getAnalytics(app);
 const theme = createTheme({
   app: {
     color: 'white',
-    fontFamily: 'Arial'
   }
 });
 
@@ -61,62 +60,61 @@ ReactDOM.render(
     <ThemeProvider theme={theme}> 
       <SnackbarProvider maxSnack={3}>
       <BrowserRouter>
-        <NavBar />
         <Routes>
-          
-          <Route path="/signin" element={
-            <Signin />
-          }/>
-
-          <Route path="/register" element={
-            <Register />
-          }/>
-          <Route path="/profile" element={
-            <Profile />
-          }>
+          <Route path="/" element={
+              <>
+                <NavBar/>
+                <Outlet/>
+              </>
+            }
+          >
             <Route index element={
-              <ProfileComponent></ProfileComponent>
+              <Home />
             } />
-            <Route path="setting" element={
-              <SettingComponent></SettingComponent>
-            } />
-            <Route path="notification" element={
-              <NotificationComponent></NotificationComponent>
+            <Route path="signin" element={
+              <Signin />
+            }/>
+
+            <Route path="register" element={
+              <Register />
+            }/>
+            <Route path="profile" element={
+              <Profile />
             }>
+              <Route index element={
+                <ProfileComponent></ProfileComponent>
+              } />
+              <Route path="setting" element={
+                <SettingComponent></SettingComponent>
+              } />
+              <Route path="notification" element={
+                <NotificationComponent></NotificationComponent>
+              }>
+              </Route>
             </Route>
+            <Route path="post" element={
+              <ViewPost />
+            }/>
+            <Route path="createpost" element={
+              <CreatePost />
+            }
+            />
+            <Route path="user" element={
+                <Outlet></Outlet>
+              }
+            >
+              <Route index element={
+                <>User Not Specified</>
+              }></Route>
+              <Route path=":userId" element={
+                <ViewUser />
+              }></Route>
+            </Route>
+            <Route path="mypost" element={
+              <ViewMyPost />
+            }
+            />
           </Route>
-          <Route path="/home" element={
-            <Home />
-          }/>
-
-          <Route path="/post" element={
-            <ViewPost />
-          }/>
-          <Route path="/createpost" element={
-            <CreatePost />
-          }
-          />
-
-          <Route path="/user" element={
-            <ViewUser />
-          }
-          />
-          <Route path="/" element={
-            <Home />
-          }
-          />
-
-          <Route path="/mypost" element={
-            <ViewMyPost />
-          }
-          />
-          <Route path="/" element={
-            <Home />
-          }
-          />
-
-          
-
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
