@@ -87,6 +87,13 @@ public class UserController {
 		return userService.unfollowUser(followerId, followeeId);
 	}
 
+	@PostMapping("/user/update")
+	public UserData updateUserProfile(
+		final @RequestBody UserData userData
+	) {
+		return userService.updateUser(userData);
+	}
+
 
 	/**
 	 * Post request to create user information int the system.

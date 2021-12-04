@@ -5,15 +5,18 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useNavigate, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
+import { useNavigate, Routes, Route, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
+
 import { serverUrl } from '../constants';
+import ProfileComponent from '../components/profile/ProfileComponent';
+import SettingComponent from '../components/profile/SettingComponent';
+import NotificationComponent from '../components/profile/NotificationComponent';
 
 const axios = require('axios');
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
    
-
   return (
     <div
       role="tabpanel"
@@ -40,9 +43,11 @@ function a11yProps(index) {
 
 const Profile = () => {
   const [value, setValue] = React.useState(0);
+  const [userData, setUserData] = React.useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
+  var fecthingUserData = false;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -55,7 +60,18 @@ const Profile = () => {
     } else if(location.pathname.split('/')[2] === "notification") {
       setValue(2);
     } else {
+    }
 
+    if(userData === null && fecthingUserData === false && location.pathname.split('/').length < 3) {
+      fecthingUserData = true;
+      axios.get(serverUrl + "/users/user/" + parseInt(localStorage.getItem("uid")))
+      .then(response => {
+        // console.log("response user data: ", response.data);
+        setUserData(response.data);
+      })
+      .catch(error => {
+        alert("profile data failed to fetch....");
+      })
     }
 
   });
@@ -91,7 +107,23 @@ const Profile = () => {
         </Tabs>
 
         <TabPanel>
-          <Outlet />
+          {/* <Outlet/> */}
+          {
+            userData ? (
+              <Routes>
+                <Route index element={<ProfileComponent userData={userData}></ProfileComponent>} />
+                <Route
+                  path="setting"
+                  element={<SettingComponent></SettingComponent>}
+                />
+                <Route
+                  path="notification"
+                  element={<NotificationComponent></NotificationComponent>}
+                ></Route>
+              </Routes>
+            ) : null
+          }
+          
         </TabPanel>
       </Box>
     </Container>
