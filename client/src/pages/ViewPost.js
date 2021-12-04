@@ -59,13 +59,11 @@ export default function ViewPost() {
       }
       const timeA = Date.parse(firstEl.createdDate);
       const timeB = Date.parse(secondEl.createdDate);
-      console.log("timeA: ", timeA);
-      console.log("timeB: ", timeB);
 
       if (timeA < timeB) {
-        return -1;
+        return 11;
       } else if(timeA > timeB) {
-        return 1;
+        return -1;
       } else {
         return 0;
       }
@@ -81,7 +79,9 @@ export default function ViewPost() {
       content: comment
     }).then(function(response) {
       console.log("send comment response: ", response);
-      enqueueSnackbar("Comment Sent :)");
+      enqueueSnackbar("Comment Sent :)", {
+        variant: 'success'
+      });
       // setPostComments([
       //   ...postComments,
       //   response.data
@@ -94,7 +94,9 @@ export default function ViewPost() {
       setPostComments(sortedCommentsData);
       
     }).catch(function(error) {
-      enqueueSnackbar("Comment Error");
+      enqueueSnackbar("Comment Error", {
+        variant: 'error',
+      });
     });
   }
 
@@ -110,7 +112,9 @@ export default function ViewPost() {
         console.log(typeof(response.data.dateTime));
       })
       .catch(error=>{
-        console.log(error);
+        enqueueSnackbar("Error", {
+          variant: 'error',
+        })
       })
     }
   })
@@ -144,7 +148,7 @@ export default function ViewPost() {
         <Grid container item style={{marginBottom: 12}}>
           {postInfo.tags?postInfo.tags.map((element,index) =>{
             return (
-              <Chip label={element.label} style={{
+              <Chip key={`post-tag-${index}`} label={element.label} style={{
                 marginRight: 10
               }} size="small" variant="outlined" />
             )
