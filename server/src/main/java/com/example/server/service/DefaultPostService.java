@@ -1,24 +1,31 @@
 package com.example.server.service;
 
 import com.example.server.data.Post;
+import com.example.server.data.Tag;
 import com.example.server.data.User;
 import com.example.server.dto.PostData;
+import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.repository.PostRepository;
+import com.example.server.repository.TagRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
+import com.example.server.utils.DataMappingUtils;
 @Service("postService")
 public class DefaultPostService implements PostService {
     @Autowired
     private PostRepository postRepo;
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private TagRepository tagRepo;
 
     /**
      * Create a user based on the data sent to the service class.
@@ -27,8 +34,20 @@ public class DefaultPostService implements PostService {
      */
     @Override
     public PostData savePost(PostData postData) {
+        List<TagData> temp_tags = postData.getTags();
+        Set<Tag> temp_set= new HashSet<>();
+
         Post postInstance = populatePostEntity(postData);
-        return populatePostData((postRepo.save(postInstance)));
+        Post temp_post = postRepo.save(postInstance);
+        temp_tags.forEach(tagData -> {
+            Tag temp_tag = new Tag();
+            temp_tag.setLabel(tagData.getLabel());
+            temp_tag.setPost(temp_post);
+//            temp_set.add(temp_tag);
+            tagRepo.save(temp_tag);
+        });
+
+        return populatePostData(temp_post);
     }
 
     /**
@@ -67,6 +86,7 @@ public class DefaultPostService implements PostService {
     public PostData getPostById(long postId) {
         Post post = postRepo.findById(postId).orElseThrow(() ->
             new EntityNotFoundException("Post not found!"));
+
         return populatePostData(post);
     }
 
@@ -126,9 +146,21 @@ public class DefaultPostService implements PostService {
 
         User user = userRepo.getById(post.getCreatorId());
         postData.setCreator(populateUserData(user));
+        List<TagData> temp_tagList = new ArrayList<>();
 
+        if(post.getTags() != null){
+            post.getTags().forEach(tag -> {
+                TagData temp_tagData = DataMappingUtils.populateTagData(tag);
+                temp_tagList.add(temp_tagData);
+            });
+        }
+        postData.setTags(temp_tagList);
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
+        postData.setLocation(post.getLocation());
+        postData.setIsVirtual(post.getIsVirtual());
+        postData.setDateTime(post.getDateTime());
+
 
         return postData;
     }
@@ -156,6 +188,10 @@ public class DefaultPostService implements PostService {
         User user = userRepo.getById(postData.getCreatorId());
         post.setCreator(user);
 //        System.out.println("IMPORTANT TEST: " + post.getCreatorId());
+        post.setLocation(postData.getLocation());
+        post.setIsVirtual(postData.getIsVirtual());
+        post.setDateTime(postData.getDateTime());
+
         return post;
     }
 }

@@ -1,32 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { SnackbarProvider } from 'notistack';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
+import reportWebVitals from "./reportWebVitals";
 
-import './index.css';
-import App from './App';
-import Profile from './pages/Profile';
-import NavBar from './components/AppBar';
-import Register from './pages/Register';
-import Signin from './pages/Signin'
-import Home from './pages/Home'
-import ViewPost from './pages/ViewPost';
-import Footer from './components/Footer';
-import CreatePost from './pages/CreatePost'
-import ViewUser from './pages/ViewUser'
-import ViewMyPost from './pages/ViewMyPost';
-import NotificationComponent from './components/profile/NotificationComponent';
-import ProfileComponent from './components/profile/ProfileComponent';
-import SettingComponent from './components/profile/SettingComponent';
+import "./index.css";
+import App from "./App";
+import Profile from "./pages/Profile";
+import NavBar from "./components/AppBar";
+import Register from "./pages/Register";
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
+import ViewPost from "./pages/ViewPost";
+import Footer from "./components/Footer";
+import CreatePost from "./pages/CreatePost";
+import ViewUser from "./pages/ViewUser";
+import ViewMyPost from "./pages/ViewMyPost";
+import NotificationComponent from "./components/profile/NotificationComponent";
+import ProfileComponent from "./components/profile/ProfileComponent";
+import SettingComponent from "./components/profile/SettingComponent";
 
-
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -43,7 +37,7 @@ const firebaseConfig = {
   storageBucket: "playpal-85bf8.appspot.com",
   messagingSenderId: "1047945280349",
   appId: "1:1047945280349:web:0b90f227cc8190d70086b4",
-  measurementId: "G-9EKD8D4D1Y"
+  measurementId: "G-9EKD8D4D1Y",
 };
 
 // Initialize Firebase
@@ -51,85 +45,58 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const theme = createTheme({
   app: {
-    color: 'white',
-  }
+    color: "white",
+  },
 });
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}> 
+    <ThemeProvider theme={theme}>
       <SnackbarProvider maxSnack={3}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={
-              <>
-                <NavBar/>
-                <Outlet/>
-              </>
-            }
-          >
-            <Route index element={
-              <Home />
-            } />
-            <Route path="signin" element={
-              <Signin />
-            }/>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <NavBar />
+                  <Outlet />
+                </>
+              }
+            >
+              <Route index element={<Home />} />
+              <Route path="signin" element={<Signin />} />
 
-            <Route path="register" element={
-              <Register />
-            }/>
-            <Route path="profile" element={
-              <Profile />
-            }>
-              <Route index element={
-                <ProfileComponent></ProfileComponent>
-              } />
-              <Route path="setting" element={
-                <SettingComponent></SettingComponent>
-              } />
-              <Route path="notification" element={
-                <NotificationComponent></NotificationComponent>
-              }>
+              <Route path="register" element={<Register />} />
+              <Route path="profile" element={<Profile />}>
+                <Route index element={<ProfileComponent></ProfileComponent>} />
+                <Route
+                  path="setting"
+                  element={<SettingComponent></SettingComponent>}
+                />
+                <Route
+                  path="notification"
+                  element={<NotificationComponent></NotificationComponent>}
+                ></Route>
               </Route>
+              <Route path="post" element={<Outlet></Outlet>}>
+                <Route index element={<>Post Not Specified</>}></Route>
+                <Route path=":postId" element={<ViewPost />}></Route>
+              </Route>
+              <Route path="createpost" element={<CreatePost />} />
+              <Route path="user" element={<Outlet></Outlet>}>
+                <Route index element={<>User Not Specified</>}></Route>
+                <Route path=":userId" element={<ViewUser />}></Route>
+              </Route>
+              <Route path="mypost" element={<ViewMyPost />} />
             </Route>
-            <Route path="post" element={
-                <Outlet></Outlet>
-              }
-            >
-              <Route index element={
-                <>Post Not Specified</>
-              }></Route>
-              <Route path=":postId" element={
-                <ViewPost />
-              }></Route>
-            </Route>
-            <Route path="createpost" element={
-              <CreatePost />
-            }
-            />
-            <Route path="user" element={
-                <Outlet></Outlet>
-              }
-            >
-              <Route index element={
-                <>User Not Specified</>
-              }></Route>
-              <Route path=":userId" element={
-                <ViewUser />
-              }></Route>
-            </Route>
-            <Route path="mypost" element={
-              <ViewMyPost />
-            }
-            />
-          </Route>
-        </Routes>
-        <Footer></Footer>
-      </BrowserRouter>
+          </Routes>
+          <Footer></Footer>
+        </BrowserRouter>
       </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

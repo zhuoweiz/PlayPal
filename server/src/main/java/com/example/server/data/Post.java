@@ -1,6 +1,7 @@
 package com.example.server.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,13 +21,21 @@ public class Post extends Auditable<String>{
     private Long id;
     private String title;
     private String content;
+//    private Long creatorId;
+    private String location;
+
+    @Type(type = "numeric_boolean")
+    private Boolean isVirtual;
+
+    private String dateTime;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private User creator;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     @OneToMany(mappedBy="post",
       fetch = FetchType.LAZY,
@@ -35,12 +44,17 @@ public class Post extends Auditable<String>{
     private Set<Tag> tags;
 
 
+
     public Post() {
     }
 
-    public Post(String title, String content) {
+    public Post(String title, String content,  String location, Boolean isVirtual, String dateTime) {
         this.title = title;
         this.content = content;
+//        this.creatorId = creatorId;
+        this.location = location;
+        this.isVirtual = isVirtual;
+        this.dateTime = dateTime;
     }
 
     public void setId(Long id) {
@@ -62,6 +76,13 @@ public class Post extends Auditable<String>{
         return content;
     }
 
+    public void setLocation(String location) { this.location = location; }
+    public void setIsVirtual(Boolean isVirtual) {this.isVirtual = isVirtual; }
+    public void setDateTime(String dateTime) {this.dateTime = dateTime; }
+    public String getLocation() {return location;}
+    public Boolean getIsVirtual() {return isVirtual; }
+    public String getDateTime() {return dateTime; }
+
     public Long getCreatorId() {
         return creator.getId();
     }
@@ -74,6 +95,10 @@ public class Post extends Auditable<String>{
     public Set<Tag> getTags() {
         return tags;
     }
+    public void setTags(Set<Tag> tags){this.tags = tags;}
+    public Set<Comment> getComments() {return comments;}
+    public void setComments(Set<Comment> comments) {this.comments = comments;}
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

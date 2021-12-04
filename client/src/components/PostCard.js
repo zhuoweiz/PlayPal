@@ -46,7 +46,7 @@ function PostCard(props) {
         </CardContent>
         <CardActions>
           <Button size="small" 
-            href={postData ? `post/${postData.id}` : "#"}
+            href={postData ? `/post/${postData.id}` : "#"}
             onClick={handleViewPost}
           >Learn More</Button>
         </CardActions>
