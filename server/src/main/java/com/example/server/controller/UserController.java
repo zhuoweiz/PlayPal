@@ -46,6 +46,20 @@ public class UserController {
 		return userService.getOtherUserById(id, otherId);
 	}
 
+	@GetMapping("/user/like/{id}/{postId}")
+	public Boolean checkLikedPost(
+			@PathVariable Long id,
+			@PathVariable Long postId) {
+		return userService.checkLikedPostById(id, postId);
+	}
+
+	@GetMapping("/user/join/{id}/{postId}")
+	public Boolean checkJoinedPost(
+			@PathVariable Long id,
+			@PathVariable Long postId) {
+		return userService.checkJoinedPostById(id, postId);
+	}
+
 	@GetMapping("/user/createdPosts/{id}")
 	public ResponseEntity<List<PostData>> getCreatedPosts(@PathVariable Long id) {
 		return new ResponseEntity<List<PostData>>(userService.getCreatedPosts(id), HttpStatus.ACCEPTED);
