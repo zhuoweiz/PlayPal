@@ -48,6 +48,120 @@ export default function ViewPost() {
   const postId = params.postId;
   console.log("Post Id is: ", postId);
   const [postInfo, setPostInfo] = React.useState({});
+  const [checkLike , setCheckLike] = React.useState(null);
+  const [checkJoin, setCheckJoin] = React.useState(null);
+  const [joinedUsers, setJoinedUsers] = React.useState([]);
+  const checkLikeURL = serverUrl + '/users/user/like/' + localStorage.getItem("uid") + '/' + postId;
+  const checkJoinURL = serverUrl + '/users/user/join/' + localStorage.getItem("uid") + "/" + postId;
+  const likeURL = serverUrl + '/users/like?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const unlikeURL = serverUrl + '/users/unlike?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const joinURL = serverUrl + '/users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const unjoinURL = serverUrl + '/users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const joinedUsersURL = serverUrl + '/posts/joined/' + postId;
+
+  const renderLikeButton = ()=> {
+    if (checkLike === null) {
+      return null
+    }
+    else if (checkLike === true) {
+      return (
+        <Button variant="outlined" size="small"
+          onClick = {
+            unlikeHandler
+          }
+        >
+          unlike
+        </Button>  
+      )
+    }
+    else {
+      return (
+        <Button
+          variant="contained"
+          size="small"
+          onClick = {
+            likeHandler
+          }
+        >
+          like
+        </Button>
+      )
+    }
+  } 
+
+  const renderJoinButton = ()=> {
+    if (checkJoin === null) {
+      return null
+    }
+    else if (checkJoin === true) {
+      return (
+        <Button variant="outlined" size="small"
+          onClick = {
+            unjoinHandler
+          }
+        >
+          leave
+        </Button>  
+      )
+    }
+    else {
+      return (
+        <Button
+          variant="contained"
+          size="small"
+          onClick = {
+            joinHandler
+          }
+        >
+          join
+        </Button>
+      )
+    }
+  } 
+
+  const likeHandler = ()=> {
+    axios.get(likeURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckLike(true)
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
+
+  const unlikeHandler = ()=> {
+    axios.get(unlikeURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckLike(false)
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
+
+  const joinHandler = ()=> {
+    axios.get(joinURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckJoin(true)
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
+
+  const unjoinHandler = ()=> {
+    axios.get(unjoinURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckJoin(false)
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
 
   React.useEffect(()=>{
     if(Object.keys(postInfo).length === 0){
@@ -61,8 +175,35 @@ export default function ViewPost() {
       console.log(error);
     })
     }
+
+    axios.get(checkLikeURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckLike(response.data);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+
+    axios.get(checkJoinURL)
+    .then(response => {
+      console.log(response.data);
+      setCheckJoin(response.data);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
     
-  })
+    axios.get(joinedUsersURL)
+      .then(response => {
+        console.log(response.data);
+        setJoinedUsers(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      }); 
+  },[])
+
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -79,12 +220,18 @@ export default function ViewPost() {
         </Typography>
         <Grid container item justifyContent="space-between" alignItems="center" style={{marginBottom: 12}}>
           <Grid item>
-          <Button variant="outlined" style={{
+          {/* <Button variant="outlined" style={{
             marginRight: 10
-          }} >Like</Button>
-          <Button variant="outlined" style={{
+          }} >Like</Button> */}
+          {/* <Button variant="outlined" style={{
             marginRight: 10
-          }}>Join/Leave</Button>
+          }}>Join/Leave</Button> */}
+            {
+              renderLikeButton()
+            }
+            {
+              renderJoinButton()
+            }
           </Grid>
           <Grid item>
             Activity Time: {convert(postInfo.dateTime)}
@@ -213,13 +360,21 @@ export default function ViewPost() {
 
                 <Grid container spacing={2} xs={12} direction="row" justifyContent="flex-start">
                   <Grid item xs={6}>
-                    <MemberBox></MemberBox>
+                    {
+                      joinedUsers.map((element, index) => {
+                        return <Grid item xs={6} md={4} key={index}>
+                          <MemberBox data={element}></MemberBox>
+                      </Grid>
+                      })
+
+                    }
+                    
                   </Grid>
 
 
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <MemberBox></MemberBox>
-                  </Grid>
+                  </Grid> */}
 
                   
                   

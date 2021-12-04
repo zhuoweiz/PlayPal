@@ -56,7 +56,7 @@ public class User extends Auditable<String>{
 	)
 	private Set<User> usersFollowing;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "joins",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")

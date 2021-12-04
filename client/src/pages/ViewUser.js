@@ -176,6 +176,7 @@ function ViewUser() {
           style={{ padding: "12px", backgroundColor: "white" }}
         >
           <Grid item style={{}}>
+
             <CardHeader
               avatar={
                 <Avatar
@@ -184,6 +185,7 @@ function ViewUser() {
                   src="/static/images/avatar/1.jpg"
                 />
               }
+              titleTypographyProps={{variant:'h3' }}
               title={user.name}
             />
           </Grid>
@@ -192,9 +194,6 @@ function ViewUser() {
             {
               renderFollowButton()
             }
-
-           
-            
           </Grid>
         </Paper>
         <Paper container item md={3} style={{marginTop:"24px" , padding:"12px"}} component={Grid}>
@@ -203,7 +202,7 @@ function ViewUser() {
               bio
             </Typography>
             <Typography>
-              Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.
+              {user.bio ? user.bio : "bio is empty"}
             </Typography>
           </Grid>
           <Grid item md={12} style={{}}>

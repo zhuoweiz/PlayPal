@@ -56,7 +56,10 @@ public class PostController {
         return postService.savePost(postData);
     }
 
-
+    @GetMapping("/joined/{postId}")
+    public List<UserData> getJoinedUsers(@PathVariable Long postId) {
+        return postService.getJoinedUsers(postId);
+    }
 
 
     /**
