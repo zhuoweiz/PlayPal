@@ -60,7 +60,14 @@ export default function ProfileComponent(props) {
   const editFinishHandler = () => {
     setIsEditing(false);
 
+    axios.post(serverUrl + "/users/user/update", {
+      id: localStorage.getItem("uid"),
+      bio: bio
+    }).then(response => {
+      console.log("update user data response: ", response);
+    }).catch(error => {
 
+    });
   }
 
   const cancelEditHandler = () => {
