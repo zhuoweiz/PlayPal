@@ -7,11 +7,8 @@ import { useSnackbar } from 'notistack';
 import AddTagComponent from '../other/AddTagComponent';
 import { serverUrl} from '../../constants';
 
-
 const axios = require('axios');
 const _ = require("lodash");
-
-
 
 
 export default function ProfileComponent(props) {

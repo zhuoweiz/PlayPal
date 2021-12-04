@@ -20,6 +20,11 @@ public class DataMappingUtils {
 		commentData.setContent(comment.getContent());
 		commentData.setPostId(comment.getPost().getId());
 		commentData.setCreatorId(comment.getCreator().getId());
+		commentData.setCreatedDate(comment.getCreatedDate());
+
+		// use creatorId and set creatorName
+		commentData.setCreatorName(comment.getCreator().getName());
+
 		return commentData;
 	}
 

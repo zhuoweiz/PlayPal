@@ -13,14 +13,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useParams } from "react-router-dom";
+import { useSnackbar } from 'notistack';
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 import ChatList from '../components/ChatList';
 import MemberBox from '../components/MemberBox';
+import CommentBox from '../components/viewpost/CommentBox';
 
 import { serverUrl } from '../constants';
 import axios from 'axios';
+const _ = require("lodash");
 
 function Comment(props) {
   const { author, content, time, ...otherProps } = props;
@@ -33,7 +36,6 @@ function Comment(props) {
       {author}: {content} ({time})
       </Typography>
     </div>
-    
   )
 }
 function convert(dateTime){
@@ -44,24 +46,73 @@ function convert(dateTime){
 export default function ViewPost() {
 
   const params = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
-  console.log("Post Id is: ", postId);
   const [postInfo, setPostInfo] = React.useState({});
+  const [postComments, setPostComments] = React.useState([]);
+
+  function sortComments(unsortedCommentsData) {
+    unsortedCommentsData.sort((firstEl, secondEl) => { 
+      if (firstEl.createdDate === null || secondEl.createdDate === null) {
+        return 0;
+      }
+      const timeA = Date.parse(firstEl.createdDate);
+      const timeB = Date.parse(secondEl.createdDate);
+      console.log("timeA: ", timeA);
+      console.log("timeB: ", timeB);
+
+      if (timeA < timeB) {
+        return -1;
+      } else if(timeA > timeB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return unsortedCommentsData;
+  }
+
+  const sendCommentHandler = (comment) => {
+    // create comment axios request
+    axios.post(serverUrl + "/comments/comment", {
+      postId: postId,
+      creatorId: localStorage.getItem("uid"),
+      content: comment
+    }).then(function(response) {
+      console.log("send comment response: ", response);
+      enqueueSnackbar("Comment Sent :)");
+      // setPostComments([
+      //   ...postComments,
+      //   response.data
+      // ]);
+
+      // sort comments based on time
+      var unsortedCommentsData = _.cloneDeep(postComments);
+      unsortedCommentsData.push(response.data);
+      const sortedCommentsData = sortComments(unsortedCommentsData);
+      setPostComments(sortedCommentsData);
+      
+    }).catch(function(error) {
+      enqueueSnackbar("Comment Error");
+    });
+  }
 
   React.useEffect(()=>{
     if(Object.keys(postInfo).length === 0){
-      axios.get(serverUrl+"/posts/post/"+postId)
-    .then(response => {
-      console.log(response.data);
-      setPostInfo(response.data)
-      console.log(typeof(response.data.dateTime));
-    })
-    .catch(error=>{
-      console.log(error);
-    })
+      // fetch post info
+      axios.get(serverUrl+"/posts/fullPost/"+postId)
+      .then(response => {
+        console.log("fetch postDat: ", response.data);
+        setPostInfo(response.data);
+        const sortedCommentsData = sortComments(response.data.comments);
+        setPostComments(sortedCommentsData);
+        console.log(typeof(response.data.dateTime));
+      })
+      .catch(error=>{
+        console.log(error);
+      })
     }
-    
   })
   return (
     <Container maxWidth="md">
@@ -136,70 +187,11 @@ export default function ViewPost() {
             </Grid>
 
             <Grid container item xs={12} style={{marginBottom: 12}}>
-              <Paper variant="outlined" style={{
-                width: "100%",
-              }}>
-                <Grid container justifyContent="center" direction="column" textAlign="center">
-                  <Grid item>
-                    <Typography style={{marginTop: 8}}>
-                      Comments
-                    </Typography>
-                  </Grid>
-                  <Grid item style={{
-                    textAlign: "left",
-                    }}>
-
-                    <List
-                      sx={{
-                        width: '100%',
-                        bgcolor: 'background.paper',
-                        position: 'relative',
-                        overflow: 'auto',
-                        maxHeight: 320,
-                        '& ul': { padding: 0 },
-                      }}
-                      subheader={<li />}
-                    >
-                      {[0, 1, 2, 3, 4].map((sectionId) => (
-                        <li key={`section-${sectionId}`}>
-                          <ul>
-                            <ListSubheader>{`Author: `}</ListSubheader>
-                            <ListItem key={`item-${sectionId}-item`}>
-                              <ListItemText 
-                                primary="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te" 
-                              />
-                            </ListItem>
-                          </ul>
-                        </li>
-                      ))}
-                    </List>
-                    
-                    {/* <Comment
-                      author="Alex"
-                      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te"
-                      time=""
-                    /> */}
-
-                  </Grid>
-                  <Grid item container alignItems="center" justifyContent="center"  >
-                    <TextField
-                      label="write your comment here"
-                      size="small"
-                      style={{
-                        width: 300
-                      }}
-                    >
-
-                    </TextField>
-                    <Button variant="outlined" style={{
-                      marginLeft: 8,
-                      width: 100
-                    }}>Comment</Button>
-                  </Grid>
-                </Grid>
-              </Paper>
+              <CommentBox
+                onSend = {sendCommentHandler}
+                commentsData = {postComments}
+              />
             </Grid>
-            
           </Grid>
 
           
@@ -211,7 +203,7 @@ export default function ViewPost() {
               }}>
                 Member List
 
-                <Grid container spacing={2} xs={12} direction="row" justifyContent="flex-start">
+                <Grid container spacing={2} direction="row" justifyContent="flex-start">
                   <Grid item xs={6}>
                     <MemberBox></MemberBox>
                   </Grid>
