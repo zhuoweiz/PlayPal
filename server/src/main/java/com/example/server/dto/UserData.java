@@ -12,6 +12,7 @@ public class UserData {
 	private String name;
 	private String email;
 	private String fid;
+	private String bio;
 /*	@Temporal(value = TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
 
@@ -45,6 +46,9 @@ public class UserData {
 		return email;
 	}
 	public String getFid() { return fid; }
+
+	public String getBio() { return bio; }
+	public void setBio(String bio) { this.bio = bio; }
 
 	@Override
 	public String toString() {

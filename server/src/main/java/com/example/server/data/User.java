@@ -22,6 +22,7 @@ public class User extends Auditable<String>{
 	private String fid;
 	private String name;
 	private String email;
+	private String bio;
 
 	@OneToMany(mappedBy="creator",
 		fetch = FetchType.LAZY,
@@ -88,6 +89,9 @@ public class User extends Auditable<String>{
 	public void setUsersFollowing(Set<User> usersFollowing) { this.usersFollowing = usersFollowing; }
 	public Set<Post> getJoinedPosts() {return joinedPosts;}
 	public void setJoinedPosts(Set<Post> joinedPosts) {this.joinedPosts = joinedPosts;}
+
+	public String getBio() { return bio; }
+	public void setBio(String bio) { this.bio = bio; }
 
 	@Override
 	public String toString() {

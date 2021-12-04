@@ -248,6 +248,7 @@ public class DefaultUserService implements UserService {
 		userData.setId(user.getId());
 		userData.setName(user.getName());
 		userData.setEmail(user.getEmail());
+		userData.setBio(user.getBio());
 		// Do not return fid to the client.
 
 		return userData;
@@ -263,6 +264,7 @@ public class DefaultUserService implements UserService {
 		user.setName(userData.getName());
 		user.setEmail(userData.getEmail());
 		user.setFid(userData.getFid());
+		user.setBio(userData.getBio());
 		return user;
 	}
 
@@ -273,7 +275,6 @@ public class DefaultUserService implements UserService {
 
 		User user = userRepo.getById(post.getCreatorId());
 		postData.setCreator(populateUserData(user));
-
 		postData.setTitle(post.getTitle());
 		postData.setContent(post.getContent());
 
