@@ -39,6 +39,13 @@ public class UserController {
 		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/user/{id}/{otherId}")
+	public Boolean getOtherUser(
+			@PathVariable Long id,
+			@PathVariable Long otherId){
+		return userService.getOtherUserById(id, otherId);
+	}
+
 	@GetMapping("/user/createdPosts/{id}")
 	public ResponseEntity<List<PostData>> getCreatedPosts(@PathVariable Long id) {
 		return new ResponseEntity<List<PostData>>(userService.getCreatedPosts(id), HttpStatus.ACCEPTED);

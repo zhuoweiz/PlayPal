@@ -120,7 +120,11 @@ DROP COLUMN is_virtual;
 ALTER TABLE posts
 DROP COLUMN date_time;
 
--- DEC 02 2021
+-- Dec 03 2021
+ALTER TABLE posts
+ADD lat DOUBLE(11,7);
+ALTER TABLE posts
+ADD lng DOUBLE(11,7);  
 ALTER TABLE users
 ADD bio VARCHAR(255);
 
