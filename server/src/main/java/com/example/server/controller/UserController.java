@@ -139,6 +139,13 @@ public class UserController {
 		return userService.unjoinPost(userId, postId);
 	}
 
+	@GetMapping("/searchUser")
+	public List<UserData> searchUserByName(
+		@RequestParam(value = "keyword") String keyword
+	) {
+		return userService.searchUserByName(keyword);
+	}
+
 	/**
 	 * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
 	 * @DeleteMapping and @GetMapping</p>

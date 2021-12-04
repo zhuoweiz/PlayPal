@@ -263,6 +263,18 @@ public class DefaultUserService implements UserService {
 		return userRepo.getUserByFid(fid).getId();
 	}
 
+	@Override
+	public List<UserData> searchUserByName(String keyword) {
+		List<User> searchResult = userRepo.findByNameContainingIgnoreCase(keyword);
+		List<UserData> responseUserDataList = new ArrayList<>();
+
+		searchResult.forEach(user -> {
+			responseUserDataList.add(populateUserData(user));
+		});
+
+		return responseUserDataList;
+	}
+
 	/**
 	 * Internal method to convert User JPA entity to the DTO object
 	 * for frontend data
@@ -276,13 +288,16 @@ public class DefaultUserService implements UserService {
 		userData.setEmail(user.getEmail());
 		userData.setBio(user.getBio());
 		Set<Tag> tags = user.getTags();
-		List<TagData> tagsData = new ArrayList<>();
-		tags.forEach(tag -> {
-			TagData tmpTagData = new TagData();
-			tmpTagData.setLabel(tag.getLabel());
-			tagsData.add(tmpTagData);
-		});
-		userData.setTags(tagsData);
+
+		if(tags != null) {
+			List<TagData> tagsData = new ArrayList<>();
+			tags.forEach(tag -> {
+				TagData tmpTagData = new TagData();
+				tmpTagData.setLabel(tag.getLabel());
+				tagsData.add(tmpTagData);
+			});
+			userData.setTags(tagsData);
+		}
 		// Do not return fid to the client.
 
 		return userData;

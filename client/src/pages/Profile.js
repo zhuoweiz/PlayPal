@@ -6,11 +6,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useNavigate, Routes, Route, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 import { serverUrl } from '../constants';
 import ProfileComponent from '../components/profile/ProfileComponent';
 import SettingComponent from '../components/profile/SettingComponent';
 import NotificationComponent from '../components/profile/NotificationComponent';
+import { Grow } from '@mui/material';
 
 const axios = require('axios');
 
@@ -45,6 +47,8 @@ const Profile = () => {
   const [value, setValue] = React.useState(0);
   const [userData, setUserData] = React.useState(null);
 
+  const {enqueueSnackbar} = useSnackbar();
+
   const navigate = useNavigate();
   const location = useLocation();
   var fecthingUserData = false;
@@ -70,7 +74,14 @@ const Profile = () => {
         setUserData(response.data);
       })
       .catch(error => {
-        alert("profile data failed to fetch....");
+        enqueueSnackbar("Not logged in, pls do so after sign-in", {
+          variant: 'warning',
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center',
+          },
+          TransitionComponent: Grow,
+        });
       })
     }
 

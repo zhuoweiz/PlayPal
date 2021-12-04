@@ -9,6 +9,9 @@ import com.example.server.utils.DataMappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service("tagService")
 public class DefaultTagService implements TagService {
 	@Autowired
@@ -37,6 +40,17 @@ public class DefaultTagService implements TagService {
 		tagData.setId(tag.getId());
 
 		return tagData;
+	}
+
+	@Override
+	public List<TagData> searchTagByLabel(String label) {
+		List<TagData> responseList = new ArrayList<>();
+		List<Tag> searchResult = tagRepo.findByLabelContainingAndPostIdIsNotNull(label);
+		searchResult.forEach(tag -> {
+			TagData tmpTagData = DataMappingUtils.populateTagData(tag);
+			responseList.add(tmpTagData);
+		});
+		return responseList;
 	}
 
 	@Override

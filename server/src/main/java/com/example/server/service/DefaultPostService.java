@@ -155,6 +155,18 @@ public class DefaultPostService implements PostService {
         }
         return matchPosts;
     }
+
+    @Override
+    public List<PostData> searchPostByTag(String searchString) {
+        List<PostData> responseList = new ArrayList<>();
+        List<Tag> searchResult = tagRepo.findByLabelContainingAndPostIdIsNotNull(searchString);
+        searchResult.forEach(tag -> {
+            responseList.add(populatePostData(tag.getPost()));
+        });
+
+        return responseList;
+    }
+
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
