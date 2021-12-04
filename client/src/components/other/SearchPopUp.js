@@ -20,6 +20,7 @@ export default function SearchPopUp(props) {
   const [searchRule, setSearchRule] = React.useState(1);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchResult, setSearchResult] = React.useState([]);
+  const [searchResultType, setSearchResultType] = React.useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -47,17 +48,41 @@ export default function SearchPopUp(props) {
   const handleSearchSubmit = (e) => {
     // Post search only atm
     e.preventDefault();
+    if(searchValue === "") {
+      enqueueSnackbar("No Keyword Specified", {
+        variant: 'error'
+      });
+      return;
+    } else if(searchValue.length < 3) {
+      enqueueSnackbar("Keyword Too Short (3 char minimum)", {
+        variant: 'warning'
+      });
+      return;
+    }
     enqueueSnackbar("Search Submitted");
-    const searchRequestLink = serverUrl + `${searchRule === 2 ? "/posts/searchPostByTag" : "/posts/post"}`;
 
+    // Link Processing
+    var searchRequestLink = serverUrl ;
+    if(searchType == 1) {
+      searchRequestLink += "/posts";
+      searchRequestLink += `${searchRule === 2 ? "/searchPostByTag" : "/post"}`
+    } else {
+      searchRequestLink += "/users";
+      searchRequestLink += "/searchUser";
+    }
+
+    // http://localhost:8080/users/searchUser?keyword=BBY
     // send axios search request
+    setSearchResultType(searchType);
     axios.get(searchRequestLink, {
       params: {
         keyword: searchValue
       }
     })
     .then(function (response) {
-      enqueueSnackbar("Search Finished");
+      enqueueSnackbar("Search Finished", {
+        variant: 'info'
+      });
       console.log("response.data: ", response.data);
       setSearchResult(response.data);
     })
@@ -69,7 +94,11 @@ export default function SearchPopUp(props) {
 
   const handleListItemClick = (event, id) => {
     onClose(0);
-    navigate("/post/" + id);
+    if (searchResultType === 1) {
+      navigate("/post/" + id);
+    } else {
+      navigate("/user/" + id);
+    }
   };
 
   return (
@@ -139,8 +168,8 @@ export default function SearchPopUp(props) {
                     onClick={(event) => handleListItemClick(event, element.id)}
                   >
                     <ListItemText 
-                      primary={element.title} 
-                      secondary={element.description}
+                      primary={element.title ? element.title : element.name} 
+                      secondary={element.content}
                     />
                   </ListItemButton>
                 )
