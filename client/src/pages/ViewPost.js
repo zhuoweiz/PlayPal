@@ -50,12 +50,12 @@ export default function ViewPost() {
   const [postInfo, setPostInfo] = React.useState({});
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
-  const checkLikeURL = serverUrl + '/Users/user/like/' + localStorage.getItem("uid") + '/' + postId;
-  const checkJoinURL = serverUrl + '/Users/user/join/' + localStorage.getItem("uid") + "/" + postId;
-  const likeURL = serverUrl + '/Users/like?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
-  const unlikeURL = serverUrl + '/Users/unlike?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
-  const joinURL = serverUrl + '/Users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
-  const unjoinURL = serverUrl + '/Users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const checkLikeURL = serverUrl + '/users/user/like/' + localStorage.getItem("uid") + '/' + postId;
+  const checkJoinURL = serverUrl + '/users/user/join/' + localStorage.getItem("uid") + "/" + postId;
+  const likeURL = serverUrl + '/users/like?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const unlikeURL = serverUrl + '/users/unlike?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const joinURL = serverUrl + '/users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const unjoinURL = serverUrl + '/users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
 
   const renderLikeButton = ()=> {
     if (checkLike === null) {
