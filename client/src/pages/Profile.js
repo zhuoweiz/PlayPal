@@ -6,9 +6,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useNavigate, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
+import { serverUrl } from '../constants';
+
+const axios = require('axios');
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+   
 
   return (
     <div
@@ -44,7 +48,7 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  
+
   React.useEffect(() => {
     if(location.pathname.split('/')[2] === "setting") {
       setValue(1);
@@ -53,6 +57,7 @@ const Profile = () => {
     } else {
 
     }
+
   });
 
   return (

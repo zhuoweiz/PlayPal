@@ -21,4 +21,5 @@ public interface UserService {
 	List<PostData> getJoinedPosts(final long userId);
 	boolean joinPost(final long userId, final long postId);
 	boolean unjoinPost(final long userId, final long postId);
+	Boolean getOtherUserById(long userId, long otherUserId);
 }
