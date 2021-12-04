@@ -14,4 +14,6 @@ public interface PostService {
     PostData getPostById(final long postId);
     UserData getPostCreator(final long postId);
     List<PostData> searchPosts(final String searchKeyword);
+
+    PostData getFullPostById(final long postId);
 }

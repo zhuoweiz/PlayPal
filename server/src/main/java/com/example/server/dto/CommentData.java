@@ -1,10 +1,14 @@
 package com.example.server.dto;
 
+import java.util.Date;
+
 public class CommentData {
     private Long id;
     private Long postId;
     private Long creatorId;
     private String content;
+    private String creatorName;
+    private Date createdDate;
 
     public CommentData() {}
 
@@ -55,5 +59,21 @@ public class CommentData {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

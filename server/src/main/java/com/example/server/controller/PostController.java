@@ -38,6 +38,12 @@ public class PostController {
         return postService.getPostById(id);
     }
 
+    @GetMapping("/fullPost/{id}")
+    public PostData getFullPost(@PathVariable Long id) {
+        System.out.println(" === GET FULL POST (with comments and other data) BY ID ===");
+        return postService.getFullPostById(id);
+    }
+
     @GetMapping("/postcreator/{id}")
     public UserData getCreator(@PathVariable Long id) {
         return postService.getPostCreator(id);

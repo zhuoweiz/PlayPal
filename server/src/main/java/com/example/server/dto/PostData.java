@@ -23,6 +23,7 @@ public class PostData {
     private Boolean isVirtual;
     private String dateTime;
     private List<TagData> tags;
+    private List<CommentData> comments;
 
 //    private Set<CommentData> comments;
 //    private Set<TagData> tags;
@@ -72,10 +73,12 @@ public class PostData {
     public void setLocation(String location) {this.location = location;}
     public void setIsVirtual(Boolean isVirtual) {this.isVirtual = isVirtual; }
     public void setDateTime(String dateTime) {this.dateTime = dateTime; }
+    public void setComments(List<CommentData> comments) { this.comments = comments; }
 
     public String getLocation() { return location; }
     public Boolean getIsVirtual() { return isVirtual; }
     public String getDateTime() { return dateTime; }
+    public List<CommentData> getComments() { return comments; }
 
     @Override
     public String toString() {
