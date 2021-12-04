@@ -147,10 +147,13 @@ public class DefaultPostService implements PostService {
         User user = userRepo.getById(post.getCreatorId());
         postData.setCreator(populateUserData(user));
         List<TagData> temp_tagList = new ArrayList<>();
-        post.getTags().forEach(tag -> {
-            TagData temp_tagData = DataMappingUtils.populateTagData(tag);
-            temp_tagList.add(temp_tagData);
-        });
+
+        if(post.getTags() != null){
+            post.getTags().forEach(tag -> {
+                TagData temp_tagData = DataMappingUtils.populateTagData(tag);
+                temp_tagList.add(temp_tagData);
+            });
+        }
         postData.setTags(temp_tagList);
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
