@@ -1,10 +1,13 @@
 package com.example.server.service;
 
 import com.example.server.data.Post;
+import com.example.server.data.Tag;
 import com.example.server.data.User;
 import com.example.server.dto.PostData;
+import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.repository.PostRepository;
+import com.example.server.repository.TagRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ public class DefaultUserService implements UserService {
 	private UserRepository userRepo;
 	@Autowired
 	private PostRepository postRepo;
+	@Autowired
+	private TagRepository tagRepo;
 
 	/**
 	 * Create a user based on the data sent to the service class.
@@ -28,6 +33,28 @@ public class DefaultUserService implements UserService {
 	public UserData saveUser(UserData userData) {
 		User userInstance = populateUserEntity(userData);
 		return populateUserData((userRepo.save(userInstance)));
+	}
+
+	@Override
+	public UserData updateUser(UserData userData) {
+		User existingUser = userRepo.getById(userData.getId());
+		if (userData.getBio() != null) {
+			existingUser.setBio(userData.getBio());
+		}
+		List<TagData> tagsData = userData.getTags();
+
+		long uid = existingUser.getId();
+		if (tagsData != null) {
+			tagRepo.deleteByUserId(uid);
+			tagsData.forEach(tagData -> {
+				Tag newTag = new Tag();
+				newTag.setLabel(tagData.getLabel());
+				newTag.setUser(existingUser);
+				tagRepo.save(newTag);
+			});
+		}
+
+		return populateUserData((userRepo.save(existingUser)));
 	}
 
 	@Override
@@ -121,7 +148,6 @@ public class DefaultUserService implements UserService {
 		User tmpuser = userRepo.getById(userId);
 
 		Set<Post> joinedPost = tmpuser.getJoinedPosts();
-
 		if (joinedPost.contains(tmppost)) {
 			joinedPost.remove(tmppost);
 			userRepo.save(tmpuser);
@@ -249,6 +275,14 @@ public class DefaultUserService implements UserService {
 		userData.setName(user.getName());
 		userData.setEmail(user.getEmail());
 		userData.setBio(user.getBio());
+		Set<Tag> tags = user.getTags();
+		List<TagData> tagsData = new ArrayList<>();
+		tags.forEach(tag -> {
+			TagData tmpTagData = new TagData();
+			tmpTagData.setLabel(tag.getLabel());
+			tagsData.add(tmpTagData);
+		});
+		userData.setTags(tagsData);
 		// Do not return fid to the client.
 
 		return userData;
