@@ -281,6 +281,20 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
+	public List<TagData> getTagsByUser(long userId) {
+		List<TagData> responseTags = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Tag> tmp = user.getTags();
+		tmp.forEach(tag -> {
+			TagData tmpTagData = new TagData();
+			tmpTagData.setLabel(tag.getLabel());
+			responseTags.add(tmpTagData);
+		});
+
+		return responseTags;
+	}
+
+	@Override
 	public long getUserId(String fid) {
 		return userRepo.getUserByFid(fid).getId();
 	}
