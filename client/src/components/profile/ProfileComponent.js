@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Typography, Button, TextField, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
+import { serverUrl } from '../../constants';
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
@@ -33,20 +34,21 @@ const interests = [
   },
 ]
 
-export default function ProfileComponent() {
+export default function ProfileComponent(props) {
 
-  const [bio, setBio] = React.useState("Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.");
+  const { userData, ...otherProps } = props;
+
+  const [bio, setBio] = React.useState(userData.bio);
   const [prevBio, setPrevBio] = React.useState("");
-  const [tags, setTags] = React.useState([]);
+  const [tags, setTags] = React.useState(userData.tags);
   const [prevTags, setPrevTags] = React.useState([]);
   const [isEditing, setIsEditing] = React.useState(false);
 
   const classes = useStyles();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
 
   useEffect(() => {
-    
   })
 
   const editStartHandler = () => {
@@ -76,7 +78,7 @@ export default function ProfileComponent() {
       </Typography>
       <TextField 
         label="Name"
-        value="Alfred"
+        value={userData.name}
         fullWidth
         margin="normal"
         inputProps={{
@@ -90,7 +92,7 @@ export default function ProfileComponent() {
       />
       <TextField 
         label="Email"
-        value="xxx@playpal.com"
+        value={userData.email}
         fullWidth
         margin="normal"
         inputProps={{
@@ -121,7 +123,7 @@ export default function ProfileComponent() {
       </Typography>
       <div className={classes.tagBox}>
         {
-          interests.map((element, index) => {
+          tags.map((element, index) => {
             return (
               <Chip 
                 key={index}
