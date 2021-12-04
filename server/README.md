@@ -120,4 +120,8 @@ DROP COLUMN is_virtual;
 ALTER TABLE posts
 DROP COLUMN date_time;
 
+-- DEC 02 2021
+ALTER TABLE users
+ADD bio VARCHAR(255);
+
 ```
