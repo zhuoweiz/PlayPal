@@ -27,7 +27,16 @@ public class DefaultTagService implements TagService {
 
 	@Override
 	public TagData getTagById(long tagId) {
-		return null;
+		Tag tag = tagRepo.getById(tagId);
+		TagData tagData = new TagData();
+
+		// populate tagData
+		tagData.setPostId(tag.getPost().getId());
+		tagData.setUserId(tag.getUser().getId());
+		tagData.setLabel(tag.getLabel());
+		tagData.setId(tag.getId());
+
+		return tagData;
 	}
 
 	@Override

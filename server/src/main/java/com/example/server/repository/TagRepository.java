@@ -4,10 +4,13 @@ import com.example.server.data.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-	List<Tag> getTagsByUserId(long userId);
-	List<Tag> getTagsByPostId(long userId);
+	List<Tag> findByUserId(long userId);
+
+	@Transactional
+	void deleteByUserId(long userId);
 }

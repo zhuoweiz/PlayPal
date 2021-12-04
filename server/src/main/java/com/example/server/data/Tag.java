@@ -15,7 +15,7 @@ public class Tag {
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "post_id", nullable = false)
+	@JoinColumn(name = "post_id")
 	private Post post;
 
 	public Tag() {

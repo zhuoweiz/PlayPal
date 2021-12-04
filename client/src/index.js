@@ -69,14 +69,14 @@ ReactDOM.render(
 
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />}>
-                <Route index element={<ProfileComponent></ProfileComponent>} />
+                <Route index/>
                 <Route
                   path="setting"
-                  element={<SettingComponent></SettingComponent>}
+                  // element={<SettingComponent></SettingComponent>}
                 />
                 <Route
                   path="notification"
-                  element={<NotificationComponent></NotificationComponent>}
+                  // element={<NotificationComponent></NotificationComponent>}
                 ></Route>
               </Route>
               <Route path="post" element={<Outlet></Outlet>}>

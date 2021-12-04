@@ -1,64 +1,71 @@
-import React from 'react';
-import { Typography, Button, TextField, Chip } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Typography, Button, TextField, Chip, Box } from '@mui/material';
+import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
 
-const useStyles = makeStyles((theme) => ({
-  tag: {
-    marginRight: theme.spacing(1),
-  },
-  tagBox: {
-    width: "100%", 
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-  },
-}));
+import AddTagComponent from '../other/AddTagComponent';
+import { serverUrl} from '../../constants';
 
-const interests = [
-  {
-    value: "Game"
-  },
-  {
-    value: "Sport"
-  },
-  {
-    value: "Read"
-  },
-  {
-    value: "Coding"
-  },
-  {
-    value: "Movie"
-  },
-]
 
-export default function ProfileComponent() {
+const axios = require('axios');
+const _ = require("lodash");
 
-  const [bio, setBio] = React.useState("Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text.");
+
+
+
+export default function ProfileComponent(props) {
+
+  const { userData, ...otherProps } = props;
+
+  const [bio, setBio] = React.useState(userData.bio);
   const [prevBio, setPrevBio] = React.useState("");
-  const [tags, setTags] = React.useState([]);
+  const [tags, setTags] = React.useState(userData.tags);
+  const [prevTags, setPrevTags] = React.useState([]);
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const classes = useStyles();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+  })
 
   const editStartHandler = () => {
     setPrevBio(bio);
+    setPrevTags(tags);
     setIsEditing(true);
   }
 
   const editFinishHandler = () => {
     setIsEditing(false);
+
+    axios.post(serverUrl + "/users/user/update", {
+      id: localStorage.getItem("uid"),
+      bio: bio,
+      tags: tags,
+    }).then(response => {
+      console.log("update user data response: ", response);
+    }).catch(error => {
+
+    });
+  }
+
+  const cancelEditHandler = () => {
+    setBio(prevBio);
+    setTags(prevTags);
+    setIsEditing(false);
   }
 
   return (
-    <div>
+    <div style={{
+      width: 520
+    }}>
       <Typography variant="h4">
         Profile
       </Typography>
       <TextField 
         label="Name"
-        value="Alfred"
+        variant= {isEditing ? "filled" : "outlined"}
+        value={userData.name}
         fullWidth
         margin="normal"
         inputProps={{
@@ -72,7 +79,8 @@ export default function ProfileComponent() {
       />
       <TextField 
         label="Email"
-        value="xxx@playpal.com"
+        variant= {isEditing ? "filled" : "outlined"}
+        value={userData.email}
         fullWidth
         margin="normal"
         inputProps={{
@@ -92,7 +100,7 @@ export default function ProfileComponent() {
         margin="normal"
         minRows={2}
         value={bio}
-        variant= {isEditing ? "standard" : "outlined"}
+        variant= {isEditing ? "outlined" : "outlined"}
         onChange={(e) => { setBio(e.target.value) }}
         inputProps={{
           readOnly: isEditing !== true,
@@ -101,26 +109,31 @@ export default function ProfileComponent() {
       <Typography>
         Interests
       </Typography>
-      <div className={classes.tagBox}>
-        {
-          interests.map((element, index) => {
-            return (
-              <Chip 
-                key={index}
-                className={classes.tag} label={element.value} variant="outlined" />
-            )
-          })
-        }
-      </div>
-
+      
+      <AddTagComponent 
+        tags={tags}
+        setTags={setTags}
+        isEditing={isEditing}
+      />
       {
         isEditing ?
-        <Button
-          variant="outlined"
-          onClick={editFinishHandler}
-        >
-          Save Changes
-        </Button>
+        <>
+          <Button
+            variant="outlined"
+            onClick={editFinishHandler}
+            style={{
+              marginRight: 10
+            }}
+          >
+            Save Changes
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={cancelEditHandler}
+          >
+            Cancel
+          </Button>
+        </>
         :
         <Button 
           variant="outlined"
