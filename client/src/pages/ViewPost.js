@@ -50,12 +50,14 @@ export default function ViewPost() {
   const [postInfo, setPostInfo] = React.useState({});
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
+  const [joinedUsers, setJoinedUsers] = React.useState([]);
   const checkLikeURL = serverUrl + '/users/user/like/' + localStorage.getItem("uid") + '/' + postId;
   const checkJoinURL = serverUrl + '/users/user/join/' + localStorage.getItem("uid") + "/" + postId;
   const likeURL = serverUrl + '/users/like?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const unlikeURL = serverUrl + '/users/unlike?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const joinURL = serverUrl + '/users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const unjoinURL = serverUrl + '/users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const joinedUsersURL = serverUrl + '/posts/joined/' + postId;
 
   const renderLikeButton = ()=> {
     if (checkLike === null) {
@@ -192,7 +194,16 @@ export default function ViewPost() {
       console.error('There was an error!', error);
     }); 
     
-  })
+    axios.get(joinedUsersURL)
+      .then(response => {
+        console.log(response.data);
+        setJoinedUsers(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      }); 
+  },[])
+
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -349,13 +360,21 @@ export default function ViewPost() {
 
                 <Grid container spacing={2} xs={12} direction="row" justifyContent="flex-start">
                   <Grid item xs={6}>
-                    <MemberBox></MemberBox>
+                    {
+                      joinedUsers.map((element, index) => {
+                        return <Grid item xs={6} md={4} key={index}>
+                          <MemberBox data={element}></MemberBox>
+                      </Grid>
+                      })
+
+                    }
+                    
                   </Grid>
 
 
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <MemberBox></MemberBox>
-                  </Grid>
+                  </Grid> */}
 
                   
                   
