@@ -183,6 +183,17 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
+	public Boolean getOtherUserById(long userId, long otherUserId) {
+		User user = userRepo.getById(userId);
+		User otherUser = userRepo.getById(otherUserId);
+		Set<User> usersFollowed = user.getUsersFollowing();
+		if (usersFollowed.contains(otherUser)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public List<PostData> getCreatedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
 		User user = userRepo.getById(userId);
