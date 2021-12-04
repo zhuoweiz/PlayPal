@@ -184,16 +184,7 @@ function CreatePost() {
         >
           {/* Add tags for you posts! */}
           <Box>
-            {/* <TextField
-              fullWidth
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
-              value={tag}
-              onChange={(event) => {
-                setTag(event.target.value);
-              }}
-            /> */}
+            
             <Autocomplete
               disablePortal
               id="add-tag"

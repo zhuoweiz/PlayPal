@@ -36,7 +36,10 @@ function Comment(props) {
     
   )
 }
-
+function convert(dateTime){
+  let date = new Date(dateTime)
+  return date.toLocaleString()
+}
 
 export default function ViewPost() {
 
@@ -52,6 +55,7 @@ export default function ViewPost() {
     .then(response => {
       console.log(response.data);
       setPostInfo(response.data)
+      console.log(typeof(response.data.dateTime));
     })
     .catch(error=>{
       console.log(error);
@@ -73,13 +77,18 @@ export default function ViewPost() {
         <Typography component="h1" variant="h5" style={{marginBottom: 12}}>
           {postInfo.title}
         </Typography>
-        <Grid container item style={{marginBottom: 12}}>
+        <Grid container item justifyContent="space-between" alignItems="center" style={{marginBottom: 12}}>
+          <Grid item>
           <Button variant="outlined" style={{
             marginRight: 10
           }} >Like</Button>
           <Button variant="outlined" style={{
             marginRight: 10
           }}>Join/Leave</Button>
+          </Grid>
+          <Grid item>
+            Activity Time: {convert(postInfo.dateTime)}
+          </Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
           {postInfo.tags?postInfo.tags.map((element,index) =>{
