@@ -16,4 +16,5 @@ public interface PostService {
     List<PostData> searchPosts(final String searchKeyword);
 
     PostData getFullPostById(final long postId);
+    List<PostData> searchPostByTag(final String searchString);
 }
