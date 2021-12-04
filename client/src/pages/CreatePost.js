@@ -21,7 +21,11 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { serverUrl } from "../constants";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
+const axios = require("axios");
 const _ = require("lodash");
 
 const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
@@ -38,15 +42,18 @@ function CreatePost() {
   const [tags, setTags] = React.useState([]);
   const [tag, setTag] = React.useState("");
   // const [options, setOptions] = React.useState(tagList);
-  const [value, setValue] = React.useState(new Date("2021-12-01T21:11:54"));
+
+  const [date, setDate] = React.useState(new Date("2021-12-02T21:11:54"));
   // 1. convert dateString to ms method Date.parse(dateString) 
   // 2. convertr ms to Date first var date = new Date(time) then date.toString()
-  const handleChange = (newValue) => {
-    setValue(newValue);
-    // console.log(newValue);
-    // console.log(typeof(newValue));
+  
+ const [title, setTitle] = React.useState("");
+ const [location,setLocation] = React.useState("");
+ const [isVirtual, setIsVirtual] = React.useState(false);
+ const [content, setContent] = React.useState("");
 
-  };
+ const navigate = useNavigate();
+ const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
   const { ref: materialRef } = usePlacesWidget({
     apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
@@ -60,11 +67,38 @@ function CreatePost() {
     defaultValue: "syracuse",
   });
 
+  const handleCreatePostAction= () =>{
+    
+    axios.post(serverUrl + "/posts/post",{
+        creatorId: localStorage.getItem("uid"),
+        title: title,
+        content: content,
+        location: location,
+        isVirtual: isVirtual,
+        dateTime: date,
+        tags: tags,
+    }).then(function(response) {
+        console.log(response);
+        let getData = response.data;
+        console.log(getData);
+        enqueueSnackbar("Create Post Sucess!")
+        // navigate("/post")
+        // alert("success")
+    }).catch(function(error){
+      enqueueSnackbar("Create Post Error")
+      // console.log(error.code);
+      // console.log(error.message);
+      // alert("failed")
+    })
+    
+  }
+
+
   return (
     <Container maxWidth="md" style={{ height: "100vh" }}>
       <Box style={{ marginTop: "24px", height: "80%" }}>
         <Box style={{ width: "100%", marginTop: "12px" }}>
-          <TextField fullWidth label="Title"></TextField>
+          <TextField fullWidth label="Title" onChange={(e)=>setTitle(e.target.value)}></TextField>
         </Box>
 
         <Grid style={{ height: "10%", marginTop:"16px"}}>
@@ -85,6 +119,7 @@ function CreatePost() {
             color="secondary"
             variant="outlined"
             inputRef={materialRef}
+            onChange={(e)=> setLocation(e.target.value)}
           />
         </Grid>
         <div style={{ height: "24px" }}></div>
@@ -94,15 +129,20 @@ function CreatePost() {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label="Date&Time picker"
-                  value={value}
-                  onChange={handleChange}
+                  value={date}
+                  onChange={(newValue)=> {
+                    setDate(newValue)
+                    console.log(newValue);
+                  }}
+                  
+                
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
             <Grid>
               <FormControlLabel
-                control={<Checkbox defaultChecked />}
+                control={<Checkbox defaultChecked={false} onChange={()=>setIsVirtual(!isVirtual)} />}
                 label="is a Virtual Activity?"
               />
             </Grid>
@@ -114,10 +154,10 @@ function CreatePost() {
           style={{
             fontSize: "18px",
             marginTop: "20px",
-            height: "60%",
+            // height: "60%",
             padding: "4px",
           }}
-          sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
+          // sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
         >
           <Grid container direction="row" style={{ height: "90%" }}>
             {/* <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
@@ -127,19 +167,11 @@ function CreatePost() {
               <Grid>
                 Description
                 {/* <Divider /> */}
-                <MUIRichTextEditor
-                  maxLength={400}
-                  controls={[
-                    "title",
-                    "bold",
-                    "strikethrough",
-                    "undo",
-                    "redo",
-                    "link",
-                    "numberList",
-                    "bulletList",
-                    "quote",
-                  ]}
+                <TextField
+                  multiline
+                  fullWidth
+                  minRows={4}
+                  onChange={(e)=>setContent(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -152,16 +184,7 @@ function CreatePost() {
         >
           {/* Add tags for you posts! */}
           <Box>
-            {/* <TextField
-              fullWidth
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
-              value={tag}
-              onChange={(event) => {
-                setTag(event.target.value);
-              }}
-            /> */}
+            
             <Autocomplete
               disablePortal
               id="add-tag"
@@ -185,7 +208,9 @@ function CreatePost() {
               onClick={() => {
                 // add tag
                 const currTags = _.cloneDeep(tags);
-                currTags.push(tag);
+                currTags.push({
+                  label:tag
+                });
                 setTags(currTags);
                 // let newOptions = _.remove(options,function(n){
                 //   return n === tag;
@@ -198,7 +223,7 @@ function CreatePost() {
             {tags.map((element, index) => {
               return (
                 <Chip
-                  label={element}
+                  label={element.label}
                   variant="outlined"
                   onClick={handleClick}
                   onDelete={handleDelete}
@@ -213,7 +238,7 @@ function CreatePost() {
           alignItems="center"
           style={{ marginTop: "20px", marginBottom:"20px"}}
         >
-          <Button variant="contained" endIcon={<SendIcon />} href="/post">
+          <Button variant="contained" endIcon={<SendIcon />} onClick={handleCreatePostAction}>
             Send
           </Button>
         </Grid>

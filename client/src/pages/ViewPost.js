@@ -19,6 +19,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import ChatList from '../components/ChatList';
 import MemberBox from '../components/MemberBox';
 
+import { serverUrl } from '../constants';
+import axios from 'axios';
 
 function Comment(props) {
   const { author, content, time, ...otherProps } = props;
@@ -34,7 +36,10 @@ function Comment(props) {
     
   )
 }
-
+function convert(dateTime){
+  let date = new Date(dateTime)
+  return date.toLocaleString()
+}
 
 export default function ViewPost() {
 
@@ -42,7 +47,22 @@ export default function ViewPost() {
 
   const postId = params.postId;
   console.log("Post Id is: ", postId);
+  const [postInfo, setPostInfo] = React.useState({});
 
+  React.useEffect(()=>{
+    if(Object.keys(postInfo).length === 0){
+      axios.get(serverUrl+"/posts/post/"+postId)
+    .then(response => {
+      console.log(response.data);
+      setPostInfo(response.data)
+      console.log(typeof(response.data.dateTime));
+    })
+    .catch(error=>{
+      console.log(error);
+    })
+    }
+    
+  })
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -55,18 +75,30 @@ export default function ViewPost() {
         }}
       >
         <Typography component="h1" variant="h5" style={{marginBottom: 12}}>
-          Project Title
+          {postInfo.title}
         </Typography>
-        <Grid container item style={{marginBottom: 12}}>
+        <Grid container item justifyContent="space-between" alignItems="center" style={{marginBottom: 12}}>
+          <Grid item>
           <Button variant="outlined" style={{
             marginRight: 10
           }} >Like</Button>
           <Button variant="outlined" style={{
             marginRight: 10
           }}>Join/Leave</Button>
+          </Grid>
+          <Grid item>
+            Activity Time: {convert(postInfo.dateTime)}
+          </Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
-          <Chip label="Tag 1" style={{
+          {postInfo.tags?postInfo.tags.map((element,index) =>{
+            return (
+              <Chip label={element.label} style={{
+                marginRight: 10
+              }} size="small" variant="outlined" />
+            )
+          }):null}
+          {/* <Chip label={post} style={{
             marginRight: 10
           }} size="small" variant="outlined" />
           <Chip label="Tag x" style={{
@@ -74,20 +106,20 @@ export default function ViewPost() {
           }} size="small" variant="outlined" />
           <Chip label="Tag r" style={{
             marginRight: 10
-          }} size="small" variant="outlined" />
+          }} size="small" variant="outlined" /> */}
         </Grid>
 
         <Grid container item xs={12} sm={8}>
 
           <Typography style={{marginBottom: 12}}>
-            Description: Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+           {postInfo.content}
           </Typography>
 
         </Grid>
 
         <Grid item>
           <Typography style={{marginBottom: 12}}>
-            Location: Lorem ipsum/
+            {postInfo.location}
           </Typography>
         </Grid>
         
