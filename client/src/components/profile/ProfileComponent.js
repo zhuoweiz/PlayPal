@@ -1,38 +1,18 @@
 import React, { useEffect } from 'react';
-import { Typography, Button, TextField, Chip } from '@mui/material';
+import { Typography, Button, TextField, Chip, Box } from '@mui/material';
+import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
-import { serverUrl } from '../../constants';
+
+import AddTagComponent from '../other/AddTagComponent';
+import { serverUrl} from '../../constants';
+
+
 const axios = require('axios');
+const _ = require("lodash");
 
-const useStyles = makeStyles((theme) => ({
-  tag: {
-    marginRight: theme.spacing(1),
-  },
-  tagBox: {
-    width: "100%", 
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-  },
-}));
 
-const interests = [
-  {
-    label: "Game"
-  },
-  {
-    label: "Sport"
-  },
-  {
-    label: "Read"
-  },
-  {
-    label: "Coding"
-  },
-  {
-    label: "Movie"
-  },
-]
+
 
 export default function ProfileComponent(props) {
 
@@ -44,9 +24,7 @@ export default function ProfileComponent(props) {
   const [prevTags, setPrevTags] = React.useState([]);
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-
 
   useEffect(() => {
   })
@@ -62,7 +40,8 @@ export default function ProfileComponent(props) {
 
     axios.post(serverUrl + "/users/user/update", {
       id: localStorage.getItem("uid"),
-      bio: bio
+      bio: bio,
+      tags: tags,
     }).then(response => {
       console.log("update user data response: ", response);
     }).catch(error => {
@@ -85,6 +64,7 @@ export default function ProfileComponent(props) {
       </Typography>
       <TextField 
         label="Name"
+        variant= {isEditing ? "filled" : "outlined"}
         value={userData.name}
         fullWidth
         margin="normal"
@@ -99,6 +79,7 @@ export default function ProfileComponent(props) {
       />
       <TextField 
         label="Email"
+        variant= {isEditing ? "filled" : "outlined"}
         value={userData.email}
         fullWidth
         margin="normal"
@@ -119,7 +100,7 @@ export default function ProfileComponent(props) {
         margin="normal"
         minRows={2}
         value={bio}
-        variant= {isEditing ? "standard" : "outlined"}
+        variant= {isEditing ? "outlined" : "outlined"}
         onChange={(e) => { setBio(e.target.value) }}
         inputProps={{
           readOnly: isEditing !== true,
@@ -128,18 +109,12 @@ export default function ProfileComponent(props) {
       <Typography>
         Interests
       </Typography>
-      <div className={classes.tagBox}>
-        {
-          tags.map((element, index) => {
-            return (
-              <Chip 
-                key={index}
-                className={classes.tag} label={element.label} variant="outlined" />
-            )
-          })
-        }
-      </div>
-
+      
+      <AddTagComponent 
+        tags={tags}
+        setTags={setTags}
+        isEditing={isEditing}
+      />
       {
         isEditing ?
         <>
