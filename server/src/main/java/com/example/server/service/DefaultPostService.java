@@ -189,8 +189,8 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    public List<PostData> searchPostByLat(double lower, double upper) {
-        List<Post> searchResult = postRepo.findByLatBetweenAndLngBetween(40, 45, -77,-75);
+    public List<PostData> searchPostByLatLng(double lat, double lng) {
+        List<Post> searchResult = postRepo.findByLatBetweenAndLngBetween(lat-0.2, lat+0.2, lng-0.2,lng+0.2);
         List<PostData> responseList = new ArrayList<>();
 
         searchResult.forEach(post -> {

@@ -32,7 +32,8 @@ const postsFromBackend = [
   
 ];
 
-function AlignItemsList() {
+function AlignItemsList(props) {
+  const {recommendationList} = props
   return (
     <List
       sx={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
@@ -40,15 +41,15 @@ function AlignItemsList() {
       lg={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
       xl={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
     >
-      {postsFromBackend.map((post, index) => {
+      {recommendationList.map((post, index) => {
         return (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt={post.name} src={post.src} />
+                <Avatar alt={post.creator.id} src={"/post/"+post.id} />
               </ListItemAvatar>
               <ListItemText
-                primary={post.primary}
+                primary={post.title}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -57,9 +58,9 @@ function AlignItemsList() {
                       variant="body2"
                       color="text.primary"
                     >
-                      {post.secondary}
+                      {post.content}
                     </Typography>
-                    {post.text}
+                    {post.location}
                   </React.Fragment>
                 }
               />

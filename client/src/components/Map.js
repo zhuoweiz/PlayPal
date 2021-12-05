@@ -43,21 +43,39 @@ const postItems = postsFromBackend.map((post) => {
   );
 });
 
-function Map() {
-  const defaultProps = {
+function Map(props) {
+  const { recommendationList, lat, lng, zoom} = props;
+  const [mapProps, setMapProps] = React.useState(null);
+  // const defaultProps = {
+  //   center: {
+  //     lat: lat,
+  //     lng: lng,
+  //   },
+  //   zoom: 8,
+  // };
+  setMapProps({
     center: {
-      lat: 43.088947,
-      lng: -76.15448,
+      lat: lat,
+      lng: lng
     },
-    zoom: 8,
-  };
+    zoom:zoom
+  })
   return (
     <GoogleMapReact
       bootstrapURLKeys={{ key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc" }}
-      defaultCenter={defaultProps.center}
-      defaultZoom={defaultProps.zoom}
+      defaultCenter={mapProps.center}
+      defaultZoom={mapProps.zoom}
     >
-      {postItems}
+      {recommendationList.map((post, index) => {
+        return (
+          <AnyReactComponent
+            key={post.id}
+            lat={post.lat}
+            lng={post.lng}
+            
+          />
+        );
+      })}
     </GoogleMapReact>
   );
 }

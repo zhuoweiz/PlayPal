@@ -95,7 +95,8 @@ function CreatePost() {
         console.log(getData);
         console.log(location);
         enqueueSnackbar("Create Post Sucess!")
-        // navigate("/post")
+        console.log(response.data.id);
+        navigate("/post/" + response.data.id)
         // alert("success")
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
