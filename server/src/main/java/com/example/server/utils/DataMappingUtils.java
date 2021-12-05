@@ -20,6 +20,11 @@ public class DataMappingUtils {
 		commentData.setContent(comment.getContent());
 		commentData.setPostId(comment.getPost().getId());
 		commentData.setCreatorId(comment.getCreator().getId());
+		commentData.setCreatedDate(comment.getCreatedDate());
+
+		// use creatorId and set creatorName
+		commentData.setCreatorName(comment.getCreator().getName());
+
 		return commentData;
 	}
 
@@ -40,8 +45,12 @@ public class DataMappingUtils {
 		TagData tagData = new TagData();
 		tagData.setId(tag.getId());
 		tagData.setLabel(tag.getLabel());
-//		tagData.setUserId(tag.getUser().getId());
-//		tagData.setPostId(tag.getPost().getId());
+		if(tag.getUser() != null) {
+			tagData.setUserId(tag.getUser().getId());
+		}
+		if(tag.getPost() != null) {
+			tagData.setPostId(tag.getPost().getId());
+		}
 
 		return tagData;
 	}

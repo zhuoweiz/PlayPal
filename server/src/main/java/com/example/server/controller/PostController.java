@@ -1,8 +1,10 @@
 package com.example.server.controller;
 
 import com.example.server.dto.PostData;
+import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.PostService;
+import com.example.server.service.TagService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,6 +18,9 @@ public class PostController {
 
     @Resource(name = "postService")
     private PostService postService;
+
+    @Resource(name = "tagService")
+    private TagService tagService;
 
     /**
      * <p>Get all user data in the system.For production system you many want to use
@@ -38,6 +43,12 @@ public class PostController {
         return postService.getPostById(id);
     }
 
+    @GetMapping("/fullPost/{id}")
+    public PostData getFullPost(@PathVariable Long id) {
+        System.out.println(" === GET FULL POST (with comments and other data) BY ID ===");
+        return postService.getFullPostById(id);
+    }
+
     @GetMapping("/postcreator/{id}")
     public UserData getCreator(@PathVariable Long id) {
         return postService.getPostCreator(id);
@@ -49,9 +60,7 @@ public class PostController {
      * @return
      */
     @PostMapping("/post")
-
     public PostData savePost(final @RequestBody PostData postData) {
-
         System.out.println("Post new post === " + postData.toString());
         return postService.savePost(postData);
     }
@@ -60,7 +69,6 @@ public class PostController {
     public List<UserData> getJoinedUsers(@PathVariable Long postId) {
         return postService.getJoinedUsers(postId);
     }
-
 
     /**
      * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
@@ -76,5 +84,10 @@ public class PostController {
     @GetMapping("/post")
     public List<PostData> searchPosts(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPosts(keyword);
+    }
+
+    @GetMapping("/searchPostByTag")
+    public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
+        return postService.searchPostByTag(keyword);
     }
 }
