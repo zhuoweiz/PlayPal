@@ -31,7 +31,7 @@ function PostCard(props) {
             </Grid>
             <Grid item>
               {
-                postData.tags ? 
+                postData && postData.tags ? 
                 postData.tags.map((tag, index) => {
                   <Chip key={index} label={tag.label} variant="outlined" size="small" />
                 })

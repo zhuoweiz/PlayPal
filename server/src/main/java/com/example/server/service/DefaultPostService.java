@@ -188,6 +188,17 @@ public class DefaultPostService implements PostService {
         return responseList;
     }
 
+    @Override
+    public List<PostData> searchPostByLat(double lower, double upper) {
+        List<Post> searchResult = postRepo.findByLatBetweenAndLngBetween(40, 45, -77,-75);
+        List<PostData> responseList = new ArrayList<>();
+
+        searchResult.forEach(post -> {
+            responseList.add(populatePostData(post));
+        });
+        return responseList;
+    }
+
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
