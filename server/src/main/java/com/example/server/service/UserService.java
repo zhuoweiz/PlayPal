@@ -23,4 +23,5 @@ public interface UserService {
 	boolean unjoinPost(final long userId, final long postId);
 	Boolean getOtherUserById(long userId, long otherUserId);
 	UserData updateUser(UserData userData);
+	List<UserData> searchUserByName(final String keyword);
 }

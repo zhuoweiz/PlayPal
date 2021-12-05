@@ -3,6 +3,7 @@ package com.example.server.service;
 import com.example.server.data.Post;
 import com.example.server.data.Tag;
 import com.example.server.data.User;
+import com.example.server.dto.CommentData;
 import com.example.server.dto.PostData;
 import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
@@ -91,6 +92,27 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
+    public PostData getFullPostById(long postId) {
+        Post post = postRepo.findById(postId).orElseThrow(() ->
+          new EntityNotFoundException("Post not found!"));
+        PostData responsePostData = populatePostData(post);
+
+        // add comments
+        if(post.getComments() != null) {
+            List<CommentData> commentDataList = new ArrayList<>();
+            post.getComments().forEach(comment -> {
+                CommentData tmpCommentData = DataMappingUtils.populateCommentData(comment);
+                commentDataList.add(tmpCommentData);
+            });
+            responsePostData.setComments(commentDataList);
+        }
+
+        // can add chat and stuff later
+
+        return responsePostData;
+    }
+
+    @Override
     public UserData getPostCreator(long postId) {
         Post post = postRepo.findById(postId).orElseThrow(() ->
           new EntityNotFoundException("Post not found!"));
@@ -133,6 +155,18 @@ public class DefaultPostService implements PostService {
         }
         return matchPosts;
     }
+
+    @Override
+    public List<PostData> searchPostByTag(String searchString) {
+        List<PostData> responseList = new ArrayList<>();
+        List<Tag> searchResult = tagRepo.findByLabelContainingAndPostIdIsNotNull(searchString);
+        searchResult.forEach(tag -> {
+            responseList.add(populatePostData(tag.getPost()));
+        });
+
+        return responseList;
+    }
+
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
@@ -146,8 +180,9 @@ public class DefaultPostService implements PostService {
 
         User user = userRepo.getById(post.getCreatorId());
         postData.setCreator(populateUserData(user));
-        List<TagData> temp_tagList = new ArrayList<>();
 
+        // add tags
+        List<TagData> temp_tagList = new ArrayList<>();
         if(post.getTags() != null){
             post.getTags().forEach(tag -> {
                 TagData temp_tagData = DataMappingUtils.populateTagData(tag);

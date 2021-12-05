@@ -17,11 +17,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Divider, FormControl, Link, List, ListItemButton, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Button } from '@mui/material';
-import {Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 
 import {useNavigate} from 'react-router-dom';
 
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+
+import SearchPopUp from './other/SearchPopUp';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,91 +63,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-function SimpleDialog(props) {
-  const { onClose, selectedValue, open } = props;
-
-  const [alignment, setAlignment] = React.useState('left');
-  const [searchType, setSearchType] = React.useState(0);
-  const [searchValue, setSearchValue] = React.useState("");
-
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
-
-  const handleClose = () => {
-    onClose(1);
-  };
-
-  const data = [
-    "yes",
-    "no",
-  ]
-
-  const handleListItemClick = (value) => {
-    // onClose(value);
-    // go to a post page or person page (target blank)
-  };
-
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Search</DialogTitle>
-      <DialogContent>
-        <ToggleButtonGroup
-          value={alignment}
-          exclusive
-          onChange={handleAlignment}
-          aria-label="text alignment"
-        >
-          <ToggleButton value="left" aria-label="left aligned">
-            Post Activity
-          </ToggleButton>
-          <ToggleButton value="center" aria-label="centered">
-            User
-          </ToggleButton>
-        </ToggleButtonGroup>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("submitted...")
-          }}
-        >
-          <TextField
-            label="Search here"
-            sx={{
-              marginTop: 2,
-              width: 400
-            }}
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
-          ></TextField>
-          {/* <Button variant="outlined">Search</Button> */}
-        </form>
-
-        <div>
-          <List component="nav" aria-label="main mailbox folders">
-            {
-              data.map((element,index) => {
-                return (
-                  <ListItemButton
-                    key={index}
-                    onClick={(event) => handleListItemClick(event, 0)}
-                  >
-                    <ListItemText primary={element} />
-                  </ListItemButton>
-                )
-              })
-            }
-          </List>
-        </div>
-      </DialogContent>
-      
-    </Dialog>
-  );
-}
 
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -386,7 +302,7 @@ export default function NavBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <SimpleDialog
+      <SearchPopUp
         open={open}
         onClose={handleClose}
       />

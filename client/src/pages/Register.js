@@ -51,7 +51,9 @@ function SignUp() {
           .then(function (response) {
             console.log(response);
             localStorage.setItem("uid", response.data.id);
-            enqueueSnackbar("Register Sucess!");
+            enqueueSnackbar("Register Sucess!", {
+              variant: 'success'
+            });
             navigate("/");
           })
           .catch(function (error) {

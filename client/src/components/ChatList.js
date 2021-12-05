@@ -13,8 +13,6 @@ function renderRow(props) {
   const { index, style, data } = props;
   const currentUserId = 1;
 
-  console.log("data: ", data);
-
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
       { data[index].senderId === currentUserId ? null : 
