@@ -224,10 +224,6 @@ function CreatePost() {
                   label:tag
                 });
                 setTags(currTags);
-                // let newOptions = _.remove(options,function(n){
-                //   return n === tag;
-                // })
-                // setOptions(newOptions);
               }}
             >
               Add

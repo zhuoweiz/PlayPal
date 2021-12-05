@@ -28,7 +28,6 @@ public interface UserService {
   Boolean checkLikedPostById(long userId, long postId);
 	Boolean checkJoinedPostById(long userId, long postId);
 	List<TagData> getTagsByUser(long userId);
-  
-	UserData updateUser(UserData userData);
+
 	List<UserData> searchUserByName(final String keyword);
 }
