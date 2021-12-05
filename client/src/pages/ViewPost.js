@@ -59,7 +59,7 @@ export default function ViewPost() {
   const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
-  const [postInfo, setPostInfo] = React.useState({});
+  const [postInfo, setPostInfo] = React.useState([]);
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
@@ -151,7 +151,7 @@ export default function ViewPost() {
   const likeHandler = ()=> {
     axios.get(likeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(true)
     })
     .catch(error => {
@@ -162,7 +162,7 @@ export default function ViewPost() {
   const unlikeHandler = ()=> {
     axios.get(unlikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(false)
     })
     .catch(error => {
@@ -173,7 +173,7 @@ export default function ViewPost() {
   const joinHandler = ()=> {
     axios.get(joinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(true)
     })
     .catch(error => {
@@ -184,7 +184,7 @@ export default function ViewPost() {
   const unjoinHandler = ()=> {
     axios.get(unjoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(false)
     })
     .catch(error => {
@@ -280,7 +280,7 @@ export default function ViewPost() {
 
     axios.get(checkLikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(response.data);
     })
     .catch(error => {
@@ -289,7 +289,7 @@ export default function ViewPost() {
 
     axios.get(checkJoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(response.data);
     })
     .catch(error => {
@@ -298,14 +298,14 @@ export default function ViewPost() {
     
     axios.get(joinedUsersURL)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         setJoinedUsers(response.data);
       })
       .catch(error => {
         console.error('There was an error!', error);
       }); 
   },[])
-
+  console.log("postInfo", postInfo)
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -345,6 +345,12 @@ export default function ViewPost() {
               }} size="small" variant="outlined" />
             )
           }):null}
+        </Grid>
+
+        <Grid container item xs={12} sm={8}>
+          <Typography style={{ marginBottom: 12 }}>
+            Host : {postInfo.creator.name}  
+          </Typography>
         </Grid>
 
         <Grid container item xs={12} sm={8}>
