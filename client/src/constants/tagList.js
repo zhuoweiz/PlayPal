@@ -10,17 +10,6 @@ const tagList= [
     {label: 'BBQ',id:9},
     {label: 'workout',id:10},
     {label: 'postAnyway',id:11},
-    // "sports",
-    // "basketball",
-    // "baseball",
-    // "boardgame",
-    // "leagueOfLegends",
-    // "APEX",
-    // "CSGO",
-    // "football",
-    // "BBQ",
-    // "workout",
-    // "postAnyway",
 ]
 
 export default tagList;

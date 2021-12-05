@@ -20,20 +20,25 @@ export default function MemberBox(props) {
   const classes = useStyles();
 
   return (
-    <a href={`/user/${data ? data.id : ""}`}>
+    <a style={{
+      textDecoration: "none"
+    }} href={`/user/${data ? data.id : ""}`}>
       <Paper className={classes.memberBox}>
         <Grid container direction="row" alignItems="center">
           <Grid item>
-            <Avatar 
-              sx={{ width: 40, height: 40 }}
-              src="../../public/profile_avatar.png"
-            ></Avatar>
-            </Grid>
-            <Grid item>
+          <Avatar 
+            sx={{ width: 30, height: 30 }}
+            src="../../public/profile_avatar.png"
+          ></Avatar>
+          </Grid>
+          <Grid item
+            style={{
+              marginLeft: 4,
+            }}
+          >
             {
               data ? data.name : null
             }
-
           </Grid>
           </Grid>
       </Paper>
