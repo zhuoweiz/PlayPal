@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 function PostCard(props) {
   const { postData, ...otherProps } = props;
-
+  console.log("check tags: ", postData);
   const handleViewPost = () => {
 
   }
@@ -30,8 +30,14 @@ function PostCard(props) {
               </Typography>
             </Grid>
             <Grid item>
-              <Chip label="tag1" variant="outlined" size="small" />
-              <Chip label="tag2" variant="outlined" size="small" />
+              {
+                postData.tags ? 
+                postData.tags.map((tag, index) => {
+                  <Chip key={index} label={tag.label} variant="outlined" size="small" />
+                })
+                : null
+              }
+              
             </Grid>
           </Grid>
           <Typography variant="subtitle1" >
