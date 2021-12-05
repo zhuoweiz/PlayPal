@@ -32,24 +32,29 @@ export default function ProfileComponent(props) {
     setIsEditing(true);
   }
 
-  const editFinishHandler = () => {
+  const cancelEditHandler = () => {
+    setBio(prevBio);
+    setTags(prevTags);
     setIsEditing(false);
+  }
 
+  const editFinishHandler = () => {
     axios.post(serverUrl + "/users/user/update", {
       id: localStorage.getItem("uid"),
       bio: bio,
       tags: tags,
     }).then(response => {
+      setIsEditing(false);
+      enqueueSnackbar("Successfully Saved!", {
+        variant: "success"
+      })
       console.log("update user data response: ", response);
     }).catch(error => {
-
+      cancelEditHandler();
+      enqueueSnackbar("Save Error!", {
+        variant: "error"
+      })
     });
-  }
-
-  const cancelEditHandler = () => {
-    setBio(prevBio);
-    setTags(prevTags);
-    setIsEditing(false);
   }
 
   return (
