@@ -15,8 +15,6 @@ public class MessageController {
     @Resource(name="messageService")
     private MessageService messageService;
 
-
-
     @GetMapping("/bypost/{id}")
     public List<MessageData> getMessages(@PathVariable Long id){
         System.out.println("=== GET Message BY PostID ===");

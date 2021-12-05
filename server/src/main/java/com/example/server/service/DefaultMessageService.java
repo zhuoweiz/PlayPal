@@ -32,7 +32,6 @@ public class DefaultMessageService implements MessageService {
     public MessageData saveMessage(MessageData messageData){
         Message messageInstance = populateMessageEntity(messageData);
         return populateMessageData((messageRepo.save(messageInstance)));
-
     }
 
 
@@ -48,25 +47,16 @@ public class DefaultMessageService implements MessageService {
         return true;
     }
 
-
-//TODO
     @Override
     public List<MessageData> getMessagesByPostId(long postId){
         List<MessageData> messageData = new ArrayList<>();
-        List<Message> messageList = messageRepo.findAll();
-        List<Message> messageList_PostId = new ArrayList<>();
-        messageList.forEach(message -> {
-            if(message.getPostId() == postId){
-                messageList_PostId.add(message);
-            }
-        });
+        List<Message> messageList_PostId = messageRepo.findByPost_Id(postId);
         messageList_PostId.forEach(message -> {
             messageData.add(populateMessageData(message));
         });
 
         return messageData;
     }
-
 
     /**
      * Get user by ID. The service will send the user data else will throw the exception.
