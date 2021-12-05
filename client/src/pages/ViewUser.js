@@ -18,8 +18,10 @@ import { typography } from "@mui/system";
 import { makeStyles } from '@mui/styles';
 import { useParams } from "react-router-dom";
 import { serverUrl } from '../constants';
-const axios = require('axios');
 
+import AddTagComponent from "../components/other/AddTagComponent";
+
+const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
   tag: {
@@ -199,7 +201,7 @@ function ViewUser() {
         <Paper container item md={3} style={{marginTop:"24px" , padding:"12px"}} component={Grid}>
           <Grid item md={12} style={{}}>
             <Typography variant = "h6">
-              bio
+              Bio
             </Typography>
             <Typography>
               {user.bio ? user.bio : "bio is empty"}
@@ -207,18 +209,12 @@ function ViewUser() {
           </Grid>
           <Grid item md={12} style={{}}>
             <Typography variant = "h6">
-              interest tags
+              Interest Tags
             </Typography>
             <div className={classes.tagBox}>
-              {
-                interests.map((element, index) => {
-                  return (
-                    <Chip 
-                      key={index}
-                      className={classes.tag} label={element.value} variant="outlined" />
-                  )
-                })
-              }
+              <AddTagComponent
+                tags={user.tags ? user.tags : []}
+              ></AddTagComponent>
             </div>
           </Grid>
         </Paper>

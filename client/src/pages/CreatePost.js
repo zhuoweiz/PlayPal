@@ -25,6 +25,8 @@ import { serverUrl } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
+import AddTagComponent from "../components/other/AddTagComponent";
+
 const axios = require("axios");
 const _ = require("lodash");
 
@@ -194,55 +196,11 @@ function CreatePost() {
           style={{ marginTop: "24px", padding: "12px" }}
           sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
         >
-          {/* Add tags for you posts! */}
-          <Box>
-            
-            <Autocomplete
-              disablePortal
-              id="add-tag"
-              options={tagList}
-              sx={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Activity" />
-              )}
-              value={tag}
-              onChange={(event, newValue) => {
-                setTag(newValue);
-                if (newValue) {
-                  setTag(newValue.label);
-                }
-                // console.log(tag);
-              }}
-            />
-          </Box>
-          <Box style={{ marginTop: "12px" }}>
-            <Button
-              onClick={() => {
-                // add tag
-                const currTags = _.cloneDeep(tags);
-                currTags.push({
-                  label:tag
-                });
-                setTags(currTags);
-                // let newOptions = _.remove(options,function(n){
-                //   return n === tag;
-                // })
-                // setOptions(newOptions);
-              }}
-            >
-              Add
-            </Button>
-            {tags.map((element, index) => {
-              return (
-                <Chip
-                  label={element.label}
-                  variant="outlined"
-                  onClick={handleClick}
-                  onDelete={handleDelete}
-                />
-              );
-            })}
-          </Box>
+          <AddTagComponent
+            tags={tags}
+            setTags={setTags}
+            isEditing={true}
+          ></AddTagComponent>
         </Box>
         <Grid
           container

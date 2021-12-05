@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 
 function PostCard(props) {
   const { postData, ...otherProps } = props;
-  console.log("postData", postData);
   const handleViewPost = () => {
 
   }

@@ -54,8 +54,6 @@ function convert(dateTime) {
 }
 
 export default function ViewPost() {
-  
-
 
   const params = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -65,6 +63,12 @@ export default function ViewPost() {
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
+
+  const [latitude, setLatitude] = React.useState(43.088947)
+  const [longitude, setLongitude] = React.useState(-76.15448)
+  const [mapProps, setMapProps] = React.useState(null);
+  
+  
   const checkLikeURL = serverUrl + '/users/user/like/' + localStorage.getItem("uid") + '/' + postId;
   const checkJoinURL = serverUrl + '/users/user/join/' + localStorage.getItem("uid") + "/" + postId;
   const likeURL = serverUrl + '/users/like?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
@@ -79,7 +83,11 @@ export default function ViewPost() {
     }
     else if (checkLike === true) {
       return (
-        <Button variant="outlined" size="small"
+        <Button 
+          style={{
+            marginRight: 10,
+          }}
+          variant="outlined"
           onClick = {
             unlikeHandler
           }
@@ -92,7 +100,9 @@ export default function ViewPost() {
       return (
         <Button
           variant="contained"
-          size="small"
+          style={{
+            marginRight: 10,
+          }}
           onClick = {
             likeHandler
           }
@@ -109,7 +119,10 @@ export default function ViewPost() {
     }
     else if (checkJoin === true) {
       return (
-        <Button variant="outlined" size="small"
+        <Button variant="outlined"
+          style={{
+            marginRight: 10,
+          }}
           onClick = {
             unjoinHandler
           }
@@ -122,7 +135,9 @@ export default function ViewPost() {
       return (
         <Button
           variant="contained"
-          size="small"
+          style={{
+            marginRight: 10,
+          }}
           onClick = {
             joinHandler
           }
@@ -177,16 +192,6 @@ export default function ViewPost() {
     }); 
   }
 
-  const [latitude, setLatitude] = React.useState(43.088947)
-  const [longitude, setLongitude] = React.useState(-76.15448)
-  
-  const defaultProps = {
-    center: {
-      lat: latitude,
-      lng: longitude,
-    },
-    zoom: 8,
-  };
   const [postComments, setPostComments] = React.useState([]);
 
   function sortComments(unsortedCommentsData) {
@@ -247,8 +252,20 @@ export default function ViewPost() {
 
         setLatitude(response.data.lat)
         setLongitude(response.data.lng)
-        defaultProps.center.lat = latitude;
-        defaultProps.center.lng = longitude
+
+        // const defaultProps = {
+        //   center: {
+        //     lat: latitude,
+        //     lng: longitude,
+        //   },
+        //   zoom: 8,
+        // };
+        setMapProps({
+          center: {
+            lat: response.data.lat,
+            lng: response.data.lng
+          }
+        })
 
         const sortedCommentsData = sortComments(response.data.comments);
         setPostComments(sortedCommentsData);
@@ -311,38 +328,12 @@ export default function ViewPost() {
           style={{ marginBottom: 12 }}
         >
           <Grid item>
-          {/* <Button variant="outlined" style={{
-            marginRight: 10
-          }} >Like</Button> */}
-          {/* <Button variant="outlined" style={{
-            marginRight: 10
-          }}>Join/Leave</Button> */}
             {
               renderLikeButton()
             }
             {
               renderJoinButton()
             }
-          </Grid>
-          <Grid item>
-            Activity Time: {convert(postInfo.dateTime)}
-
-            <Button
-              variant="outlined"
-              style={{
-                marginRight: 10,
-              }}
-            >
-              Like
-            </Button>
-            <Button
-              variant="outlined"
-              style={{
-                marginRight: 10,
-              }}
-            >
-              Join/Leave
-            </Button>
           </Grid>
           <Grid item>Activity Time: {convert(postInfo.dateTime)}</Grid>
         </Grid>
@@ -354,15 +345,6 @@ export default function ViewPost() {
               }} size="small" variant="outlined" />
             )
           }):null}
-          {/* <Chip label={post} style={{
-            marginRight: 10
-          }} size="small" variant="outlined" />
-          <Chip label="Tag x" style={{
-            marginRight: 10
-          }} size="small" variant="outlined" />
-          <Chip label="Tag r" style={{
-            marginRight: 10
-          }} size="small" variant="outlined" /> */}
         </Grid>
 
         <Grid container item xs={12} sm={8}>
@@ -387,18 +369,22 @@ export default function ViewPost() {
                   height: 300,
                 }}
               >
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
-                  }}
-                  defaultCenter={defaultProps.center}
-                  defaultZoom={defaultProps.zoom}
-                >
-                  <MapIcon 
-                  lat= {latitude}
-                  lng={longitude}
-                  />
-                </GoogleMapReact>
+                {
+                  mapProps ?
+                    <GoogleMapReact
+                      bootstrapURLKeys={{
+                        key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+                      }}
+                      center={mapProps.center}
+                      zoom={12}
+                    >
+                      <MapIcon 
+                      lat= {latitude}
+                      lng={longitude}
+                      />
+                    </GoogleMapReact>
+                  : null
+                }
               </Paper>
             </Grid>
             
@@ -422,17 +408,13 @@ export default function ViewPost() {
                 Member List
 
                 <Grid container spacing={2} direction="row" justifyContent="flex-start">
-                  <Grid item xs={6}>
                     {
                       joinedUsers.map((element, index) => {
-                        return <Grid item xs={6} md={4} key={index}>
+                        return <Grid item xs={6} key={index}>
                           <MemberBox data={element}></MemberBox>
                       </Grid>
                       })
-
                     }
-                    
-                  </Grid>
                 </Grid>
               </Paper>
             </Grid>
