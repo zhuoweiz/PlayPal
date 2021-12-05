@@ -119,6 +119,27 @@ public class DefaultPostService implements PostService {
         return populatePostData(post).getCreator();
     }
 
+    @Override
+    public List<UserData> getJoinedUsers(long postId) {
+        /*List<User> joinedUsers= userRepo.findByPostId(postId);
+        List<UserData> result = new ArrayList<>();
+        joinedUsers.forEach(user -> {
+            UserData tmpuser = new UserData();
+            tmpuser.setName(user.getName());
+            tmpuser.setId(user.getId());
+            result.add(tmpuser);
+        });
+        return result;*/
+        List<UserData> responseUsers = new ArrayList<>();
+        Post post = postRepo.getById(postId);
+        Set<User> tmp = post.getJoinedUsers();
+
+        for (User element: tmp) {
+            responseUsers.add(populateUserData(element));
+        }
+        return responseUsers;
+    }
+
     /*
     * Search for posts match with the searchKeyword. return empty list if no posts found
     * @param searchKeyword

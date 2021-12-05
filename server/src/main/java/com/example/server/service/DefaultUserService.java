@@ -220,6 +220,28 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
+	public Boolean checkLikedPostById(long userId, long postId) {
+		User user = userRepo.getById(userId);
+		Post post = postRepo.getById((postId));
+		Set<Post> likedPosts = user.getLikedPosts();
+		if (likedPosts.contains(post)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean checkJoinedPostById(long userId, long postId) {
+		User user = userRepo.getById(userId);
+		Post post = postRepo.getById((postId));
+		Set<Post> joinedPosts = user.getJoinedPosts();
+		if (joinedPosts.contains(post)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public List<PostData> getCreatedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
 		User user = userRepo.getById(userId);
@@ -256,6 +278,20 @@ public class DefaultUserService implements UserService {
 		}
 
 		return responsePosts;
+	}
+
+	@Override
+	public List<TagData> getTagsByUser(long userId) {
+		List<TagData> responseTags = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Tag> tmp = user.getTags();
+		tmp.forEach(tag -> {
+			TagData tmpTagData = new TagData();
+			tmpTagData.setLabel(tag.getLabel());
+			responseTags.add(tmpTagData);
+		});
+
+		return responseTags;
 	}
 
 	@Override

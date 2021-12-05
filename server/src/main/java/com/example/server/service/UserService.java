@@ -1,6 +1,7 @@
 package com.example.server.service;
 
 import com.example.server.dto.PostData;
+import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import java.util.List;
 
@@ -22,6 +23,12 @@ public interface UserService {
 	boolean joinPost(final long userId, final long postId);
 	boolean unjoinPost(final long userId, final long postId);
 	Boolean getOtherUserById(long userId, long otherUserId);
+
+  UserData updateUser(UserData userData);
+  Boolean checkLikedPostById(long userId, long postId);
+	Boolean checkJoinedPostById(long userId, long postId);
+	List<TagData> getTagsByUser(long userId);
+  
 	UserData updateUser(UserData userData);
 	List<UserData> searchUserByName(final String keyword);
 }

@@ -45,6 +45,13 @@ public class Post extends Auditable<String>{
     )
     private Set<Tag> tags;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "joins",
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    private Set<User> joinedUsers;
+
 
 
     public Post() {
@@ -85,6 +92,12 @@ public class Post extends Auditable<String>{
     public Boolean getIsVirtual() {return isVirtual; }
     public String getDateTime() {return dateTime; }
 
+    public Set<User> getJoinedUsers() {
+        return joinedUsers;
+    }
+
+    public void setJoinedUsers(Set<User> joinedUsers) {
+        this.joinedUsers = joinedUsers;
     public Double getLat() {
         return lat;
     }

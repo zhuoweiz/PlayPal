@@ -1,6 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.dto.PostData;
+import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -39,11 +40,30 @@ public class UserController {
 		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/user/tags/{id}")
+	public ResponseEntity<List<TagData>> getTagsByUser(@PathVariable Long id) {
+		return new ResponseEntity<List<TagData>>(userService.getTagsByUser(id), HttpStatus.ACCEPTED);
+	}
+
 	@GetMapping("/user/{id}/{otherId}")
 	public Boolean getOtherUser(
 			@PathVariable Long id,
 			@PathVariable Long otherId){
 		return userService.getOtherUserById(id, otherId);
+	}
+
+	@GetMapping("/user/like/{id}/{postId}")
+	public Boolean checkLikedPost(
+			@PathVariable Long id,
+			@PathVariable Long postId) {
+		return userService.checkLikedPostById(id, postId);
+	}
+
+	@GetMapping("/user/join/{id}/{postId}")
+	public Boolean checkJoinedPost(
+			@PathVariable Long id,
+			@PathVariable Long postId) {
+		return userService.checkJoinedPostById(id, postId);
 	}
 
 	@GetMapping("/user/createdPosts/{id}")

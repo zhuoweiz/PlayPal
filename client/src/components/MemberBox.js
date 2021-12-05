@@ -1,3 +1,4 @@
+import * as React from "react";
 import { makeStyles } from '@mui/styles';
 import { Paper, Grid, Avatar } from '@mui/material';
 
@@ -27,13 +28,14 @@ export default function MemberBox(props) {
               sx={{ width: 40, height: 40 }}
               src="../../public/profile_avatar.png"
             ></Avatar>
-          </Grid>
-          <Grid item>
+            </Grid>
+            <Grid item>
             {
-              data ? data.name : "test name"
+              data ? data.name : null
             }
+
           </Grid>
-        </Grid>
+          </Grid>
       </Paper>
     </a>
     

@@ -65,6 +65,10 @@ public class PostController {
         return postService.savePost(postData);
     }
 
+    @GetMapping("/joined/{postId}")
+    public List<UserData> getJoinedUsers(@PathVariable Long postId) {
+        return postService.getJoinedUsers(postId);
+    }
 
     /**
      * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
