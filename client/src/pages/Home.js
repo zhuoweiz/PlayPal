@@ -85,7 +85,7 @@ function Home() {
             </Grid>
             <Box style={{ marginTop: "30px" }}>
               <Typography variant="h5" gutterBottom component="div">
-                Activities Near You
+                Recommended Activites
               </Typography>
             </Box>
             <Grid
@@ -94,11 +94,6 @@ function Home() {
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              {/* {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  <PostCard />
-                </Grid>
-              ))} */}
               {
                 tagRecommendation.map((element, index) => {
                   return <Grid item xs={6} md={4} key={index}>

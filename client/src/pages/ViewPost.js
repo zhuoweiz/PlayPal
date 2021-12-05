@@ -59,7 +59,7 @@ export default function ViewPost() {
   const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
-  const [postInfo, setPostInfo] = React.useState([]);
+  const [postInfo, setPostInfo] = React.useState(null);
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
@@ -243,7 +243,7 @@ export default function ViewPost() {
   }
 
   React.useEffect(()=>{
-    if(Object.keys(postInfo).length === 0){
+    if(postInfo === null){
       // fetch post info
       axios.get(serverUrl+"/posts/fullPost/"+postId)
       .then(response => {
@@ -318,7 +318,7 @@ export default function ViewPost() {
         }}
       >
         <Typography component="h1" variant="h5" style={{ marginBottom: 12 }}>
-          {postInfo.title}
+          {postInfo ? postInfo.title : null }
         </Typography>
         <Grid
           container
@@ -335,10 +335,10 @@ export default function ViewPost() {
               renderJoinButton()
             }
           </Grid>
-          <Grid item>Activity Time: {convert(postInfo.dateTime)}</Grid>
+          <Grid item>Activity Time: { postInfo ? convert(postInfo.dateTime) : null}</Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
-          {postInfo.tags?postInfo.tags.map((element,index) =>{
+          {postInfo && postInfo.tags ?postInfo.tags.map((element,index) =>{
             return (
               <Chip key={`post-tag-${index}`} label={element.label} style={{
                 marginRight: 10
@@ -349,19 +349,19 @@ export default function ViewPost() {
 
         <Grid container item xs={12} sm={8}>
           <Typography style={{ marginBottom: 12 }}>
-            Host : {postInfo.creator.name}  
+             Host : {postInfo ? postInfo.creator.name : null}   
           </Typography>
         </Grid>
 
         <Grid container item xs={12} sm={8}>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.content}
+            {postInfo ? postInfo.content : null}
           </Typography>
         </Grid>
 
         <Grid item>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.location}
+            {postInfo ? postInfo.location: null}
           </Typography>
         </Grid>
 
