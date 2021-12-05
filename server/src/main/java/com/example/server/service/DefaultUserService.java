@@ -9,6 +9,7 @@ import com.example.server.dto.UserData;
 import com.example.server.repository.PostRepository;
 import com.example.server.repository.TagRepository;
 import com.example.server.repository.UserRepository;
+import com.example.server.utils.DataMappingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -362,6 +363,14 @@ public class DefaultUserService implements UserService {
 		postData.setCreator(populateUserData(user));
 		postData.setTitle(post.getTitle());
 		postData.setContent(post.getContent());
+		List<TagData> temp_tagList = new ArrayList<>();
+		if(post.getTags() != null){
+			post.getTags().forEach(tag -> {
+				TagData temp_tagData = DataMappingUtils.populateTagData(tag);
+				temp_tagList.add(temp_tagData);
+			});
+		}
+		postData.setTags(temp_tagList);
 
 		return postData;
 	}
