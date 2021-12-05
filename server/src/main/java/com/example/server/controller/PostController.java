@@ -94,6 +94,11 @@ public class PostController {
         return postService.searchPostByLat(lower, upper);
     }
 
+    @GetMapping("/searchPostByUserInterest/{id}")
+    public List<PostData> searchPostByUserInterest(@PathVariable long id) {
+        return postService.searchPostByUserInterest(id);
+    }
+
     @GetMapping("/searchPostByTag")
     public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPostByTag(keyword);
