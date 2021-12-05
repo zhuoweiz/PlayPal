@@ -1,20 +1,27 @@
 import { Container, Grid, Paper, Divider } from "@mui/material";
 import { grid } from "@mui/system";
-import Maps from "../components/Map";
+import Map from "../components/Map";
 import PostsList from "../components/PostsList";
 import PostCard from "../components/PostCard";
 import { Typography, Box } from "@mui/material";
 import FloatingActionButton from "../components/FloatingActionButton";
 
 function Home() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("current position");
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
+    });
+  } else {
+    console.log("geolocation IS NOT available")
+  }
+
   return (
-    <Container
-      maxWidth="lg"
-      style={{ height: "100vh",  }}
-    >
+    <Container maxWidth="lg" style={{ height: "100vh" }}>
       <Grid container direction="row" style={{ marginTop: "12px" }}>
         <Grid item xs={11} xm={11} md={11} lg={11} xl={11}>
-          <Box >
+          <Box>
             <Typography variant="h5" gutterBottom component="div">
               Activities Near You
             </Typography>
@@ -42,7 +49,7 @@ function Home() {
                 xl={7}
                 style={{ height: "100%" }}
               >
-                <Maps />
+                <Map />
               </Grid>
               <Grid
                 item
@@ -77,7 +84,7 @@ function Home() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item  xs={1} xm={1} md={1} lg={1} xl={1}>
+        <Grid item xs={1} xm={1} md={1} lg={1} xl={1}>
           <FloatingActionButton />
         </Grid>
       </Grid>

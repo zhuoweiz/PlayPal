@@ -24,6 +24,9 @@ public class PostData {
     private String dateTime;
     private List<TagData> tags;
 
+    private Double lat;
+    private Double lng;
+
 //    private Set<CommentData> comments;
 //    private Set<TagData> tags;
 
@@ -76,6 +79,22 @@ public class PostData {
     public String getLocation() { return location; }
     public Boolean getIsVirtual() { return isVirtual; }
     public String getDateTime() { return dateTime; }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
 
     @Override
     public String toString() {
