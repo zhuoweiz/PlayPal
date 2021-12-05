@@ -17,6 +17,7 @@ import { serverUrl } from '../constants';
 const axios = require('axios');
 
 function ViewMyPost() {
+  const [post, setPosts] = React.useState([]);
   const [createdPosts, setCreatedPosts] = React.useState([]);
   const [likedPosts, setLikedPosts] = React.useState([]);
   const [joinedPosts, setJoinedPosts] = React.useState([]);
