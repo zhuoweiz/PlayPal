@@ -29,6 +29,8 @@ public class Post extends Auditable<String>{
 
     private String dateTime;
 
+    private Double lat;
+    private Double lng;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
@@ -82,6 +84,22 @@ public class Post extends Auditable<String>{
     public String getLocation() {return location;}
     public Boolean getIsVirtual() {return isVirtual; }
     public String getDateTime() {return dateTime; }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
 
     public Long getCreatorId() {
         return creator.getId();

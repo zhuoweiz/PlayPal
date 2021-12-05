@@ -195,6 +195,8 @@ public class DefaultPostService implements PostService {
         postData.setLocation(post.getLocation());
         postData.setIsVirtual(post.getIsVirtual());
         postData.setDateTime(post.getDateTime());
+        postData.setLat(post.getLat());
+        postData.setLng(post.getLng());
 
         return postData;
     }
@@ -225,7 +227,8 @@ public class DefaultPostService implements PostService {
         post.setLocation(postData.getLocation());
         post.setIsVirtual(postData.getIsVirtual());
         post.setDateTime(postData.getDateTime());
-
+        post.setLat(postData.getLat());
+        post.setLng(postData.getLng());
         return post;
     }
 }

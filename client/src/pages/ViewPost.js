@@ -1,24 +1,32 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { Chip, Paper, List, ListSubheader, ListItem, ListItemText } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import {
+  Chip,
+  Paper,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
-
 import { getAuth } from "firebase/auth";
+import ChatList from "../components/ChatList";
+import MemberBox from "../components/MemberBox";
 
-import ChatList from '../components/ChatList';
-import MemberBox from '../components/MemberBox';
+import GoogleMapReact from "google-map-react";
+import MapIcon from "../components/MapIcon";
 import CommentBox from '../components/viewpost/CommentBox';
 
 import { serverUrl } from '../constants';
@@ -29,27 +37,42 @@ function Comment(props) {
   const { author, content, time, ...otherProps } = props;
 
   return (
-    <div style={{
-      margin: 20,
-    }}>
+    <div
+      style={{
+        margin: 20,
+      }}
+    >
       <Typography>
-      {author}: {content} ({time})
+        {author}: {content} ({time})
       </Typography>
     </div>
   )
 }
-function convert(dateTime){
-  let date = new Date(dateTime)
-  return date.toLocaleString()
+function convert(dateTime) {
+  let date = new Date(dateTime);
+  return date.toLocaleString();
 }
 
 export default function ViewPost() {
+  
+
 
   const params = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
   const [postInfo, setPostInfo] = React.useState({});
+
+  const [latitude, setLatitude] = React.useState(43.088947)
+  const [longitude, setLongitude] = React.useState(-76.15448)
+  
+  const defaultProps = {
+    center: {
+      lat: latitude,
+      lng: longitude,
+    },
+    zoom: 8,
+  };
   const [postComments, setPostComments] = React.useState([]);
 
   function sortComments(unsortedCommentsData) {
@@ -107,6 +130,12 @@ export default function ViewPost() {
       .then(response => {
         console.log("fetch postDat: ", response.data);
         setPostInfo(response.data);
+
+        setLatitude(response.data.lat)
+        setLongitude(response.data.lng)
+        defaultProps.center.lat = latitude;
+        defaultProps.center.lng = longitude
+
         const sortedCommentsData = sortComments(response.data.comments);
         setPostComments(sortedCommentsData);
         console.log(typeof(response.data.dateTime));
@@ -118,32 +147,47 @@ export default function ViewPost() {
       })
     }
   })
+
   return (
     <Container maxWidth="md">
       <CssBaseline />
       <Box
         sx={{
           marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'left',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "left",
         }}
       >
-        <Typography component="h1" variant="h5" style={{marginBottom: 12}}>
+        <Typography component="h1" variant="h5" style={{ marginBottom: 12 }}>
           {postInfo.title}
         </Typography>
-        <Grid container item justifyContent="space-between" alignItems="center" style={{marginBottom: 12}}>
+        <Grid
+          container
+          item
+          justifyContent="space-between"
+          alignItems="center"
+          style={{ marginBottom: 12 }}
+        >
           <Grid item>
-          <Button variant="outlined" style={{
-            marginRight: 10
-          }} >Like</Button>
-          <Button variant="outlined" style={{
-            marginRight: 10
-          }}>Join/Leave</Button>
+            <Button
+              variant="outlined"
+              style={{
+                marginRight: 10,
+              }}
+            >
+              Like
+            </Button>
+            <Button
+              variant="outlined"
+              style={{
+                marginRight: 10,
+              }}
+            >
+              Join/Leave
+            </Button>
           </Grid>
-          <Grid item>
-            Activity Time: {convert(postInfo.dateTime)}
-          </Grid>
+          <Grid item>Activity Time: {convert(postInfo.dateTime)}</Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
           {postInfo.tags?postInfo.tags.map((element,index) =>{
@@ -165,31 +209,42 @@ export default function ViewPost() {
         </Grid>
 
         <Grid container item xs={12} sm={8}>
-
-          <Typography style={{marginBottom: 12}}>
-           {postInfo.content}
+          <Typography style={{ marginBottom: 12 }}>
+            {postInfo.content}
           </Typography>
-
         </Grid>
 
         <Grid item>
-          <Typography style={{marginBottom: 12}}>
+          <Typography style={{ marginBottom: 12 }}>
             {postInfo.location}
           </Typography>
         </Grid>
-        
-        <Grid item container direction="row" xs={12} spacing={2
-        }>
+
+        <Grid item container direction="row" xs={12} spacing={2}>
           <Grid item container xs={12} sm={6}>
-            <Grid container item xs={12} style={{marginBottom: 12}}>
-              <Paper variant="outlined" style={{
-                width: "100%",
-                height: 300
-              }}>
-                Map
+            <Grid container item xs={12} style={{ marginBottom: 12 }}>
+              <Paper
+                variant="outlined"
+                style={{
+                  width: "100%",
+                  height: 300,
+                }}
+              >
+                <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+                  }}
+                  defaultCenter={defaultProps.center}
+                  defaultZoom={defaultProps.zoom}
+                >
+                  <MapIcon 
+                  lat= {latitude}
+                  lng={longitude}
+                  />
+                </GoogleMapReact>
               </Paper>
             </Grid>
-
+            
             <Grid container item xs={12} style={{marginBottom: 12}}>
               <CommentBox
                 onSend = {sendCommentHandler}
@@ -198,13 +253,15 @@ export default function ViewPost() {
             </Grid>
           </Grid>
 
-          
           <Grid container item xs={12} sm={6}>
-            <Grid item style={{marginBottom: 12}} xs={12}>
-              <Paper variant="outlined" style={{
-                width: "100%",
-                height: 200
-              }}>
+            <Grid item style={{ marginBottom: 12 }} xs={12}>
+              <Paper
+                variant="outlined"
+                style={{
+                  width: "100%",
+                  height: 200,
+                }}
+              >
                 Member List
 
                 <Grid container spacing={2} direction="row" justifyContent="flex-start">
@@ -212,26 +269,23 @@ export default function ViewPost() {
                     <MemberBox></MemberBox>
                   </Grid>
 
-
                   <Grid item xs={6}>
                     <MemberBox></MemberBox>
                   </Grid>
-
-                  
-                  
-                  
                 </Grid>
               </Paper>
             </Grid>
 
-            <Grid item style={{marginBottom: 12}} xs={12}>
-              <Paper variant="outlined" style={{
-                width: "100%",
-                height: 500
-              }}>
+            <Grid item style={{ marginBottom: 12 }} xs={12}>
+              <Paper
+                variant="outlined"
+                style={{
+                  width: "100%",
+                  height: 500,
+                }}
+              >
                 Chat
-                
-                <ChatList 
+                <ChatList
                   data={[
                     {
                       senderId: 2,
@@ -295,30 +349,33 @@ export default function ViewPost() {
                     },
                   ]}
                 />
-
-                <Grid item container alignItems="center" justifyContent="center" 
-                  
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justifyContent="center"
                 >
                   <TextField
                     label="write your message here"
                     size="small"
                     style={{
-                      width: 300
+                      width: 300,
+                    }}
+                  ></TextField>
+                  <Button
+                    variant="outlined"
+                    style={{
+                      marginLeft: 8,
+                      width: 100,
                     }}
                   >
-
-                  </TextField>
-                  <Button variant="outlined" style={{
-                    marginLeft: 8,
-                    width: 100
-                  }}>Send</Button>
+                    Send
+                  </Button>
                 </Grid>
               </Paper>
             </Grid>
-            
           </Grid>
         </Grid>
-
       </Box>
     </Container>
   );

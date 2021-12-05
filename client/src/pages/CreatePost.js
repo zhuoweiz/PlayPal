@@ -49,6 +49,8 @@ function CreatePost() {
   
  const [title, setTitle] = React.useState("");
  const [location,setLocation] = React.useState("");
+ const [lat, setLat] = React.useState()
+ const [lng, setLng] = React.useState()
  const [isVirtual, setIsVirtual] = React.useState(false);
  const [content, setContent] = React.useState("");
 
@@ -59,6 +61,12 @@ function CreatePost() {
     apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
     onPlaceSelected: (place) => {
       console.log(place);
+      // console.log(place.formatted_address);
+      setLocation(place.formatted_address)
+      setLat(place.geometry.location.lat())
+      setLng(place.geometry.location.lng())
+      // console.log(place.geometry.location.lat());
+      // console.log(place.geometry.location.lng());
     },
     options: {
       types: ["establishment", "geocode"],
@@ -77,18 +85,22 @@ function CreatePost() {
         isVirtual: isVirtual,
         dateTime: date,
         tags: tags,
+        lat: lat,
+        lng: lng
     }).then(function(response) {
-        console.log(response);
+        // console.log(response);
         let getData = response.data;
         console.log(getData);
+        console.log(location);
         enqueueSnackbar("Create Post Sucess!")
         // navigate("/post")
         // alert("success")
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
-      // console.log(error.code);
-      // console.log(error.message);
-      // alert("failed")
+      console.log(error.code);
+      console.log(error.message);
+      alert("failed")
+      // console.log(location);
     })
     
   }
@@ -119,7 +131,7 @@ function CreatePost() {
             color="secondary"
             variant="outlined"
             inputRef={materialRef}
-            onChange={(e)=> setLocation(e.target.value)}
+            
           />
         </Grid>
         <div style={{ height: "24px" }}></div>
