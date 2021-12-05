@@ -12,5 +12,4 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 	List<Message> findByContent(String content);
 	List<Message> findByPost_Id(long postId);
-//	List<Message> findByPostId(long postId);
 }
