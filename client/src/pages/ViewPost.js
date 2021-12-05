@@ -478,18 +478,16 @@ export default function ViewPost() {
                 }}
               >
                 <Grid item>
-                  <Typography style={{marginLeft: 8, marginTop: 8}}>
+                  <Typography style={{marginLeft: 8, marginTop: 8, marginBottom: 8}}>
                   Member List
                   </Typography>
                 </Grid>
 
-                <Grid container spacing={2} direction="row" justifyContent="flex-start">
+                <Grid container spacing={1} direction="row" justifyContent="flex-start">
                     {
                       joinedUsers.map((element, index) => {
                         return <Grid item xs={6} key={index}
                           style={{
-                            marginTop: 4,
-                            marginBottom: 4,
                           }}
                         >
                           <MemberBox data={element}></MemberBox>

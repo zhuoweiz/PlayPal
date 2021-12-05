@@ -1,23 +1,23 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
 import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { FixedSizeList } from 'react-window';
-import { ListItemAvatar } from '@mui/material';
+import { FixedSizeList, VariableSizeList } from 'react-window';
+import { ListItemAvatar, ListItemText, List, ListItem } from '@mui/material';
 
 import People from '@mui/icons-material/People';
 
 export default function ChatList(props) {
   const { data, joinedUsersIdMap } = props;
 
-  function renderRow(props) {
-    const { index, style, data } = props;
+  function renderRow(index) {
+    const { style } = props;
     const currentUserId = parseInt(localStorage.getItem("uid"));
   
     return (
-      <ListItem style={style} key={index} component="div" disablePadding>
+      <ListItem style={{
+
+      }} key={index} component="div" disablePadding>
         { data[index].senderId === currentUserId ? null : 
           <ListItemAvatar>
             <Avatar sx={{ width: 36, height: 36 }} src="../../public/profile_avatar.png" />
@@ -43,19 +43,30 @@ export default function ChatList(props) {
     );
   }
 
+  function getItemSize(index) {
+    return (10+ (data[index].content.length - 100)/50);
+  }
+
   return (
     <Box
       sx={{ width: '100%', height: 430, bgcolor: 'background.paper' }}
     >
-      <FixedSizeList
-        height={420}
-        itemSize={46}
-        itemCount={data.length}
-        itemData={data}
-        overscanCount={5}
+      <List
+        sx={{
+          width: '100%',
+          bgcolor: 'background.paper',
+          position: 'relative',
+          overflow: 'auto',
+          height: 420,
+          '& ul': { padding: 0 },
+        }}
       >
-        {renderRow}
-      </FixedSizeList>
+        {
+          data.map((element, index) => {
+            return renderRow(index);
+          })
+        }
+      </List>
     </Box>
   );
 }
