@@ -23,10 +23,9 @@ import AddTagComponent from "../components/other/AddTagComponent";
 const axios = require("axios");
 const _ = require("lodash");
 
-//require('dotenv').config({path: '.ENV'});
 const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
-const MAILGUN_API="e41d5411106f424f6bc6d354e7034cf1-7b8c9ba8-14ed39fe";
-const DOMAIN="sandbox0a4e20a9344743fd8711b2649f370e7f.mailgun.org";
+const MAILGUN_API="97c4f6e7c91825de62483b411ccea959-7005f37e-de6a6d66";
+const DOMAIN="mg.stormlander.com";
 
 
 function CreatePost() {
@@ -51,9 +50,10 @@ function CreatePost() {
  const db = getFirestore();
 
  const data = {
-	from: 'Excited User <me@samples.mailgun.org>',
-	to: email,
-	subject: 'Hello',
+	from: 'Playpal Team <service@playpal.com>',
+	// to: email,
+  to: "xianhomedroy@outlook.com",
+	subject: 'Post Creation Confirmation',
 	text: 'You just created a post!'
 };
 
@@ -95,32 +95,33 @@ onAuthStateChanged(auth, (user) => {
 
   function handleCreatePostAction() {
     
-    axios.post(serverUrl + "/posts/post",{
-        creatorId: localStorage.getItem("uid"),
-        title: title,
-        content: content,
-        location: location,
-        isVirtual: isVirtual,
-        dateTime: date,
-        tags: tags,
-        lat: lat,
-        lng: lng
-    }).then(function(response) {
-        // console.log(response);
-        let getData = response.data;
-        console.log(getData);
-        console.log(location);
-        enqueueSnackbar("Create Post Sucess!")
-        navigate("/post/" + response.data.id)
-    }).catch(function(error){
-      enqueueSnackbar("Create Post Error")
-      console.log(error.code);
-      console.log(error.message);
-      alert("failed")
-    })
+    // axios.post(serverUrl + "/posts/post",{
+    //     creatorId: localStorage.getItem("uid"),
+    //     title: title,
+    //     content: content,
+    //     location: location,
+    //     isVirtual: isVirtual,
+    //     dateTime: date,
+    //     tags: tags,
+    //     lat: lat,
+    //     lng: lng
+    // }).then(function(response) {
+    //     // console.log(response);
+    //     let getData = response.data;
+    //     console.log(getData);
+    //     console.log(location);
+    //     enqueueSnackbar("Create Post Sucess!")
+    //     navigate("/post/" + response.data.id)
+    // }).catch(function(error){
+    //   enqueueSnackbar("Create Post Error")
+    //   console.log(error.code);
+    //   console.log(error.message);
+    //   alert("failed")
+    // })
 
-    console.log(MAILGUN_API, DOMAIN);
-    const mg = require("mailgun-js")({apiKey: MAILGUN_API, domain: DOMAIN});
+    const mg = require("mailgun-js")({
+      apiKey: process.env.REACT_APP_MAILGUN_API, 
+      domain: process.env.REACT_APP_MAILGUN_DOMAIN});
     mg.messages().send(data, function (error, body) {
       if (error) {
           console.log(error);

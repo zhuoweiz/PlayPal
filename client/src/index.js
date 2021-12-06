@@ -55,6 +55,8 @@ const theme = createTheme({
   }
 });
 
+require('dotenv').config();
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
