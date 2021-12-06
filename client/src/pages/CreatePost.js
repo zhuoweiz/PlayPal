@@ -25,6 +25,8 @@ import { serverUrl } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { doc, setDoc, collection, Timestamp, getFirestore } from "firebase/firestore"; 
+
 import AddTagComponent from "../components/other/AddTagComponent";
 
 const axios = require("axios");
@@ -55,6 +57,7 @@ function CreatePost() {
 
  const navigate = useNavigate();
  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+ const db = getFirestore();
 
  const data = {
 	from: 'Excited User <me@samples.mailgun.org>',
@@ -95,7 +98,11 @@ onAuthStateChanged(auth, (user) => {
     defaultValue: "syracuse",
   });
 
-  const handleCreatePostAction= () =>{
+  async function createPostOnFirestore(docData) {
+    await setDoc(doc(collection(db, "messages")), docData);
+  }
+
+  function handleCreatePostAction() {
     
     axios.post(serverUrl + "/posts/post",{
         creatorId: localStorage.getItem("uid"),
@@ -112,15 +119,14 @@ onAuthStateChanged(auth, (user) => {
         let getData = response.data;
         console.log(getData);
         console.log(location);
-        enqueueSnackbar("Create Post Sucess!")
-        // navigate("/post")
-        // alert("success")
+        enqueueSnackbar("Create Post Sucess!");
+    
+        navigate("/post/" + getData.id);
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
       console.log(error.code);
       console.log(error.message);
       alert("failed")
-      // console.log(location);
     })
 
     console.log(MAILGUN_API, DOMAIN);

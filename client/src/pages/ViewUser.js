@@ -72,6 +72,9 @@ function ViewUser() {
     if (checkFollow === null) {
       return null
     }
+    if (localStorage.getItem("uid") === userId) {
+      return null;
+    }
     else if (checkFollow === true) {
       return (
         <Button variant="outlined" size="small"
