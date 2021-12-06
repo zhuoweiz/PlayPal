@@ -10,7 +10,6 @@ import { serverUrl } from "../constants";
 import GoogleMapReact from "google-map-react";
 import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import {serverUrl} from  '../constants';
 
 const axios = require('axios');
 
