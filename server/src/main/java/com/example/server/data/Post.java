@@ -21,7 +21,6 @@ public class Post extends Auditable<String>{
     private Long id;
     private String title;
     private String content;
-//    private Long creatorId;
     private String location;
 
     @Type(type = "numeric_boolean")
@@ -52,15 +51,12 @@ public class Post extends Auditable<String>{
     )
     private Set<User> joinedUsers;
 
-
-
     public Post() {
     }
 
     public Post(String title, String content,  String location, Boolean isVirtual, String dateTime) {
         this.title = title;
         this.content = content;
-//        this.creatorId = creatorId;
         this.location = location;
         this.isVirtual = isVirtual;
         this.dateTime = dateTime;

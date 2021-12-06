@@ -251,10 +251,8 @@ public class DefaultPostService implements PostService {
         post.setTitle(postData.getTitle());
         post.setContent(postData.getContent());
 
-//        post.setCreator();
         User user = userRepo.getById(postData.getCreatorId());
         post.setCreator(user);
-//        System.out.println("IMPORTANT TEST: " + post.getCreatorId());
         post.setLocation(postData.getLocation());
         post.setIsVirtual(postData.getIsVirtual());
         post.setDateTime(postData.getDateTime());
