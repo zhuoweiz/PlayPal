@@ -118,10 +118,10 @@ onAuthStateChanged(auth, (user) => {
     //   console.log(error.message);
     //   alert("failed")
     // })
-
     const mg = require("mailgun-js")({
       apiKey: process.env.REACT_APP_MAILGUN_API, 
-      domain: process.env.REACT_APP_MAILGUN_DOMAIN});
+      domain: process.env.REACT_APP_MG_DOMAIN
+    });
     mg.messages().send(data, function (error, body) {
       if (error) {
           console.log(error);
