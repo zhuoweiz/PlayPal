@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import com.example.server.utils.DataMappingUtils;
 @Service("postService")
 public class DefaultPostService implements PostService {
@@ -186,6 +184,26 @@ public class DefaultPostService implements PostService {
         });
 
         return responseList;
+    }
+
+    @Override
+    public List<PostData> searchPostByUserInterest(long userId) {
+        User user = userRepo.getById(userId);
+        Set<Tag> Tags = user.getTags();
+        List<String> userTags = new ArrayList<>();
+        for (Tag element : Tags) {
+            userTags.add(element.getLabel());
+        }
+        Set<PostData> responseSet = new HashSet<>();
+        userTags.forEach(string -> {
+            List<PostData> tmp = searchPostByTag(string);
+            tmp.forEach(postData -> {
+                if (postData.getIsVirtual()) {
+                    responseSet.add(postData);
+                }
+            });
+        });
+        return new ArrayList<>(responseSet);
     }
 
     @Override

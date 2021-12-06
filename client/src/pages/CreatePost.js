@@ -24,23 +24,22 @@ import Checkbox from "@mui/material/Checkbox";
 import { serverUrl } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { doc, setDoc, collection, Timestamp, getFirestore } from "firebase/firestore"; 
 
 import AddTagComponent from "../components/other/AddTagComponent";
 
 const axios = require("axios");
 const _ = require("lodash");
 
+//require('dotenv').config({path: '.ENV'});
 const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
+const MAILGUN_API="e41d5411106f424f6bc6d354e7034cf1-7b8c9ba8-14ed39fe";
+const DOMAIN="sandbox0a4e20a9344743fd8711b2649f370e7f.mailgun.org";
 
-const handleClick = () => {
-  console.info("You clicked the Chip.");
-};
-
-const handleDelete = () => {
-  console.info("You clicked the delete icon.");
-};
 
 function CreatePost() {
+  const [email, setEmail] = React.useState("");
   const [tags, setTags] = React.useState([]);
   const [tag, setTag] = React.useState("");
   // const [options, setOptions] = React.useState(tagList);
@@ -58,6 +57,28 @@ function CreatePost() {
 
  const navigate = useNavigate();
  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+ const db = getFirestore();
+
+ const data = {
+	from: 'Excited User <me@samples.mailgun.org>',
+	to: email,
+	subject: 'Hello',
+	text: 'You just created a post!'
+};
+
+ const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    const uid = user.uid;
+    setEmail(user.email);
+  } else {
+    // User is signed out
+    // ...
+    setEmail("");
+  }
+});
 
   const { ref: materialRef } = usePlacesWidget({
     apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
@@ -77,7 +98,11 @@ function CreatePost() {
     defaultValue: "syracuse",
   });
 
-  const handleCreatePostAction= () =>{
+  async function createPostOnFirestore(docData) {
+    await setDoc(doc(collection(db, "messages")), docData);
+  }
+
+  function handleCreatePostAction() {
     
     axios.post(serverUrl + "/posts/post",{
         creatorId: localStorage.getItem("uid"),
@@ -95,16 +120,22 @@ function CreatePost() {
         console.log(getData);
         console.log(location);
         enqueueSnackbar("Create Post Sucess!")
-        console.log(response.data.id);
         navigate("/post/" + response.data.id)
-        // alert("success")
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
       console.log(error.code);
       console.log(error.message);
       alert("failed")
-      // console.log(location);
     })
+
+    console.log(MAILGUN_API, DOMAIN);
+    const mg = require("mailgun-js")({apiKey: MAILGUN_API, domain: DOMAIN});
+    mg.messages().send(data, function (error, body) {
+      if (error) {
+          console.log(error);
+      }
+    console.log(body);
+    });
     
   }
 

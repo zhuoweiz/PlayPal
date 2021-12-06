@@ -140,7 +140,7 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link href="/profile">
+        <Link href="/profile/0">
           Profile
         </Link>
       </MenuItem>
@@ -173,7 +173,7 @@ export default function NavBar() {
         <Button >Home</Button>
       </MenuItem>
       <MenuItem onClick={() => {
-          navigate("/profile/notification");
+          navigate("/profile/2");
           handleMobileMenuClose();
         }}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
@@ -186,7 +186,7 @@ export default function NavBar() {
       <MenuItem 
         // onClick={handleProfileMenuOpen}
         onClick={() => {
-          navigate("/profile");
+          navigate("/profile/0");
           handleMobileMenuClose();
         }}
         >
@@ -234,7 +234,7 @@ export default function NavBar() {
           
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton href="/profile/notification" size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton href="/profile/2" size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
@@ -247,7 +247,7 @@ export default function NavBar() {
               aria-haspopup="true"
               // onClick={handleProfileMenuOpen}
               color="inherit"
-              href="/profile"
+              href="/profile/0"
             >
               <AccountCircle />
             </IconButton>
@@ -294,7 +294,7 @@ export default function NavBar() {
           }
           {
             localStorage.getItem("uid") === null ? null : 
-            <Button style={{color:"white"}} href="/profile">
+            <Button style={{color:"white"}} href="/profile/0">
               {email}
             </Button>
           }

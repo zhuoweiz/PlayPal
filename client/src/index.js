@@ -68,16 +68,13 @@ ReactDOM.render(
               <Route path="signin" element={<Signin />} />
 
               <Route path="register" element={<Register />} />
-              <Route path="profile" element={<Profile />}>
-                <Route index/>
-                <Route
-                  path="setting"
-                  // element={<SettingComponent></SettingComponent>}
-                />
-                <Route
-                  path="notification"
-                  // element={<NotificationComponent></NotificationComponent>}
-                ></Route>
+              <Route path="profile" element={<Outlet />}>
+                <Route index element={
+                  <>Wrong Path</>
+                }></Route>
+                <Route path=":profilePath" element={
+                  <Profile></Profile>
+                }></Route>
               </Route>
               <Route path="post" element={<Outlet></Outlet>}>
                 <Route index element={<>Post Not Specified</>}></Route>

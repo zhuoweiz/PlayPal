@@ -31,7 +31,7 @@ function ViewMyPost() {
     // GET request using axios inside useEffect React hook
     axios.get(createdPostsURL)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         setCreatedPosts(response.data)
       })
       .catch(error => {
@@ -40,7 +40,7 @@ function ViewMyPost() {
     
     axios.get(likedPostsURL)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         setLikedPosts(response.data)
       })
       .catch(error => {
@@ -49,7 +49,7 @@ function ViewMyPost() {
     
     axios.get(joinedPostsURL)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         setJoinedPosts(response.data)
       })
       .catch(error => {
@@ -58,7 +58,7 @@ function ViewMyPost() {
     
     axios.get(usersFollowingURL)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         setUsersFollowing(response.data)
       })
       .catch(error => {

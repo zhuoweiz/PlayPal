@@ -22,6 +22,8 @@ import Container from "@mui/material/Container";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 import { getAuth } from "firebase/auth";
+import { doc, addDoc, setDoc, updateDoc, query, where, arrayUnion, collection, Timestamp, getFirestore, onSnapshot } from "firebase/firestore";
+
 import ChatList from "../components/ChatList";
 import MemberBox from "../components/MemberBox";
 
@@ -31,6 +33,7 @@ import CommentBox from '../components/viewpost/CommentBox';
 
 import { serverUrl } from '../constants';
 import axios from 'axios';
+import { set } from "lodash";
 const _ = require("lodash");
 
 function Comment(props) {
@@ -56,13 +59,17 @@ function convert(dateTime) {
 export default function ViewPost() {
 
   const params = useParams();
+  const db = getFirestore();
   const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
-  const [postInfo, setPostInfo] = React.useState({});
+  const [postInfo, setPostInfo] = React.useState(null);
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
+  const [joinedUsersIdMap, setJoinedUsersIdMap] = React.useState(null);
+  const [message, setMessage] = React.useState("");
+  const [chatData, setChatData] = React.useState([]);
 
   const [latitude, setLatitude] = React.useState(43.088947)
   const [longitude, setLongitude] = React.useState(-76.15448)
@@ -151,7 +158,7 @@ export default function ViewPost() {
   const likeHandler = ()=> {
     axios.get(likeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(true)
     })
     .catch(error => {
@@ -162,7 +169,7 @@ export default function ViewPost() {
   const unlikeHandler = ()=> {
     axios.get(unlikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(false)
     })
     .catch(error => {
@@ -173,7 +180,7 @@ export default function ViewPost() {
   const joinHandler = ()=> {
     axios.get(joinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(true)
     })
     .catch(error => {
@@ -184,12 +191,34 @@ export default function ViewPost() {
   const unjoinHandler = ()=> {
     axios.get(unjoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(false)
     })
     .catch(error => {
       console.error('There was an error!', error);
     }); 
+  }
+
+  async function uploadMessageToFirestore(docData) {
+    const docRef = await addDoc(collection(db, "messages"), docData);
+    console.log("addes message id: ", docRef.id);
+    
+    const washingtonRef = doc(db, "postMessages", postId);
+    // Atomically add a new region to the "regions" array field.
+    await updateDoc(washingtonRef, {
+        messages: arrayUnion(docRef)
+    });
+  }
+
+  const sendMessageHandler = () => {
+    const docData = {
+      content: message,
+      senderId: parseInt(localStorage.getItem("uid")),
+      postId: postInfo.id,
+      createdDate: Timestamp.fromDate(new Date()),
+    };
+    uploadMessageToFirestore(docData);
+    setMessage("");
   }
 
   const [postComments, setPostComments] = React.useState([]);
@@ -203,7 +232,7 @@ export default function ViewPost() {
       const timeB = Date.parse(secondEl.createdDate);
 
       if (timeA < timeB) {
-        return 11;
+        return 1;
       } else if(timeA > timeB) {
         return -1;
       } else {
@@ -211,6 +240,25 @@ export default function ViewPost() {
       }
     });
     return unsortedCommentsData;
+  }
+
+  function sortChats(unsortedChatData) {
+    unsortedChatData.sort((firstEl, secondEl) => { 
+      if (firstEl.createdDate === null || secondEl.createdDate === null) {
+        return 0;
+      }
+      const timeA = (firstEl.createdDate.seconds);
+      const timeB = (secondEl.createdDate.seconds);
+
+      if (timeA < timeB) {
+        return -1;
+      } else if(timeA > timeB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return unsortedChatData;
   }
 
   const sendCommentHandler = (comment) => {
@@ -243,7 +291,19 @@ export default function ViewPost() {
   }
 
   React.useEffect(()=>{
-    if(Object.keys(postInfo).length === 0){
+
+    const q = query(collection(db, "messages"), where("postId", "==", 17));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      // triggered many times for some reason
+      const responseData = [];
+      querySnapshot.forEach((doc) => {
+        responseData.push(doc.data());
+      });
+      console.log(responseData);
+      setChatData(sortChats(responseData));
+    });
+    
+    if(postInfo === null){
       // fetch post info
       axios.get(serverUrl+"/posts/fullPost/"+postId)
       .then(response => {
@@ -280,7 +340,7 @@ export default function ViewPost() {
 
     axios.get(checkLikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(response.data);
     })
     .catch(error => {
@@ -289,7 +349,7 @@ export default function ViewPost() {
 
     axios.get(checkJoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(response.data);
     })
     .catch(error => {
@@ -298,14 +358,22 @@ export default function ViewPost() {
     
     axios.get(joinedUsersURL)
       .then(response => {
-        console.log(response.data);
         setJoinedUsers(response.data);
+        var tmpMap = {};
+        response.data.forEach(element => {
+          tmpMap[element.id] = element.name;
+        })
+        setJoinedUsersIdMap(tmpMap);
       })
       .catch(error => {
         console.error('There was an error!', error);
       }); 
-  },[])
 
+    
+    //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
+    return () => unsubscribe()
+  },[])
+  console.log("postInfo", postInfo)
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -318,7 +386,7 @@ export default function ViewPost() {
         }}
       >
         <Typography component="h1" variant="h5" style={{ marginBottom: 12 }}>
-          {postInfo.title}
+          {postInfo ? postInfo.title : null }
         </Typography>
         <Grid
           container
@@ -335,10 +403,10 @@ export default function ViewPost() {
               renderJoinButton()
             }
           </Grid>
-          <Grid item>Activity Time: {convert(postInfo.dateTime)}</Grid>
+          <Grid item>Activity Time: { postInfo ? convert(postInfo.dateTime) : null}</Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
-          {postInfo.tags?postInfo.tags.map((element,index) =>{
+          {postInfo && postInfo.tags ?postInfo.tags.map((element,index) =>{
             return (
               <Chip key={`post-tag-${index}`} label={element.label} style={{
                 marginRight: 10
@@ -349,13 +417,19 @@ export default function ViewPost() {
 
         <Grid container item xs={12} sm={8}>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.content}
+             Host : {postInfo ? postInfo.creator.name : null}   
+          </Typography>
+        </Grid>
+
+        <Grid container item xs={12} sm={8}>
+          <Typography style={{ marginBottom: 12 }}>
+            {postInfo ? postInfo.content : null}
           </Typography>
         </Grid>
 
         <Grid item>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.location}
+            {postInfo ? postInfo.location: null}
           </Typography>
         </Grid>
 
@@ -405,12 +479,19 @@ export default function ViewPost() {
                   height: 200,
                 }}
               >
-                Member List
+                <Grid item>
+                  <Typography style={{marginLeft: 8, marginTop: 8, marginBottom: 8}}>
+                  Member List
+                  </Typography>
+                </Grid>
 
-                <Grid container spacing={2} direction="row" justifyContent="flex-start">
+                <Grid container spacing={1} direction="row" justifyContent="flex-start">
                     {
                       joinedUsers.map((element, index) => {
-                        return <Grid item xs={6} key={index}>
+                        return <Grid item xs={6} key={index}
+                          style={{
+                          }}
+                        >
                           <MemberBox data={element}></MemberBox>
                       </Grid>
                       })
@@ -427,94 +508,52 @@ export default function ViewPost() {
                   height: 500,
                 }}
               >
-                Chat
-                <ChatList
-                  data={[
-                    {
-                      senderId: 2,
-                      content: "Champ",
-                      sendTime: "11.22.2021-21:00",
-                    },
-                    {
-                      senderId: 5,
-                      content: "Pog",
-                      sendTime: "11.22.2021-22:00",
-                    },
-                    {
-                      senderId: 1,
-                      content: "Hello my fellow men of culture.",
-                      sendTime: "11.22.2021-22:50",
-                    },
-                    {
-                      senderId: 2,
-                      content: "Champ",
-                      sendTime: "11.22.2021-21:00",
-                    },
-                    {
-                      senderId: 5,
-                      content: "Pog",
-                      sendTime: "11.22.2021-22:00",
-                    },
-                    {
-                      senderId: 1,
-                      content: "Hello my fellow men of culture.",
-                      sendTime: "11.22.2021-22:50",
-                    },
-                    {
-                      senderId: 2,
-                      content: "Champ",
-                      sendTime: "11.22.2021-21:00",
-                    },
-                    {
-                      senderId: 5,
-                      content: "Pog",
-                      sendTime: "11.22.2021-22:00",
-                    },
-                    {
-                      senderId: 1,
-                      content: "Hello my fellow men of culture.",
-                      sendTime: "11.22.2021-22:50",
-                    },
-                    {
-                      senderId: 2,
-                      content: "Champ",
-                      sendTime: "11.22.2021-21:00",
-                    },
-                    {
-                      senderId: 5,
-                      content: "Pog",
-                      sendTime: "11.22.2021-22:00",
-                    },
-                    {
-                      senderId: 1,
-                      content: "Hello my fellow men of culture.",
-                      sendTime: "11.22.2021-22:50",
-                    },
-                  ]}
-                />
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <TextField
-                    label="write your message here"
-                    size="small"
-                    style={{
-                      width: 300,
-                    }}
-                  ></TextField>
-                  <Button
-                    variant="outlined"
-                    style={{
-                      marginLeft: 8,
-                      width: 100,
-                    }}
-                  >
-                    Send
-                  </Button>
+                <Grid item>
+                  <Typography style={{marginLeft: 8, marginTop: 8}}>
+                    Chat
+                  </Typography>
                 </Grid>
+
+                { checkJoin ? 
+                  <>
+                  <ChatList
+                    joinedUsersIdMap={joinedUsersIdMap}
+                    data={chatData}
+                  />
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <TextField
+                      label="write your message here"
+                      size="small"
+                      style={{
+                        width: 300,
+                      }}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    ></TextField>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        marginLeft: 8,
+                        width: 100,
+                      }}
+                      onClick={sendMessageHandler}
+                    >
+                      Send
+                    </Button>
+                  </Grid>
+                  </>
+                : <>
+                  <Typography style={{margin: 8}}>
+                      Join Post To Chat
+                  </Typography>
+                </>
+                }
+                
               </Paper>
             </Grid>
           </Grid>

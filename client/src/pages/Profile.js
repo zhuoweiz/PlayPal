@@ -14,8 +14,9 @@ import SettingComponent from '../components/profile/SettingComponent';
 import NotificationComponent from '../components/profile/NotificationComponent';
 import { Grow } from '@mui/material';
 
-const axios = require('axios');
+import { useParams } from "react-router-dom";
 
+const axios = require('axios');
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
    
@@ -44,8 +45,11 @@ function a11yProps(index) {
 }
 
 const Profile = () => {
-  const [value, setValue] = React.useState(0);
+  const params = useParams();
+
+  const [value, setValue] = React.useState(parseInt(params.profilePath));
   const [userData, setUserData] = React.useState(null);
+  const [currentPath, setCurrentPath] = React.useState(parseInt(params.profilePath));
 
   const {enqueueSnackbar} = useSnackbar();
 
@@ -57,20 +61,34 @@ const Profile = () => {
     setValue(newValue);
   };
 
-
-  React.useEffect(() => {
-    if(location.pathname.split('/')[2] === "setting") {
-      setValue(1);
-    } else if(location.pathname.split('/')[2] === "notification") {
-      setValue(2);
-    } else {
+  function renderChildComponents(userData, currentPath) {
+    if (userData === null) {
+      return null;
     }
 
-    if(userData === null && fecthingUserData === false && location.pathname.split('/').length < 3) {
+    if (currentPath === 0) {
+      return (
+        <ProfileComponent userData={userData}></ProfileComponent>
+      )
+    } else if (currentPath === 1) {
+      return (
+        <SettingComponent></SettingComponent>
+      )
+    } else if (currentPath === 2) {
+      return (
+        <NotificationComponent></NotificationComponent>
+      )
+    } else {
+      return (<></>)
+    }
+  }
+
+  React.useEffect(() => {
+    if(userData === null && fecthingUserData === false) {
       fecthingUserData = true;
       axios.get(serverUrl + "/users/user/" + parseInt(localStorage.getItem("uid")))
       .then(response => {
-        // console.log("response user data: ", response.data);
+        console.log("response user data: ", response.data);
         setUserData(response.data);
       })
       .catch(error => {
@@ -84,7 +102,6 @@ const Profile = () => {
         });
       })
     }
-
   });
 
   return (
@@ -99,42 +116,29 @@ const Profile = () => {
           orientation="vertical"
           variant="scrollable"
           value={value}
-          // onChange={handleChange}
+          onChange={handleChange}
           aria-label="Vertical tabs example"
           sx={{ borderRight: 1, borderColor: 'divider' }}
         >
           <Tab onClick={() => {
             setValue(0);
-            navigate("");
+            setCurrentPath(0)
+            // navigate("profile");
           }} label="Profile" />
           <Tab onClick={() => {
             setValue(1);
-            navigate("setting");
+            setCurrentPath(1)
+            // navigate("setting");
           }} label="Setting" />
           <Tab onClick={() => {
             setValue(2);
-            navigate("notification");
+            // navigate("notification");
+            setCurrentPath(2)
           }} label="Notifications" />
         </Tabs>
 
         <TabPanel>
-          {/* <Outlet/> */}
-          {
-            userData ? (
-              <Routes>
-                <Route index element={<ProfileComponent userData={userData}></ProfileComponent>} />
-                <Route
-                  path="setting"
-                  element={<SettingComponent></SettingComponent>}
-                />
-                <Route
-                  path="notification"
-                  element={<NotificationComponent></NotificationComponent>}
-                ></Route>
-              </Routes>
-            ) : null
-          }
-          
+          { renderChildComponents(userData, currentPath) }
         </TabPanel>
       </Box>
     </Container>

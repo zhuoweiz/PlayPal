@@ -1,4 +1,4 @@
-import { Container, Grid, Paper, Divider } from "@mui/material";
+import { Container, Grid, Paper, Divider, Stack } from "@mui/material";
 import React from "react";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 
 function PostCard(props) {
   const { postData, ...otherProps } = props;
-  console.log("check tags: ", postData);
   const handleViewPost = () => {
 
   }
@@ -20,35 +19,60 @@ function PostCard(props) {
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Grid container justifyContent="space-between">
-            <Grid item>
+            <Grid item xs={12}
+              
+            >
               <Typography
-                sx={{ fontSize: 16 }}
+                sx={{ fontSize: 16,
+                  marginBottom: 0,
+                }}
                 color="text.first"
                 gutterBottom
               >
                 {postData ? postData.title : null}
               </Typography>
             </Grid>
-            <Grid item>
-              {
-                postData && postData.tags ? 
-                postData.tags.map((tag, index) => {
-                  <Chip key={index} label={tag.label} variant="outlined" size="small" />
-                })
-                : null
-              }
-              
+            <Grid item xs={12}
+              style={{
+                marginTop: 4,
+                marginBottom: 4,
+              }}
+            >
+              <Stack
+                direction="row"
+              >
+                {
+                  postData && postData.tags ? 
+                  postData.tags.map((tag, index) => {
+                  return <Chip 
+                    color="primary"
+                    label={tag.label} variant="outlined" size="small" /> 
+                  }) 
+                  : 
+                  null
+                }
+              </Stack>
+            
+
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" >
+                Detail: {postData ? postData.content : null}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body2" >
+                Host: {postData ? postData.creator.name : null}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" >
+                Date:
+              </Typography>
             </Grid>
           </Grid>
-          <Typography variant="subtitle1" >
-            Detail: {postData ? postData.content : null}
-          </Typography>
-          <Typography variant="body2" >
-            Host: {postData ? postData.creator.name : null}
-          </Typography>
-          <Typography variant="body2" >
-            Date:
-          </Typography>
+          
         </CardContent>
         <CardActions>
           <Button size="small" 

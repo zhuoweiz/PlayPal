@@ -99,6 +99,7 @@ public class Post extends Auditable<String>{
     public void setJoinedUsers(Set<User> joinedUsers) {
         this.joinedUsers = joinedUsers;
     }
+
     public Double getLat() {
         return lat;
     }
