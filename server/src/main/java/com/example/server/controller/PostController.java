@@ -86,12 +86,12 @@ public class PostController {
         return postService.searchPosts(keyword);
     }
 
-    @GetMapping("/searchPostByLat")
+    @GetMapping("/searchPostByLatLng")
     public List<PostData> searchPostByLat(
-      @RequestParam(value = "lower") double lower,
-      @RequestParam(value = "upper") double upper
+      @RequestParam(value = "lat") double lat,
+      @RequestParam(value = "lng") double lng
     ) {
-        return postService.searchPostByLat(lower, upper);
+        return postService.searchPostByLatLng(lat, lng);
     }
 
     @GetMapping("/searchPostByUserInterest/{id}")

@@ -18,6 +18,6 @@ public interface PostService {
 
     PostData getFullPostById(final long postId);
     List<PostData> searchPostByTag(final String searchString);
-    List<PostData> searchPostByLat(final double lower, final double upper);
+    List<PostData> searchPostByLatLng(final double lat, final double lng);
     List<PostData> searchPostByUserInterest(long userId);
 }

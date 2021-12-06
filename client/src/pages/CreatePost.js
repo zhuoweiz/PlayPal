@@ -119,9 +119,8 @@ onAuthStateChanged(auth, (user) => {
         let getData = response.data;
         console.log(getData);
         console.log(location);
-        enqueueSnackbar("Create Post Sucess!");
-    
-        navigate("/post/" + getData.id);
+        enqueueSnackbar("Create Post Sucess!")
+        navigate("/post/" + response.data.id)
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
       console.log(error.code);
