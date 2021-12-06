@@ -21,7 +21,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, addDoc, setDoc, updateDoc, query, where, arrayUnion, collection, Timestamp, getFirestore, onSnapshot } from "firebase/firestore";
 
 import ChatList from "../components/ChatList";
@@ -61,6 +61,7 @@ export default function ViewPost() {
   const params = useParams();
   const db = getFirestore();
   const { enqueueSnackbar } = useSnackbar();
+  const auth = getAuth();
 
   const postId = params.postId;
   const [postInfo, setPostInfo] = React.useState(null);
@@ -74,6 +75,7 @@ export default function ViewPost() {
   const [latitude, setLatitude] = React.useState(43.088947)
   const [longitude, setLongitude] = React.useState(-76.15448)
   const [mapProps, setMapProps] = React.useState(null);
+  const [email, setEmail] = React.useState("");
   
   
   const checkLikeURL = serverUrl + '/users/user/like/' + localStorage.getItem("uid") + '/' + postId;
@@ -83,6 +85,11 @@ export default function ViewPost() {
   const joinURL = serverUrl + '/users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const unjoinURL = serverUrl + '/users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const joinedUsersURL = serverUrl + '/posts/joined/' + postId;
+
+  const mg = require("mailgun-js")({
+    apiKey: process.env.REACT_APP_MAILGUN_API, 
+    domain: process.env.REACT_APP_MG_DOMAIN
+  });
 
   const renderLikeButton = ()=> {
     if (checkLike === null) {
@@ -180,6 +187,18 @@ export default function ViewPost() {
     .then(response => {
       //console.log(response.data);
       setCheckJoin(true)
+    
+      mg.messages().send({
+          from: 'Playpal Team <service@playpal.com>',
+          to: email,
+          subject: 'Actiivity Joined Confirmation',
+          text: 'You just joined an activity!'
+        }, function (error, body) {
+        if (error) {
+            console.log(error);
+        }
+        console.log(body);
+      });
     })
     .catch(error => {
       console.error('There was an error!', error);
@@ -190,7 +209,19 @@ export default function ViewPost() {
     axios.get(unjoinURL)
     .then(response => {
       //console.log(response.data);
-      setCheckJoin(false)
+      setCheckJoin(false);
+
+      mg.messages().send({
+        from: 'Playpal Team <service@playpal.com>',
+        to: email,
+        subject: 'Participation Cancelled Confirmation',
+        text: 'You just canceled an activity.'
+      }, function (error, body) {
+      if (error) {
+          console.log(error);
+      }
+      console.log(body);
+    });
     })
     .catch(error => {
       console.error('There was an error!', error);
@@ -278,6 +309,17 @@ export default function ViewPost() {
   }
 
   React.useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        setEmail(user.email);
+      } else {
+        // User is signed out
+        // ...
+        setEmail("");
+      }
+    });
 
     const q = query(collection(db, "messages"), where("postId", "==", parseInt(postId)));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

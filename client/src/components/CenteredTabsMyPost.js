@@ -38,7 +38,7 @@ export default function CenteredTabsMyPost(props) {
         <Tab label="Following" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        Post List 1
+        Post Activities I Created
         <Grid
             item
             container
@@ -55,7 +55,7 @@ export default function CenteredTabsMyPost(props) {
           </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Post List 2
+        Post Activities I Joined
         <Grid
               item
               container
@@ -89,7 +89,7 @@ export default function CenteredTabsMyPost(props) {
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Following users List
+        Users I Follow
         <Grid
           item
           container

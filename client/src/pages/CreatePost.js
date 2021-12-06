@@ -24,9 +24,6 @@ const axios = require("axios");
 const _ = require("lodash");
 
 const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
-const MAILGUN_API="97c4f6e7c91825de62483b411ccea959-7005f37e-de6a6d66";
-const DOMAIN="mg.stormlander.com";
-
 
 function CreatePost() {
   const [email, setEmail] = React.useState("");
@@ -49,27 +46,26 @@ function CreatePost() {
  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
  const db = getFirestore();
 
- const data = {
-	from: 'Playpal Team <service@playpal.com>',
-	// to: email,
-  to: "xianhomedroy@outlook.com",
-	subject: 'Post Creation Confirmation',
-	text: 'You just created a post!'
-};
+  const data = {
+    from: 'Playpal Team <service@playpal.com>',
+    to: email,
+    subject: 'Post Creation Confirmation',
+    text: 'You just created a post!'
+  };
 
- const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid;
-    setEmail(user.email);
-  } else {
-    // User is signed out
-    // ...
-    setEmail("");
-  }
-});
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      setEmail(user.email);
+    } else {
+      // User is signed out
+      // ...
+      setEmail("");
+    }
+  });
 
   const { ref: materialRef } = usePlacesWidget({
     apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
@@ -122,7 +118,7 @@ onAuthStateChanged(auth, (user) => {
           }
           console.log(body);
         });
-        
+
         navigate("/post/" + response.data.id)
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")

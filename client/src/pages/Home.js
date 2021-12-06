@@ -11,43 +11,73 @@ import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useSnackbar } from 'notistack';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoIcon from '@mui/icons-material/Info';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const axios = require('axios');
 
 function Home() {
   const {enqueueSnackbar} = useSnackbar();
+  const auth = getAuth();
 
-  const [lat, setLat] = React.useState(null);
-  const [lng, setLng] = React.useState(null);
+  const [toolTip, setToolTip] = React.useState(false);
+  const [lat, setLat] = React.useState(parseFloat(sessionStorage.getItem("lat")));
+  const [lng, setLng] = React.useState(parseFloat(sessionStorage.getItem("lng")));
   const [recommendationList, setRecommendationList] = React.useState(null);
   const [mapProps, setMapProps] = React.useState(null);
   const [tagRecommendation, setTagRecommendation] = React.useState([]);
   const tagRecommendationURL = serverUrl + '/posts/searchPostByUserInterest/' + localStorage.getItem("uid");
   React.useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('ok...')
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        axios.get(tagRecommendationURL)
+        .then(response => {
+          console.log("fuck", response.data);
+          setTagRecommendation(response.data)
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        }); 
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+
     // run when render/rerender
     // GET request using axios inside useEffect React hook
-    axios.get(tagRecommendationURL)
-      .then(response => {
-        console.log(response.data);
-        setTagRecommendation(response.data)
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      }); 
+
 
 
     if ("geolocation" in navigator) {
-      if (lat === null) {
+      if (isNaN(lat) || isNaN(lng)) {
         navigator.geolocation.getCurrentPosition(function (position) {
           console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
           setLat(position.coords.latitude);
           setLng(position.coords.longitude);
+          sessionStorage.setItem("lat", position.coords.latitude);
+          sessionStorage.setItem("lng", position.coords.longitude);
           setMapProps({
             center: {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             },
           });
+        });
+      } else {
+        setMapProps({
+          center: {
+            lat: lat,
+            lng: lng,
+          },
         });
       }
     } else {
@@ -79,7 +109,7 @@ function Home() {
   };
 
   React.useEffect(() => {
-    if (lat !== null && lng !== null && recommendationList === null) {
+    if (!isNaN(lat) && !isNaN(lng) && recommendationList === null) {
       console.log("Called when lat and lng set");
       axios
         .get(serverUrl + "/posts/searchPostByLatLng", {
@@ -158,7 +188,11 @@ function Home() {
                     })}
                   </GoogleMapReact>
                 ) : <Skeleton variant="text"
-                  width={510} height={308}  
+                    style={{
+                      margin:"5%"
+                    }}
+                  width="90%" 
+                  height="90%"  
                 />}
               </Grid>
               <Grid
@@ -172,7 +206,7 @@ function Home() {
                 borderRadius: "12px",
               }}
               >
-                <Paper>
+                {/* <Paper variant> */}
                   {recommendationList ? 
                     <PostsList
                     recommendationList={
@@ -181,28 +215,42 @@ function Home() {
                   />
                   :
                   <Skeleton variant="text"
-                    animation="wave" 
-                    width="100%" height={308} 
+                    animation="wave"
+                    style={{
+                      margin: "5%"
+                    }}
+                    width="90%" height="90%" 
                   />
                   }
                   
-                </Paper>
+                {/* </Paper> */}
               </Grid>
             </Grid>
             <Box style={{ marginTop: "30px" }}>
               <Typography variant="h5" gutterBottom component="div">
-                Recommended Activities
+                Recommended Virtual Activities
 
                 <Tooltip
+                  onOpen={() => {
+                    setToolTip(true);
+                  }}
+                  onClose={() => {
+                    setToolTip(false);
+                  }}
                   title="These recommendations are generated based on your interest tags. Set your interest tags here 🙂"
                 >
                   <IconButton size="small" aria-label="show 4 new mails" color="inherit"
                     href="/profile/0"
                   >
-                    <HelpCenterIcon
-                      color="primary"
+                    {/* <HelpCenterIcon
+                      color={toolTip ? "primary" : "action"}
                       
-                    />
+                    /> */}
+                    {
+                      toolTip ?
+                      <LightbulbIcon color="primary"/>
+                      :<LightbulbIcon color="action"/>
+                    }
                   </IconButton>
                   
                 </Tooltip>
