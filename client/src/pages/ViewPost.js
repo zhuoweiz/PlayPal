@@ -251,9 +251,9 @@ export default function ViewPost() {
       const timeB = (secondEl.createdDate.seconds);
 
       if (timeA < timeB) {
-        return 1;
-      } else if(timeA > timeB) {
         return -1;
+      } else if(timeA > timeB) {
+        return 1;
       } else {
         return 0;
       }

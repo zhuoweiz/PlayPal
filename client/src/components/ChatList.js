@@ -9,6 +9,7 @@ import People from '@mui/icons-material/People';
 
 export default function ChatList(props) {
   const { data, joinedUsersIdMap } = props;
+  const scrollRef = React.useRef(null);
 
   function renderRow(index) {
     const { style } = props;
@@ -43,9 +44,11 @@ export default function ChatList(props) {
     );
   }
 
-  function getItemSize(index) {
-    return (10+ (data[index].content.length - 100)/50);
-  }
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behaviour: "smooth" });
+    }
+  }, [data]);
 
   return (
     <Box
@@ -66,6 +69,10 @@ export default function ChatList(props) {
             return renderRow(index);
           })
         }
+
+        <ListItem ref={
+          scrollRef
+        }></ListItem>
       </List>
     </Box>
   );
