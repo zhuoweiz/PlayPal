@@ -14,4 +14,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 		double lowerLat, double upperLat,
 		double lowerLng, double upperLng
 		);
+
+	List<Post> findByTitleContainingOrContentContaining(
+		String firstKeyword,
+		String secondKeyword
+	);
 }

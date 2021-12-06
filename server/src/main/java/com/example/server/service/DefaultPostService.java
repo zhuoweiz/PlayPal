@@ -146,28 +146,9 @@ public class DefaultPostService implements PostService {
     @Override
     public List<PostData> searchPosts(String searchKeyword) {
         List<PostData> matchPosts = new ArrayList<>();
-        List<Post> postList = postRepo.findAll();
+        List<Post> postList = postRepo.findByTitleContainingOrContentContaining(searchKeyword, searchKeyword);
         for (Post p: postList) {
-            String content = p.getContent();
-            String title = p.getTitle();
-            String[] splitContent = content.split("\\s+");
-            String[] splitTitle = title.split("\\s+");
-            boolean exist = false;
-            for (String s: splitContent) {
-                if (s.equals(searchKeyword)) {
-                    exist = true;
-                    break;
-                }
-            }
-            for (String s: splitTitle) {
-                if (s.equals(searchKeyword)) {
-                    exist = true;
-                    break;
-                }
-            }
-            if (exist) {
-                matchPosts.add(populatePostData(p));
-            }
+            matchPosts.add(populatePostData(p));
         }
         if (matchPosts.size() == 0) {
             System.out.println("No matched posts found!");

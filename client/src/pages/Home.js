@@ -37,19 +37,19 @@ function Home() {
 
 
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        console.log("current position");
-        console.log(position.coords.latitude);
-        setLat(position.coords.latitude);
-        console.log(position.coords.longitude);
-        setLng(position.coords.longitude);
-        setMapProps({
-          center: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
+      if (lat === null) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
+          setLat(position.coords.latitude);
+          setLng(position.coords.longitude);
+          setMapProps({
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+          });
         });
-      });
+      }
     } else {
       enqueueSnackbar("Geolocation IS NOT available", {
         variant: "error"
