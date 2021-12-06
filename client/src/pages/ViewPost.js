@@ -292,7 +292,7 @@ export default function ViewPost() {
 
   React.useEffect(()=>{
 
-    const q = query(collection(db, "messages"), where("postId", "==", postId));
+    const q = query(collection(db, "messages"), where("postId", "==", parseInt(postId)));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       // triggered many times for some reason
       const responseData = [];

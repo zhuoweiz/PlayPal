@@ -52,7 +52,7 @@ export default function ChatList(props) {
 
   return (
     <Box
-      sx={{ width: '100%', height: 430, bgcolor: 'background.paper' }}
+      sx={{ width: '100%', height: 423, bgcolor: 'background.paper' }}
     >
       <List
         sx={{
