@@ -39,7 +39,9 @@ CREATE TABLE posts (
    location VARCHAR(255),
    is_virtual BIT,
    date_time VARCHAR(255),
-   
+   bio VARCHAR(255),
+   lat DOUBLE(11,7),
+   lng DOUBLE(11,7),
    created_date VARCHAR(255),
    last_modified_date VARCHAR(255),
    
@@ -115,10 +117,6 @@ Alter
 -- Nov 30 2021
 ALTER TABLE users
 ADD fid VARCHAR(150) NOT NULL;
-ALTER TABLE posts
-DROP COLUMN is_virtual;
-ALTER TABLE posts
-DROP COLUMN date_time;
 
 -- Dec 03 2021
 ALTER TABLE posts

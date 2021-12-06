@@ -10,6 +10,14 @@ const tagList= [
     {label: 'BBQ',id:9},
     {label: 'workout',id:10},
     {label: 'postAnyway',id:11},
+    {label: 'dota2', id: 12},
+    {label: 'code', id: 13},
+    {label: 'esport', id: 14},
+    {label: 'study', id: 15},
+    {label: 'code', id: 16},
+    {label: 'read', id: 17},
+    {label: 'movie', id: 18},
+    {label: 'minecraft', id:19},
 ]
 
 export default tagList;
