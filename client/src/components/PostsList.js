@@ -6,6 +6,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+
 
 const postsFromBackend = [
   {
@@ -29,11 +31,10 @@ const postsFromBackend = [
     secondary: "Ali Connors",
     text: " — I'll be in your neighborhood doing errands this…",
   },
-  
 ];
 
 function AlignItemsList(props) {
-  const {recommendationList} = props
+  const { recommendationList } = props;
   return (
     <List
       sx={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
@@ -44,27 +45,29 @@ function AlignItemsList(props) {
       {recommendationList.map((post, index) => {
         return (
           <React.Fragment key={index}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar src={"/post/"+post.id} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={post.title}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {post.content}
-                    </Typography>
-                    {post.location}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
+            <Link href={"/post/"+ post.id} underline="hover">
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar src={"/post/" + post.id} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={post.title}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {post.content}
+                      </Typography>
+                      {post.location}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </Link>
             <Divider variant="inset" component="li" />
           </React.Fragment>
         );
