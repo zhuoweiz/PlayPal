@@ -95,39 +95,41 @@ onAuthStateChanged(auth, (user) => {
 
   function handleCreatePostAction() {
     
-    // axios.post(serverUrl + "/posts/post",{
-    //     creatorId: localStorage.getItem("uid"),
-    //     title: title,
-    //     content: content,
-    //     location: location,
-    //     isVirtual: isVirtual,
-    //     dateTime: date,
-    //     tags: tags,
-    //     lat: lat,
-    //     lng: lng
-    // }).then(function(response) {
-    //     // console.log(response);
-    //     let getData = response.data;
-    //     console.log(getData);
-    //     console.log(location);
-    //     enqueueSnackbar("Create Post Sucess!")
-    //     navigate("/post/" + response.data.id)
-    // }).catch(function(error){
-    //   enqueueSnackbar("Create Post Error")
-    //   console.log(error.code);
-    //   console.log(error.message);
-    //   alert("failed")
-    // })
-    const mg = require("mailgun-js")({
-      apiKey: process.env.REACT_APP_MAILGUN_API, 
-      domain: process.env.REACT_APP_MG_DOMAIN
-    });
-    mg.messages().send(data, function (error, body) {
-      if (error) {
-          console.log(error);
-      }
-    console.log(body);
-    });
+    axios.post(serverUrl + "/posts/post",{
+        creatorId: localStorage.getItem("uid"),
+        title: title,
+        content: content,
+        location: location,
+        isVirtual: isVirtual,
+        dateTime: date,
+        tags: tags,
+        lat: lat,
+        lng: lng
+    }).then(function(response) {
+        // console.log(response);
+        let getData = response.data;
+        console.log(getData);
+        console.log(location);
+        enqueueSnackbar("Create Post Sucess!")
+
+        const mg = require("mailgun-js")({
+          apiKey: process.env.REACT_APP_MAILGUN_API, 
+          domain: process.env.REACT_APP_MG_DOMAIN
+        });
+        mg.messages().send(data, function (error, body) {
+          if (error) {
+              console.log(error);
+          }
+          console.log(body);
+        });
+        
+        navigate("/post/" + response.data.id)
+    }).catch(function(error){
+      enqueueSnackbar("Create Post Error")
+      console.log(error.code);
+      console.log(error.message);
+      alert("failed")
+    })
     
   }
 
