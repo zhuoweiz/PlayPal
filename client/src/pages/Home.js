@@ -1,3 +1,4 @@
+import React from "react";
 import { Container, Grid, Paper, Divider } from "@mui/material";
 import { grid } from "@mui/system";
 import Map from "../components/Map";
@@ -5,8 +6,25 @@ import PostsList from "../components/PostsList";
 import PostCard from "../components/PostCard";
 import { Typography, Box } from "@mui/material";
 import FloatingActionButton from "../components/FloatingActionButton";
+import {serverUrl} from  '../constants';
+
+const axios = require('axios');
 
 function Home() {
+  const [tagRecommendation, setTagRecommendation] = React.useState([]);
+  const tagRecommendationURL = serverUrl + '/posts/searchPostByUserInterest/' + localStorage.getItem("uid");
+  React.useEffect(() => {
+    // run when render/rerender
+    // GET request using axios inside useEffect React hook
+    axios.get(tagRecommendationURL)
+      .then(response => {
+        console.log(response.data);
+        setTagRecommendation(response.data)
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      }); 
+  },[]);  
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("current position");
@@ -67,7 +85,7 @@ function Home() {
             </Grid>
             <Box style={{ marginTop: "30px" }}>
               <Typography variant="h5" gutterBottom component="div">
-                Activities Near You
+                Recommended Activites
               </Typography>
             </Box>
             <Grid
@@ -76,11 +94,13 @@ function Home() {
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  <PostCard />
-                </Grid>
-              ))}
+              {
+                tagRecommendation.map((element, index) => {
+                  return <Grid item xs={6} md={4} key={index}>
+                    <PostCard postData={element}/>
+                  </Grid>
+                })
+              }
             </Grid>
           </Grid>
         </Grid>

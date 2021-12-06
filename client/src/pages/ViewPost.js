@@ -63,7 +63,7 @@ export default function ViewPost() {
   const { enqueueSnackbar } = useSnackbar();
 
   const postId = params.postId;
-  const [postInfo, setPostInfo] = React.useState({});
+  const [postInfo, setPostInfo] = React.useState(null);
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
@@ -158,7 +158,7 @@ export default function ViewPost() {
   const likeHandler = ()=> {
     axios.get(likeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(true)
     })
     .catch(error => {
@@ -169,7 +169,7 @@ export default function ViewPost() {
   const unlikeHandler = ()=> {
     axios.get(unlikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(false)
     })
     .catch(error => {
@@ -180,7 +180,7 @@ export default function ViewPost() {
   const joinHandler = ()=> {
     axios.get(joinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(true)
     })
     .catch(error => {
@@ -191,7 +191,7 @@ export default function ViewPost() {
   const unjoinHandler = ()=> {
     axios.get(unjoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(false)
     })
     .catch(error => {
@@ -291,10 +291,6 @@ export default function ViewPost() {
   }
 
   React.useEffect(()=>{
-    // const unsubscribe = onSnapshot(doc(db, "postMessages", postId), (doc) => {
-    //   console.log("Current data: ", doc.data());
-    //   setChatData(doc.data().messages)
-    // });
 
     const q = query(collection(db, "messages"), where("postId", "==", 17));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -306,8 +302,8 @@ export default function ViewPost() {
       console.log(responseData);
       setChatData(sortChats(responseData));
     });
-
-    if(Object.keys(postInfo).length === 0){
+    
+    if(postInfo === null){
       // fetch post info
       axios.get(serverUrl+"/posts/fullPost/"+postId)
       .then(response => {
@@ -344,7 +340,7 @@ export default function ViewPost() {
 
     axios.get(checkLikeURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckLike(response.data);
     })
     .catch(error => {
@@ -353,7 +349,7 @@ export default function ViewPost() {
 
     axios.get(checkJoinURL)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       setCheckJoin(response.data);
     })
     .catch(error => {
@@ -377,7 +373,7 @@ export default function ViewPost() {
     //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
     return () => unsubscribe()
   },[])
-
+  console.log("postInfo", postInfo)
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -390,7 +386,7 @@ export default function ViewPost() {
         }}
       >
         <Typography component="h1" variant="h5" style={{ marginBottom: 12 }}>
-          {postInfo.title}
+          {postInfo ? postInfo.title : null }
         </Typography>
         <Grid
           container
@@ -407,10 +403,10 @@ export default function ViewPost() {
               renderJoinButton()
             }
           </Grid>
-          <Grid item>Activity Time: {convert(postInfo.dateTime)}</Grid>
+          <Grid item>Activity Time: { postInfo ? convert(postInfo.dateTime) : null}</Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
-          {postInfo.tags?postInfo.tags.map((element,index) =>{
+          {postInfo && postInfo.tags ?postInfo.tags.map((element,index) =>{
             return (
               <Chip key={`post-tag-${index}`} label={element.label} style={{
                 marginRight: 10
@@ -421,13 +417,19 @@ export default function ViewPost() {
 
         <Grid container item xs={12} sm={8}>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.content}
+             Host : {postInfo ? postInfo.creator.name : null}   
+          </Typography>
+        </Grid>
+
+        <Grid container item xs={12} sm={8}>
+          <Typography style={{ marginBottom: 12 }}>
+            {postInfo ? postInfo.content : null}
           </Typography>
         </Grid>
 
         <Grid item>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo.location}
+            {postInfo ? postInfo.location: null}
           </Typography>
         </Grid>
 

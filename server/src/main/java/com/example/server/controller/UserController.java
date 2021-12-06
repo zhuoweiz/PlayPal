@@ -4,9 +4,19 @@ import com.example.server.dto.PostData;
 import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
+
+//import com.mashape.unirest.http.HttpResponse;
+//import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +26,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+//	private static final Object API_KEY = ;
+//	private static final String YOUR_DOMAIN_NAME = ;
+	private static RequestEntity<Object> Unirest;
 	@Resource(name = "userService")
 	private UserService userService;
 
@@ -165,6 +178,19 @@ public class UserController {
 	) {
 		return userService.searchUserByName(keyword);
 	}
+
+//	public static JsonNode sendSimpleMessage() throws UnirestException {
+//
+//		HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + YOUR_DOMAIN_NAME + "/messages")
+//				.basicAuth("api", API_KEY)
+//				.field("from", "Excited User <USER@YOURDOMAIN.COM>")
+//				.field("to", "artemis@example.com")
+//				.field("subject", "hello")
+//				.field("text", "testing")
+//				.asJson();
+//
+//		return request.getBody();
+//	}
 
 	/**
 	 * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of
