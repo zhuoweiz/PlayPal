@@ -1,11 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import { FixedSizeList, VariableSizeList } from 'react-window';
 import { ListItemAvatar, ListItemText, List, ListItem } from '@mui/material';
-
-import People from '@mui/icons-material/People';
 
 export default function ChatList(props) {
   const { data, joinedUsersIdMap } = props;

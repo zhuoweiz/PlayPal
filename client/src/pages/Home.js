@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Grid, Paper, Divider } from "@mui/material";
-import { grid } from "@mui/system";
-import Map from "../components/Map";
+// import Map from "../components/Map";
 import PostsList from "../components/PostsList";
 import PostCard from "../components/PostCard";
 import { Typography, Box } from "@mui/material";
@@ -79,11 +78,8 @@ function Home() {
   };
 
   React.useEffect(() => {
-    console.log("123");
     if (lat !== null && lng !== null && recommendationList === null) {
-      console.log(lat);
-      console.log(lng);
-
+      console.log("Called when lat and lng set");
       axios
         .get(serverUrl + "/posts/searchPostByLatLng", {
           params: {
@@ -101,7 +97,7 @@ function Home() {
           //  alert("failed to get recommendation list")
         });
     }
-  });
+  }, [lat, lng]);
 
   return (
     <Container maxWidth="lg" style={{ height: "100vh" }}>
@@ -124,7 +120,12 @@ function Home() {
               container
               direction="row"
               spacing={0}
-              style={{ height: "50%", maxHeight: "360px" }}
+              style={{ 
+                height: 300,
+                border: "solid 1px #ffe5b4",
+                borderRadius: "12px",
+                overflow: "hidden",
+              }}
             >
               <Grid
                 item
@@ -133,18 +134,17 @@ function Home() {
                 md={6}
                 lg={7}
                 xl={7}
-                style={{ height: "100%", maxHeight: "360px" }}
+                style={{ height: "100%", maxHeight: "360px",
+                  maxWidth: "60%",
+                borderRadius: "12px", overflow: "hidden" }}
               >
-                {/* <Map 
-                  recommendationList = {recommendationList}
-                /> */}
                 {mapProps && lat && lng && recommendationList ? (
                   <GoogleMapReact
                     bootstrapURLKeys={{
                       key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
                     }}
                     center={mapProps.center}
-                    zoom={9}
+                    zoom={12}
                   >
                     {recommendationList.map((post, index) => {
                       return (
@@ -165,7 +165,9 @@ function Home() {
                 md={6}
                 lg={5}
                 xl={5}
-                style={{ height: "100%", maxHeight: "360px", overflow: "auto" }}
+                style={{ height: "100%", maxHeight: "360px", overflow: "auto",
+                borderRadius: "12px",
+              }}
               >
                 <Paper>
                   <PostsList

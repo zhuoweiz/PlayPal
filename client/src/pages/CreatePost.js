@@ -1,24 +1,15 @@
 import { Container, Grid, Box, Divider, Chip, Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import MUIRichTextEditor from "mui-rte";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import * as React from "react";
-import Map from "../components/Map";
 import {
   default as GoogleMapsAutoComplete,
   usePlacesWidget,
 } from "react-google-autocomplete";
-import tagList from "../constants/tagList";
-import Autocomplete from "@mui/material/Autocomplete";
-
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import TimePicker from "@mui/lab/TimePicker";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { serverUrl } from "../constants";
@@ -201,26 +192,18 @@ onAuthStateChanged(auth, (user) => {
             fontSize: "18px",
             marginTop: "20px",
             // height: "60%",
-            padding: "4px",
+            padding: "0 4 4 4px",
           }}
           // sx={{ border: 1, borderColor: "grey.500", borderRadius: "8px" }}
         >
           <Grid container direction="row" style={{ height: "90%" }}>
-            {/* <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
-              <Map />
-            </Grid> */}
-            <Grid item sx={6} xm={6} md={6} lg={6} xl={6}>
-              <Grid>
-                Description
-                {/* <Divider /> */}
-                <TextField
-                  multiline
-                  fullWidth
-                  minRows={4}
-                  onChange={(e)=>setContent(e.target.value)}
-                />
-              </Grid>
-            </Grid>
+            <TextField
+              label="Description"
+              multiline
+              fullWidth
+              minRows={4}
+              onChange={(e)=>setContent(e.target.value)}
+            />
           </Grid>
         </Grid>
 

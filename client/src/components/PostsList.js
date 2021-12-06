@@ -46,7 +46,7 @@ function AlignItemsList(props) {
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt={post.creator.id} src={"/post/"+post.id} />
+                <Avatar src={"/post/"+post.id} />
               </ListItemAvatar>
               <ListItemText
                 primary={post.title}

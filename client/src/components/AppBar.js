@@ -9,14 +9,11 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Divider, FormControl, Link, List, ListItemButton, ListItemText, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Button } from '@mui/material';
+import { Link, Button } from '@mui/material';
 
 import {useNavigate} from 'react-router-dom';
 
@@ -67,7 +64,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [uid, setUid] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
@@ -94,13 +90,10 @@ export default function NavBar() {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      setUid(uid);
       setEmail(user.email);
     } else {
       // User is signed out
       // ...
-      setUid("");
       setEmail("");
     }
   });

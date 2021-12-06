@@ -47,6 +47,12 @@ const theme = createTheme({
   app: {
     color: "white",
   },
+  palette: {
+    primary: {
+      main: '#f76900',
+      light: '#ffe5b4'
+    }
+  }
 });
 
 ReactDOM.render(
