@@ -10,12 +10,15 @@ import { serverUrl } from "../constants";
 import GoogleMapReact from "google-map-react";
 import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { useSnackbar } from 'notistack';
 
 const axios = require('axios');
 
 function Home() {
-  const [lat, setLat] = React.useState();
-  const [lng, setLng] = React.useState();
+  const {enqueueSnackbar} = useSnackbar();
+
+  const [lat, setLat] = React.useState(null);
+  const [lng, setLng] = React.useState(null);
   const [recommendationList, setRecommendationList] = React.useState(null);
   const [mapProps, setMapProps] = React.useState(null);
   const [tagRecommendation, setTagRecommendation] = React.useState([]);
@@ -31,24 +34,28 @@ function Home() {
       .catch(error => {
         console.error('There was an error!', error);
       }); 
-  },[]);  
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("current position");
-      console.log(position.coords.latitude);
-      setLat(position.coords.latitude);
-      console.log(position.coords.longitude);
-      setLng(position.coords.longitude);
-      setMapProps({
-        center: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
+
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        console.log("current position");
+        console.log(position.coords.latitude);
+        setLat(position.coords.latitude);
+        console.log(position.coords.longitude);
+        setLng(position.coords.longitude);
+        setMapProps({
+          center: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        });
       });
-    });
-  } else {
-    console.log("geolocation IS NOT available");
-  }
+    } else {
+      enqueueSnackbar("Geolocation IS NOT available", {
+        variant: "error"
+      })
+    }
+  },[]);
 
   const AnyReactComponent = ({ text }) => {
     const [color, setColor] = React.useState("blue");
@@ -70,11 +77,7 @@ function Home() {
       </IconContext.Provider>
     );
   };
-  // const getRecommendation = ()=>{
-  //  if(lat !== null && lng !== null){
 
-  //  }
-  // }
   React.useEffect(() => {
     console.log("123");
     if (lat !== null && lng !== null && recommendationList === null) {
