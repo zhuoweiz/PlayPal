@@ -228,7 +228,8 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton href="/profile/2" size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={0} color="error">
+                
                 <MailIcon />
               </Badge>
             </IconButton>
