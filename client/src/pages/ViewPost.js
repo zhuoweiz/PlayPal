@@ -158,7 +158,6 @@ export default function ViewPost() {
   const likeHandler = ()=> {
     axios.get(likeURL)
     .then(response => {
-      //console.log(response.data);
       setCheckLike(true)
     })
     .catch(error => {
@@ -169,7 +168,6 @@ export default function ViewPost() {
   const unlikeHandler = ()=> {
     axios.get(unlikeURL)
     .then(response => {
-      //console.log(response.data);
       setCheckLike(false)
     })
     .catch(error => {
@@ -202,12 +200,6 @@ export default function ViewPost() {
   async function uploadMessageToFirestore(docData) {
     const docRef = await addDoc(collection(db, "messages"), docData);
     console.log("addes message id: ", docRef.id);
-    
-    const washingtonRef = doc(db, "postMessages", postId);
-    // Atomically add a new region to the "regions" array field.
-    await updateDoc(washingtonRef, {
-        messages: arrayUnion(docRef)
-    });
   }
 
   const sendMessageHandler = () => {
@@ -268,14 +260,9 @@ export default function ViewPost() {
       creatorId: localStorage.getItem("uid"),
       content: comment
     }).then(function(response) {
-      console.log("send comment response: ", response);
       enqueueSnackbar("Comment Sent :)", {
         variant: 'success'
       });
-      // setPostComments([
-      //   ...postComments,
-      //   response.data
-      // ]);
 
       // sort comments based on time
       var unsortedCommentsData = _.cloneDeep(postComments);
@@ -313,13 +300,6 @@ export default function ViewPost() {
         setLatitude(response.data.lat)
         setLongitude(response.data.lng)
 
-        // const defaultProps = {
-        //   center: {
-        //     lat: latitude,
-        //     lng: longitude,
-        //   },
-        //   zoom: 8,
-        // };
         setMapProps({
           center: {
             lat: response.data.lat,
@@ -356,6 +336,11 @@ export default function ViewPost() {
       console.error('There was an error!', error);
     }); 
     
+    //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
+    return () => unsubscribe()
+  },[])
+
+  React.useEffect(() => {
     axios.get(joinedUsersURL)
       .then(response => {
         setJoinedUsers(response.data);
@@ -368,12 +353,8 @@ export default function ViewPost() {
       .catch(error => {
         console.error('There was an error!', error);
       }); 
+  }, [chatData]);
 
-    
-    //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
-    return () => unsubscribe()
-  },[])
-  console.log("postInfo", postInfo)
   return (
     <Container maxWidth="md">
       <CssBaseline />
@@ -403,7 +384,6 @@ export default function ViewPost() {
               renderJoinButton()
             }
           </Grid>
-          <Grid item>Activity Time: { postInfo ? convert(postInfo.dateTime) : null}</Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>
           {postInfo && postInfo.tags ?postInfo.tags.map((element,index) =>{
@@ -415,22 +395,38 @@ export default function ViewPost() {
           }):null}
         </Grid>
 
-        <Grid container item xs={12} sm={8}>
-          <Typography style={{ marginBottom: 12 }}>
-             Host : {postInfo ? postInfo.creator.name : null}   
-          </Typography>
-        </Grid>
-
-        <Grid container item xs={12} sm={8}>
-          <Typography style={{ marginBottom: 12 }}>
-            {postInfo ? postInfo.content : null}
-          </Typography>
+        <Grid container item container  xs={12} 
+          justifyContent="space-between"
+        >
+          <Grid item xs={12} sm={6}>
+            <Typography style={{ marginBottom: 12 }}>
+              Host : {postInfo ? postInfo.creator.name : null}   
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography style={{ marginBottom: 12, textAlign: "right", }}>
+              Activity Time: { postInfo ? convert(postInfo.dateTime) : null}
+            </Typography>
+          </Grid>
         </Grid>
 
         <Grid item>
           <Typography style={{ marginBottom: 12 }}>
-            {postInfo ? postInfo.location: null}
+            {postInfo ? 
+              postInfo.isVirtual ? 
+                "This is a virtual event"
+                : "Location: " + postInfo.location
+              : null
+              }
           </Typography>
+        </Grid>
+
+        <Grid container item xs={12}>
+          <Grid item xs={12}>
+            <Typography style={{ marginBottom: 12 }}>
+              Description: {postInfo ? postInfo.content : null}
+            </Typography>
+          </Grid>
         </Grid>
 
         <Grid item container direction="row" xs={12} spacing={2}>

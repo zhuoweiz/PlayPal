@@ -13,7 +13,8 @@ export default function ChatList(props) {
   
     return (
       <ListItem style={{
-
+        paddingRight: 6,
+        paddingLeft: 6,
       }} key={index} component="div" disablePadding>
         { data[index].senderId === currentUserId ? null : 
           <ListItemAvatar>

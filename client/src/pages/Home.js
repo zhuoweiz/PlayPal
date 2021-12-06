@@ -1,15 +1,16 @@
 import React from "react";
-import { Container, Grid, Paper, Divider } from "@mui/material";
+import { Container, Grid, Paper, Divider, IconButton, Skeleton} from "@mui/material";
 // import Map from "../components/Map";
 import PostsList from "../components/PostsList";
 import PostCard from "../components/PostCard";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Tooltip } from "@mui/material";
 import FloatingActionButton from "../components/FloatingActionButton";
 import { serverUrl } from "../constants";
 import GoogleMapReact from "google-map-react";
 import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useSnackbar } from 'notistack';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 const axios = require('axios');
 
@@ -156,7 +157,9 @@ function Home() {
                       );
                     })}
                   </GoogleMapReact>
-                ) : null}
+                ) : <Skeleton variant="text"
+                  width={510} height={308}  
+                />}
               </Grid>
               <Grid
                 item
@@ -170,28 +173,53 @@ function Home() {
               }}
               >
                 <Paper>
-                  <PostsList
+                  {recommendationList ? 
+                    <PostsList
                     recommendationList={
                       recommendationList ? recommendationList : []
                     }
                   />
+                  :
+                  <Skeleton variant="text"
+                    animation="wave" 
+                    width="100%" height={308} 
+                  />
+                  }
+                  
                 </Paper>
               </Grid>
             </Grid>
             <Box style={{ marginTop: "30px" }}>
               <Typography variant="h5" gutterBottom component="div">
-                Recommended Activites
+                Recommended Activities
+
+                <Tooltip
+                  title="These recommendations are generated based on your interest tags. Set your interest tags here 🙂"
+                >
+                  <IconButton size="small" aria-label="show 4 new mails" color="inherit"
+                    href="/profile/0"
+                  >
+                    <HelpCenterIcon
+                      color="primary"
+                      
+                    />
+                  </IconButton>
+                  
+                </Tooltip>
+                
               </Typography>
+
+              
             </Box>
             <Grid
               item
               container
               spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
+              // columns={{ xs: 4, sm: 8, md: 12 }}
             >
               {
                 tagRecommendation.map((element, index) => {
-                  return <Grid item xs={6} md={4} key={index}>
+                  return <Grid item xs={12} sm={6} md={4} key={index}>
                     <PostCard postData={element}/>
                   </Grid>
                 })

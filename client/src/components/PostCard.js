@@ -32,28 +32,33 @@ function PostCard(props) {
                 {postData ? postData.title : null}
               </Typography>
             </Grid>
-            <Grid item xs={12}
+            <Grid item 
+              container
+              xs={12}
               style={{
-                marginTop: 4,
-                marginBottom: 4,
+                // marginTop: 4,
+                // marginBottom: 4,
               }}
             >
-              <Stack
-                direction="row"
-              >
                 {
                   postData && postData.tags ? 
                   postData.tags.map((tag, index) => {
-                  return <Chip 
-                    color="primary"
-                    label={tag.label} variant="outlined" size="small" /> 
+                  return(
+                    <Chip 
+                      key={index}
+                      color="primary"
+                      label={tag.label} variant="outlined" size="small" 
+                      style={{
+                        marginTop: 4,
+                        marginBottom: 4,
+                      }}
+                      /> 
+                  )
                   }) 
                   : 
                   null
                 }
-              </Stack>
             
-
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1" >
@@ -68,17 +73,30 @@ function PostCard(props) {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" >
-                Date:
+                Date: {
+                  postData ? 
+                  (new Date(postData.dateTime)).toLocaleString(
+                    undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+                  )
+                  : null
+                }
               </Typography>
             </Grid>
           </Grid>
           
         </CardContent>
         <CardActions>
-          <Button size="small" 
+          <Button
             href={postData ? `/post/${postData.id}` : "#"}
             onClick={handleViewPost}
-          >Learn More</Button>
+            style={{
+              width: "100%",
+              display: "flex",
+              // justifyContent: "flex-end"
+            }}
+          >Learn More
+          
+          </Button>
         </CardActions>
       </Card>
     </React.Fragment>
