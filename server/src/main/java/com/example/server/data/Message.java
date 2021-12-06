@@ -10,28 +10,23 @@ public class Message extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    private Long userId;
-//    private Long postId;
-//    private Timestamp time;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
     public Message(){
-
     }
-    public Message(String content){
-//        this.userId = senderId;
-//        this.postId = postId;
-//        this.time = new Timestamp(System.currentTimeMillis());
+    public Message(Long id, String content, User sender, Post post) {
+        this.id = id;
         this.content = content;
+        this.sender = sender;
+        this.post = post;
     }
 
     public void setId(Long id) {this.id = id;}
@@ -43,10 +38,10 @@ public class Message extends Auditable<String> {
 //    public void setPostId(Long postId) {this.postId = postId;}
     public Long getPostId() {return post.getId();}
 
-    public void setSender(User user) { sender = user; }
+    public void setSender(User sender) { this.sender = sender; }
     public User getSender() { return sender; }
 
-    public void setPost(Post post_instance) { post = post_instance; }
+    public void setPost(Post post) { this.post = post; }
     public Post getPost() { return post; }
     //    public void setTime(Timestamp time) {this.time = time;}
 //    public Timestamp getTime() {return time;}
