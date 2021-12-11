@@ -175,7 +175,7 @@ function Home() {
                       key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
                     }}
                     center={mapProps.center}
-                    zoom={12}
+                    zoom={14}
                   >
                     {recommendationList.map((post, index) => {
                       return (

@@ -201,8 +201,8 @@ function ViewUser() {
             }
           </Grid>
         </Paper>
-        <Paper container item md={3} style={{marginTop:"24px" , padding:"12px"}} component={Grid}>
-          <Grid item md={12} style={{}}>
+        <Paper container item xs={12} style={{marginTop:"24px" , padding:"12px"}} component={Grid}>
+          <Grid item xs={12}>
             <Typography variant = "h6">
               Bio
             </Typography>
@@ -210,7 +210,7 @@ function ViewUser() {
               {user.bio ? user.bio : "bio is empty"}
             </Typography>
           </Grid>
-          <Grid item md={12} style={{}}>
+          <Grid item xs={12}>
             <Typography variant = "h6">
               Interest Tags
             </Typography>

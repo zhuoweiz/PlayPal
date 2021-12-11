@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import { ListItemAvatar, ListItemText, List, ListItem } from '@mui/material';
+import { Button, ListItemAvatar, ListItemText, List, ListItem } from '@mui/material';
 
 export default function ChatList(props) {
   const { data, joinedUsersIdMap } = props;
@@ -42,15 +42,22 @@ export default function ChatList(props) {
   }
 
   React.useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behaviour: "smooth" });
-    }
+    // if (scrollRef.current) {
+    //   scrollRef.current.scrollIntoView({ behaviour: "smooth" });
+    // }
   }, [data]);
 
   return (
     <Box
       sx={{ width: '100%', height: 423, bgcolor: 'background.paper' }}
     >
+      <Button
+        onClick={()=> {
+          if (scrollRef.current) {
+          scrollRef.current.scrollIntoView({ behaviour: "smooth" });
+    }
+        }}
+      >scroll to the bottom</Button>
       <List
         sx={{
           width: '100%',
