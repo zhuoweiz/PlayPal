@@ -23,8 +23,6 @@ import AddTagComponent from "../components/other/AddTagComponent";
 const axios = require("axios");
 const _ = require("lodash");
 
-const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
-
 function CreatePost() {
   const [email, setEmail] = React.useState("");
   const [tags, setTags] = React.useState([]);

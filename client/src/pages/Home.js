@@ -92,7 +92,9 @@ function Home() {
     const [size, setSize] = React.useState("1.5rem");
     return (
       <IconContext.Provider value={{ color: color, size: size }}>
-        <div>
+        <div onMouseEnter={() => {
+          // set hover(id)
+        }}>
           <FaMapMarkerAlt
             onMouseEnter={() => {
               setColor("red");
@@ -183,6 +185,7 @@ function Home() {
                           key={post.id}
                           lat={post.lat}
                           lng={post.lng}
+                        
                         />
                       );
                     })}
@@ -212,6 +215,8 @@ function Home() {
                     recommendationList={
                       recommendationList ? recommendationList : []
                     }
+                    // hoverid = {hoverid}
+                    // style={border: {hover === thisid} : 2px solid black ? }
                   />
                   :
                   <Skeleton variant="text"
