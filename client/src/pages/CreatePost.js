@@ -23,12 +23,6 @@ import AddTagComponent from "../components/other/AddTagComponent";
 const axios = require("axios");
 const _ = require("lodash");
 
-//require('dotenv').config({path: '.ENV'});
-const YOUR_GOOGLE_MAPS_API_KEY = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc";
-const MAILGUN_API="e41d5411106f424f6bc6d354e7034cf1-7b8c9ba8-14ed39fe";
-const DOMAIN="sandbox0a4e20a9344743fd8711b2649f370e7f.mailgun.org";
-
-
 function CreatePost() {
   const [email, setEmail] = React.useState("");
   const [tags, setTags] = React.useState([]);
@@ -50,26 +44,26 @@ function CreatePost() {
  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
  const db = getFirestore();
 
- const data = {
-	from: 'Excited User <me@samples.mailgun.org>',
-	to: email,
-	subject: 'Hello',
-	text: 'You just created a post!'
-};
+  const data = {
+    from: 'Playpal Team <service@playpal.com>',
+    to: email,
+    subject: 'Post Creation Confirmation',
+    text: 'You just created a post!'
+  };
 
- const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid;
-    setEmail(user.email);
-  } else {
-    // User is signed out
-    // ...
-    setEmail("");
-  }
-});
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      setEmail(user.email);
+    } else {
+      // User is signed out
+      // ...
+      setEmail("");
+    }
+  });
 
   const { ref: materialRef } = usePlacesWidget({
     apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
@@ -111,6 +105,18 @@ onAuthStateChanged(auth, (user) => {
         console.log(getData);
         console.log(location);
         enqueueSnackbar("Create Post Sucess!")
+
+        const mg = require("mailgun-js")({
+          apiKey: process.env.REACT_APP_MAILGUN_API, 
+          domain: process.env.REACT_APP_MG_DOMAIN
+        });
+        mg.messages().send(data, function (error, body) {
+          if (error) {
+              console.log(error);
+          }
+          console.log(body);
+        });
+
         navigate("/post/" + response.data.id)
     }).catch(function(error){
       enqueueSnackbar("Create Post Error")
@@ -118,15 +124,6 @@ onAuthStateChanged(auth, (user) => {
       console.log(error.message);
       alert("failed")
     })
-
-    console.log(MAILGUN_API, DOMAIN);
-    const mg = require("mailgun-js")({apiKey: MAILGUN_API, domain: DOMAIN});
-    mg.messages().send(data, function (error, body) {
-      if (error) {
-          console.log(error);
-      }
-    console.log(body);
-    });
     
   }
 

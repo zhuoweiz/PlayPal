@@ -60,8 +60,8 @@ function PostCard(props) {
                 }
             
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" >
+            <Grid item xs={12} style={{marginTop: 4}}>
+              <Typography paragraph variant="subtitle1" lineHeight='normal'>
                 Detail: {postData ? postData.content : null}
               </Typography>
             </Grid>

@@ -14,7 +14,6 @@ const tagList= [
     {label: 'code', id: 13},
     {label: 'esport', id: 14},
     {label: 'study', id: 15},
-    {label: 'code', id: 16},
     {label: 'read', id: 17},
     {label: 'movie', id: 18},
     {label: 'minecraft', id:19},

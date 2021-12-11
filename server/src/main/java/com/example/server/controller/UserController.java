@@ -5,7 +5,6 @@ import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;

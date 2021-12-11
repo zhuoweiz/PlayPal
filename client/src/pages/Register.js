@@ -30,6 +30,7 @@ function SignUp() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -44,7 +45,7 @@ function SignUp() {
         // in reality, need to roll back the process if registration on server fails
         axios
           .post(serverUrl + "/users/user", {
-            name: firstName,
+            name: firstName + " " + lastName,
             email: email,
             fid: user.uid,
           })
@@ -128,6 +129,8 @@ function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
