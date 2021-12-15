@@ -1,5 +1,5 @@
 const dev_url = "http://localhost:8080";
 const deploy_url = ""
 const serverUrl = dev_url;
-
-module.exports = { serverUrl };
+const googleMapKey = "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc"
+module.exports = { serverUrl, googleMapKey };

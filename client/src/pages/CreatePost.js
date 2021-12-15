@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { doc, setDoc, collection, Timestamp, getFirestore } from "firebase/firestore"; 
-
+import { googleMapKey } from "../constants/url";
 import AddTagComponent from "../components/other/AddTagComponent";
 
 const axios = require("axios");
@@ -66,7 +66,7 @@ function CreatePost() {
   });
 
   const { ref: materialRef } = usePlacesWidget({
-    apiKey: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+    apiKey: googleMapKey,
     onPlaceSelected: (place) => {
       console.log(place);
       // console.log(place.formatted_address);
