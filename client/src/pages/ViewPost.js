@@ -167,7 +167,7 @@ export default function ViewPost() {
 
   const renderArchiveButton = ()=> {
     if (postInfo && (parseInt(localStorage.getItem("uid")) === postInfo.creatorId)){
-      if (postInfo.archive === true) {
+      if (checkArchive === true) {
         return (
           <Button 
             style={{
@@ -182,7 +182,7 @@ export default function ViewPost() {
           </Button>  
         )
       }
-      else if (postInfo.archive === false) {
+      else if (checkArchive === false) {
           return (
             <Button
               variant="contained"
@@ -201,13 +201,16 @@ export default function ViewPost() {
         return null
       }
     }
-      
   } 
 
   const archiveHandler = ()=> {
     axios.get(archiveURL)
     .then(response => {
       setCheckArchive(true)
+      // setPostInfo({
+      //   ...postInfo,
+      //   archive: true
+      // })
     })
     .catch(error => {
       console.error('There was an error!', error);
@@ -218,6 +221,10 @@ export default function ViewPost() {
     axios.get(unarchiveURL)
     .then(response => {
       setCheckArchive(false)
+      // setPostInfo({
+      //   ...postInfo,
+      //   archive: false
+      // })
     })
     .catch(error => {
       console.error('There was an error!', error);
@@ -412,7 +419,7 @@ export default function ViewPost() {
       .then(response => {
         console.log("fetch postDat: ", response.data);
         setPostInfo(response.data);
-
+        setCheckArchive(response.data.archive)
         setLatitude(response.data.lat)
         setLongitude(response.data.lng)
 
