@@ -98,6 +98,11 @@ public class UserController {
 		return new ResponseEntity<List<PostData>>(userService.getJoinedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/user/archivedPosts/{id}")
+	public ResponseEntity<List<PostData>> getArchivedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getArchivedPosts(id), HttpStatus.ACCEPTED);
+	}
+
 	@GetMapping("/uid")
 	public ResponseEntity<Long> getUid(@RequestParam(value = "fid") String fid) {
 		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);

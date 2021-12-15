@@ -138,6 +138,30 @@ public class DefaultPostService implements PostService {
         return responseUsers;
     }
 
+    public boolean archivePost(long postId) {
+        Post post = postRepo.getById(postId);
+        if (post.getArchive()) {
+            return false;
+        }
+        else {
+            post.setArchive(true);
+            postRepo.save(post);
+            return true;
+        }
+    }
+
+    public boolean unarchivePost(long postId) {
+        Post post = postRepo.getById(postId);
+        if (!post.getArchive()) {
+            return false;
+        }
+        else {
+            post.setArchive(false);
+            postRepo.save(post);
+            return true;
+        }
+    }
+
     /*
     * Search for posts match with the searchKeyword. return empty list if no posts found
     * @param searchKeyword
@@ -148,7 +172,9 @@ public class DefaultPostService implements PostService {
         List<PostData> matchPosts = new ArrayList<>();
         List<Post> postList = postRepo.findByTitleContainingOrContentContaining(searchKeyword, searchKeyword);
         for (Post p: postList) {
-            matchPosts.add(populatePostData(p));
+            if (!p.getArchive()) {
+                matchPosts.add(populatePostData(p));
+            }
         }
         if (matchPosts.size() == 0) {
             System.out.println("No matched posts found!");
@@ -179,7 +205,7 @@ public class DefaultPostService implements PostService {
         userTags.forEach(string -> {
             List<PostData> tmp = searchPostByTag(string);
             tmp.forEach(postData -> {
-                if (postData.getIsVirtual()) {
+                if (postData.getIsVirtual() && !postData.getArchive()) {
                     responseSet.add(postData);
                 }
             });
@@ -193,7 +219,9 @@ public class DefaultPostService implements PostService {
         List<PostData> responseList = new ArrayList<>();
 
         searchResult.forEach(post -> {
-            responseList.add(populatePostData(post));
+            if (!post.getArchive()) {
+                responseList.add(populatePostData(post));
+            }
         });
         return responseList;
     }
@@ -228,6 +256,7 @@ public class DefaultPostService implements PostService {
         postData.setDateTime(post.getDateTime());
         postData.setLat(post.getLat());
         postData.setLng(post.getLng());
+        postData.setArchive(post.getArchive());
 
         return postData;
     }

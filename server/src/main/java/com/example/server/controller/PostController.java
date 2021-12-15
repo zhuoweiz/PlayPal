@@ -86,6 +86,20 @@ public class PostController {
         return postService.searchPosts(keyword);
     }
 
+    @GetMapping("/archive")
+    public boolean archivePost(
+            @RequestParam(value = "postId") Long postId)
+    {
+        return postService.archivePost(postId);
+    }
+
+    @GetMapping("/unarchive")
+    public boolean unarchivePost(
+            @RequestParam(value = "postId") Long postId)
+    {
+        return postService.unarchivePost(postId);
+    }
+
     @GetMapping("/searchPostByLatLng")
     public List<PostData> searchPostByLat(
       @RequestParam(value = "lat") double lat,
