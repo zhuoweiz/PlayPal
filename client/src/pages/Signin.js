@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from 'notistack';
 
 import { serverUrl } from '../constants';
 
@@ -24,6 +25,67 @@ const axios = require('axios');
 export default function SignIn() {
   const auth = getAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const forgotEmailHandler = () => {
+    // 1. do config
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for
+      // this URL must be whitelisted in the Firebase Console.
+      url: 'http://localhost:3000/signin',
+      // This must be true for email link sign-in.
+      handleCodeInApp: false,
+      // FDL custom domain.
+      // dynamicLinkDomain: 'http://localhost:3000/signin',
+    };
+
+    
+    sendPasswordResetEmail(auth,
+      "zhuoweiz10@gmail.com", actionCodeSettings)
+      .then(function() {
+        // Password reset email sent.
+        enqueueSnackbar("Success")
+      })
+      .catch(function(error) {
+        // Error occurred. Inspect error.code.
+        enqueueSnackbar("Fail")
+        console.log(error);
+      });
+    // 2. send email with my server
+    // Admin SDK API to generate the password reset link.
+    // const userEmail = 'user@example.com';
+    // auth.generatePasswordResetLink(email, actionCodeSettings)
+    //   .then((link) => {
+    //     // Construct password reset email template, embed the link and send
+    //     // using custom SMTP server.
+    //     const mg = require("mailgun-js")({
+    //       apiKey: process.env.REACT_APP_MAILGUN_API, 
+    //       domain: process.env.REACT_APP_MG_DOMAIN
+    //     });
+    //     const data = {
+    //       from: 'Playpal Team <service@playpal.com>',
+    //       to: email,
+    //       subject: 'Post Creation Confirmation',
+    //       text: link
+    //     };
+    //     mg.messages().send(data, function (error, body) {
+    //       if (error) {
+    //           console.log(error);
+    //           alert("email error")
+    //       }
+    //       console.log(body);
+    //     });
+
+    //     // return sendCustomPasswordResetEmail(userEmail, displayName, link);
+    //   })
+    //   .catch((error) => {
+    //     // Some error occurred.
+    //   });
+    
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -85,6 +147,8 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -95,6 +159,8 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -110,7 +176,7 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link onClick={forgotEmailHandler} href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
