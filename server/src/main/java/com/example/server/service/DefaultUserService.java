@@ -36,6 +36,11 @@ public class DefaultUserService implements UserService {
 		return populateUserData((userRepo.save(userInstance)));
 	}
 
+	/**
+	 * Update the user info.
+	 * @param userData
+	 * @return UserData
+	 */
 	@Override
 	public UserData updateUser(UserData userData) {
 		User existingUser = userRepo.getById(userData.getId());
@@ -58,6 +63,12 @@ public class DefaultUserService implements UserService {
 		return populateUserData((userRepo.save(existingUser)));
 	}
 
+	/**
+	 * Method to like a post based on userId and postId
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public boolean likePost(final long userId, final long postId) {
 		Post tmppost = postRepo.getById(postId);
@@ -76,6 +87,12 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
+	/**
+	 * Method to create a follow relationship given two userId
+	 * @param followerId
+	 * @param followeeId
+	 * @return boolean
+	 */
 	@Override
 	public boolean followUser(long followerId, long followeeId) {
 		User follower = userRepo.getById(followerId);
@@ -94,6 +111,12 @@ public class DefaultUserService implements UserService {
     }
 	}
 
+	/**
+	 * Method to unfollow a user given two userId.
+	 * @param followerId
+	 * @param followeeId
+	 * @return boolean
+	 */
 	@Override
 	public boolean unfollowUser(long followerId, long followeeId) {
 		User follower = userRepo.getById(followerId);
@@ -109,6 +132,12 @@ public class DefaultUserService implements UserService {
 		return false;
 	}
 
+	/**
+	 * Method to unlike a post given userId and postId.
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public boolean unlikePost(final long userId, final long postId) {
 		Post tmppost = postRepo.getById(postId);
@@ -126,6 +155,12 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
+	/**
+	 * Method to join in a post given userId and postId.
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public boolean joinPost(final long userId, final long postId){
 		Post tmppost = postRepo.getById(postId);
@@ -143,6 +178,12 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
+	/**
+	 * Method to unjoin a post given userId and postId.
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public boolean unjoinPost(final long userId, final long postId) {
 		Post tmppost = postRepo.getById(postId);
@@ -159,6 +200,11 @@ public class DefaultUserService implements UserService {
 		}
 	}
 
+	/**
+	 * Method to get all the followers for the user given userId.
+	 * @param userId
+	 * @return List<UserData>
+	 */
 	@Override
 	public List<UserData> getUsersFollowing(long userId) {
 		User user = userRepo.getById(userId);
@@ -170,6 +216,7 @@ public class DefaultUserService implements UserService {
 		}
 		return responeList;
 	}
+
 	/**
 	 * Delete pet based on the user ID.We can also use other option to delete user
 	 * based on the entity (passing JPA entity class as method parameter)
@@ -209,6 +256,12 @@ public class DefaultUserService implements UserService {
 		));
 	}
 
+	/**
+	 * Method to check whether the follow relationship exists.
+	 * @param userId
+	 * @param otherUserId
+	 * @return boolean
+	 */
 	@Override
 	public Boolean getOtherUserById(long userId, long otherUserId) {
 		User user = userRepo.getById(userId);
@@ -220,6 +273,12 @@ public class DefaultUserService implements UserService {
 		return false;
 	}
 
+	/**
+	 * Method to check if a user like a certain post given userId and postId.
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public Boolean checkLikedPostById(long userId, long postId) {
 		User user = userRepo.getById(userId);
@@ -231,6 +290,12 @@ public class DefaultUserService implements UserService {
 		return false;
 	}
 
+	/**
+	 * Method to check whether a user joined in a certain post given userId and postId.
+	 * @param userId
+	 * @param postId
+	 * @return boolean
+	 */
 	@Override
 	public Boolean checkJoinedPostById(long userId, long postId) {
 		User user = userRepo.getById(userId);
@@ -242,6 +307,11 @@ public class DefaultUserService implements UserService {
 		return false;
 	}
 
+	/**
+	 * Method to get the posts that a user created given the user Id.
+	 * @param userId
+	 * @return List<PostData>
+	 */
 	@Override
 	public List<PostData> getCreatedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
@@ -256,6 +326,11 @@ public class DefaultUserService implements UserService {
 		return responsePosts;
 	}
 
+	/**
+	 * Method to get all the post that a certain user liked given a userId.
+	 * @param userId
+	 * @return List<PostData>
+	 */
 	@Override
 	public List<PostData> getLikedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
@@ -270,6 +345,11 @@ public class DefaultUserService implements UserService {
 		return responsePosts;
 	}
 
+	/**
+	 * Method to get all the posts that the user joined given the userId.
+	 * @param userId
+	 * @return List<PostData>
+	 */
 	@Override
 	public List<PostData> getJoinedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
@@ -284,6 +364,11 @@ public class DefaultUserService implements UserService {
 		return responsePosts;
 	}
 
+	/**
+	 * Method to get all the archived post for a user given the userId.
+	 * @param userId
+	 * @return List<PostData>
+	 */
 	@Override
 	public List<PostData> getArchivedPosts(long userId) {
 		List<PostData> responsePosts = new ArrayList<>();
@@ -298,6 +383,11 @@ public class DefaultUserService implements UserService {
 		return responsePosts;
 	}
 
+	/**
+	 * Method to get all the interest tags for a user given userId.
+	 * @param userId
+	 * @return List<TagData>
+	 */
 	@Override
 	public List<TagData> getTagsByUser(long userId) {
 		List<TagData> responseTags = new ArrayList<>();
@@ -312,11 +402,21 @@ public class DefaultUserService implements UserService {
 		return responseTags;
 	}
 
+	/**
+	 * Method to get the users id given the firebase id.
+	 * @param fid
+	 * @return long
+	 */
 	@Override
 	public long getUserId(String fid) {
 		return userRepo.getUserByFid(fid).getId();
 	}
 
+	/**
+	 * Method to search for a user based on the user name.
+	 * @param keyword
+	 * @return List<UserData>
+	 */
 	@Override
 	public List<UserData> searchUserByName(String keyword) {
 		List<User> searchResult = userRepo.findByNameContainingIgnoreCase(keyword);
@@ -371,6 +471,11 @@ public class DefaultUserService implements UserService {
 		return user;
 	}
 
+	/**
+	 * Method to convert post JPA entity to DTO object for the frontend.
+	 * @param post
+	 * @return PostData
+	 */
 	private PostData populatePostData(final Post post){
 		PostData postData = new PostData();
 		postData.setId(post.getId());

@@ -13,17 +13,10 @@ public class UserData {
 	private String email;
 	private String fid;
 	private String bio;
-/*	@Temporal(value = TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
 	private List<TagData> tags;
 
 	public UserData() {
 	}
-//	public UserData(Long id, String name, String email) {
-//		this.id = id;
-//		this.name = name;
-//		this.email = email;
-//	}
 
 	public void setId(Long id) {
 		this.id = id;

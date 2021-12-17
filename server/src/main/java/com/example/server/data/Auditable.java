@@ -18,16 +18,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable<U> {
 
-/*    @CreatedBy
-    protected U createdBy;*/
-
     @CreatedDate
     @Temporal(TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")
     protected Date createdDate;
-
-/*    @LastModifiedBy
-    protected U lastModifiedBy;*/
 
     @LastModifiedDate
     @Temporal(TIMESTAMP)

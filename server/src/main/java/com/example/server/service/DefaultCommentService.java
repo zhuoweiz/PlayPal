@@ -24,6 +24,11 @@ public class DefaultCommentService implements CommentService {
     @Autowired
     private UserRepository userRepo;
 
+    /**
+     * Method to save a comment to database
+     * @param commentData
+     * @return CommentData
+     */
     @Override
     public CommentData saveComment(CommentData commentData) {
         Comment commentInstance = DataMappingUtils.populateCommentEntity(postRepo, userRepo, commentData);
@@ -31,12 +36,21 @@ public class DefaultCommentService implements CommentService {
         return DataMappingUtils.populateCommentData((commentRepo.save(commentInstance)));
     }
 
+    /**
+     * Method to delete a comment by id from database.
+     * @param commentId
+     * @return boolean
+     */
     @Override
     public boolean deleteComment(Long commentId) {
         commentRepo.deleteById(commentId);
         return true;
     }
 
+    /**
+     * Method to get all the comments.
+     * @return List<CommentData>
+     */
     @Override
     public List<CommentData> getAllComments() {
         List<CommentData> commentData = new ArrayList<>();
@@ -47,6 +61,11 @@ public class DefaultCommentService implements CommentService {
         return commentData;
     }
 
+    /**
+     * Method to get a comment by Id.
+     * @param commentId
+     * @return CommentData
+     */
     @Override
     public CommentData getCommentById(long commentId) {
         return DataMappingUtils.populateCommentData(commentRepo.findById(commentId).orElseThrow(() ->
@@ -54,6 +73,11 @@ public class DefaultCommentService implements CommentService {
         ));
     }
 
+    /**
+     * Method to get all the comments for a post.
+     * @param postId
+     * @return List<CommentData>
+     */
     @Override
     public List<CommentData> getCommentsByPostId(long postId) {
         List<Comment> comments = commentRepo.findByPostId(postId);

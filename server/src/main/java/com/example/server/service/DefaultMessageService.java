@@ -23,10 +23,11 @@ public class DefaultMessageService implements MessageService {
     private PostRepository postRepo;
     @Autowired
     private UserRepository userRepo;
+
     /**
-     * Create a message based on the data sent to the service class.
+     * Method to save a message to database.
      * @param messageData
-     * @return DTO representation of the message
+     * @return MessageData
      */
     @Override
     public MessageData saveMessage(MessageData messageData){
@@ -34,12 +35,10 @@ public class DefaultMessageService implements MessageService {
         return populateMessageData((messageRepo.save(messageInstance)));
     }
 
-
     /**
-     * Delete pet based on the message ID.We can also use other option to delete user
-     * based on the entity (passing JPA entity class as method parameter)
+     * Method to delete a message based on id.
      * @param messageId
-     * @return boolean flag showing the request status
+     * @return boolean
      */
     @Override
     public boolean deleteMessage(Long messageId){
@@ -47,6 +46,11 @@ public class DefaultMessageService implements MessageService {
         return true;
     }
 
+    /**
+     * Method to get all the message for a post.
+     * @param postId
+     * @return List<Messages>
+     */
     @Override
     public List<MessageData> getMessagesByPostId(long postId){
         List<MessageData> messageData = new ArrayList<>();
@@ -59,7 +63,7 @@ public class DefaultMessageService implements MessageService {
     }
 
     /**
-     * Get user by ID. The service will send the user data else will throw the exception.
+     * Method to get a certain message based on Id.
      * @param messageId
      * @return MessageData
      */
@@ -77,14 +81,11 @@ public class DefaultMessageService implements MessageService {
      * @param message
      * @return MessageData
      */
-
-
     private MessageData populateMessageData(final Message message) {
         MessageData messageData = new MessageData();
         messageData.setId(message.getId());
         messageData.setPostId(message.getPostId());
         messageData.setSenderId(message.getSenderId());
-//        messageData.setTime(message.getTime());
         User sender = userRepo.getById(message.getSenderId());
         Post post = postRepo.getById((message.getPostId()));
         messageData.setSender(populateUserData(sender));
@@ -94,6 +95,11 @@ public class DefaultMessageService implements MessageService {
         return messageData;
     }
 
+    /**
+     * Method to convert User JPA Entity to DTO object for frontend.
+     * @param user
+     * @return UserData.
+     */
     private UserData populateUserData(final User user){
         UserData userData = new UserData();
         userData.setId(user.getId());
@@ -103,14 +109,17 @@ public class DefaultMessageService implements MessageService {
         return userData;
     }
 
+    /**
+     * Method to convert Post JPA entity to DTO object for frontend.
+     * @param post
+     * @return PostData
+     */
     private PostData populatePostData(final Post post){
         PostData postData = new PostData();
         postData.setId(post.getId());
         postData.setCreatorId(post.getCreatorId());
-
         User user = userRepo.getById(post.getCreatorId());
         postData.setCreator(populateUserData(user));
-
         postData.setTitle(post.getTitle());
         postData.setContent(post.getContent());
 
@@ -128,15 +137,11 @@ public class DefaultMessageService implements MessageService {
      */
     private Message populateMessageEntity(MessageData messageData){
         Message message = new Message();
-//        message.setPostId(messageData.getPostId());
-//        message.setUserId(messageData.getSenderId());
-//        message.setTime(messageData.getTime());
         message.setContent(messageData.getContent());
         User sender = userRepo.getById((messageData.getSenderId()));
         message.setSender(sender);
         Post post = postRepo.getById(messageData.getPostId());
         message.setPost(post);
-
 
         return message;
     }

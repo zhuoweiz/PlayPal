@@ -14,6 +14,5 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 	@Transactional
 	void deleteByUserId(long userId);
 
-//	@Transactional
 	List<Tag> findByLabelContainingAndPostIdIsNotNull(String label);
 }
