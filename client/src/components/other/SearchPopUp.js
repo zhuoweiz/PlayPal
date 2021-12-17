@@ -77,6 +77,9 @@ export default function SearchPopUp(props) {
     axios.get(searchRequestLink, {
       params: {
         keyword: searchValue
+      },
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
       }
     })
     .then(function (response) {

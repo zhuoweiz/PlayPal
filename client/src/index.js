@@ -21,6 +21,7 @@ import ProfileComponent from "./components/profile/ProfileComponent";
 import SettingComponent from "./components/profile/SettingComponent";
 
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";

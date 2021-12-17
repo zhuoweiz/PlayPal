@@ -99,6 +99,10 @@ function CreatePost() {
         tags: tags,
         lat: lat,
         lng: lng
+    },{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
     }).then(function(response) {
         // console.log(response);
         let getData = response.data;

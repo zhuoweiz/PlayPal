@@ -4,7 +4,12 @@ import com.example.server.dto.PostData;
 import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.UserService;
+import com.example.server.utils.MyExceptionHandler;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +21,20 @@ import java.io.File;
 //import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://143.198.190.9"})
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-//	private static final Object API_KEY = ;
-//	private static final String YOUR_DOMAIN_NAME = ;
-	private static RequestEntity<Object> Unirest;
+	public static void bob() {
+
+	}
+
 	@Resource(name = "userService")
 	private UserService userService;
 
@@ -37,7 +44,8 @@ public class UserController {
 	 * @return List<UserData>
 	 */
 	@GetMapping
-	public List<UserData> getUsers() {
+	public List<UserData> getUsers(@RequestHeader HttpHeaders headers) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.getAllUsers();
 	}
 
@@ -47,16 +55,28 @@ public class UserController {
 	 * @return UserData
 	 */
 	@GetMapping("/user/{id}")
-	public ResponseEntity<UserData> getUser(@PathVariable Long id) {
-		System.out.println(" === GET USER BY ID ===");
+	public ResponseEntity<UserData> getUser(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<UserData>(userService.getUserById(id), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Get the tags a user has.
+	 * @param id
+	 * @return List<TagData>
+	 */
 	@GetMapping("/user/tags/{id}")
-	public ResponseEntity<List<TagData>> getTagsByUser(@PathVariable Long id) {
+	public ResponseEntity<List<TagData>> getTagsByUser(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<List<TagData>>(userService.getTagsByUser(id), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Check if the other user if being followed by me
+	 * @param id
+	 * @param otherId
+	 * @return Boolean
+	 */
 	@GetMapping("/user/{id}/{otherId}")
 	public Boolean getOtherUser(
 			@PathVariable Long id,
@@ -64,6 +84,12 @@ public class UserController {
 		return userService.getOtherUserById(id, otherId);
 	}
 
+	/**
+	 * Check if the post is liked by the user
+	 * @param id
+	 * @param postId
+	 * @return Boolean
+	 */
 	@GetMapping("/user/like/{id}/{postId}")
 	public Boolean checkLikedPost(
 			@PathVariable Long id,
@@ -71,6 +97,12 @@ public class UserController {
 		return userService.checkLikedPostById(id, postId);
 	}
 
+	/**
+	 * Check if the post is joined by the user
+	 * @param id
+	 * @param postId
+	 * @return Boolean
+	 */
 	@GetMapping("/user/join/{id}/{postId}")
 	public Boolean checkJoinedPost(
 			@PathVariable Long id,
@@ -78,118 +110,192 @@ public class UserController {
 		return userService.checkJoinedPostById(id, postId);
 	}
 
+	/**
+	 * Fetch a list of created posts from the user
+	 * @param id
+	 * @return List<PostData>
+	 */
 	@GetMapping("/user/createdPosts/{id}")
-	public ResponseEntity<List<PostData>> getCreatedPosts(@PathVariable Long id) {
+	public ResponseEntity<List<PostData>> getCreatedPosts(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<List<PostData>>(userService.getCreatedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Fetch a list of posts liked by the user
+	 * @param id
+	 * @return List<PostData>
+	 */
 	@GetMapping("/user/likedPosts/{id}")
-	public ResponseEntity<List<PostData>> getLikedPosts(@PathVariable Long id) {
+	public ResponseEntity<List<PostData>> getLikedPosts(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<List<PostData>>(userService.getLikedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Fetch a list of users being followed by the requesting user
+	 * @param uid
+	 * @return List of UserData
+	 */
 	@GetMapping("/user/usersFollowing/{uid}")
-	public ResponseEntity<List<UserData>> getUsersFollowing(@PathVariable Long uid) {
+	public ResponseEntity<List<UserData>> getUsersFollowing(@RequestHeader HttpHeaders headers, @PathVariable Long uid) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<List<UserData>>(userService.getUsersFollowing(uid), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Fetch a list of posts joined by the requesting user
+	 * @param id
+	 * @return List of PostData
+	 */
 	@GetMapping("/user/joinedPosts/{id}")
-	public ResponseEntity<List<PostData>> getJoinedPosts(@PathVariable Long id) {
+	public ResponseEntity<List<PostData>> getJoinedPosts(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return new ResponseEntity<List<PostData>>(userService.getJoinedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+
+	@GetMapping("/user/archivedPosts/{id}")
+	public ResponseEntity<List<PostData>> getArchivedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getArchivedPosts(id), HttpStatus.ACCEPTED);
+	}
+
+	/**
+	 * Fetch the custom uid with the firebase provided uid
+	 * @param fid
+	 * @return Long uid
+	 */
 	@GetMapping("/uid")
 	public ResponseEntity<Long> getUid(@RequestParam(value = "fid") String fid) {
 		return new ResponseEntity<Long>(userService.getUserId(fid), HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * The action of following a user
+	 * @param followerId
+	 * @param followeeId
+	 * @return boolean
+	 */
 	@PostMapping("/follow/{followerId}/{followeeId}")
-	public boolean followUser(
-		@PathVariable Long followerId,
-		@PathVariable Long followeeId
+	public boolean followUser(@RequestHeader HttpHeaders headers,
+							  @PathVariable Long followerId,
+							  @PathVariable Long followeeId
 	) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.followUser(followerId, followeeId);
 	}
 
+	/**
+	 * The action of un-following a user
+	 * @param followerId
+	 * @param followeeId
+	 * @return boolean
+	 */
 	@PostMapping("/unfollow/{followerId}/{followeeId}")
-	public boolean unfollowUser(
+	public boolean unfollowUser(@RequestHeader HttpHeaders headers,
 		@PathVariable Long followerId,
 		@PathVariable Long followeeId
 	) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.unfollowUser(followerId, followeeId);
 	}
 
+	/**
+	 * Update user profile, bio and tags.
+	 * @param userData
+	 * @return UserData
+	 */
 	@PostMapping("/user/update")
-	public UserData updateUserProfile(
+	public UserData updateUserProfile(@RequestHeader HttpHeaders headers,
 		final @RequestBody UserData userData
 	) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.updateUser(userData);
 	}
 
 
 	/**
-	 * Post request to create user information int the system.
+	 * Post request to create a new int the system.
 	 * @param userData
-	 * @return
+	 * @return UserData
 	 */
 	@PostMapping("/user")
 	public UserData saveUser(final @RequestBody UserData userData) {
-		System.out.println("Post new user === " + userData.toString());
 		return userService.saveUser(userData);
 	}
 
+	/**
+	 * The action of liking a post by a user.
+	 * @param postId
+	 * @param userId
+	 * @return boolean
+	 */
 	@GetMapping("/like")
-	public boolean likePost(
+	public boolean likePost(@RequestHeader HttpHeaders headers,
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.likePost(userId, postId);
 	}
 
+	/**
+	 * The action of unliking a post by a user
+	 * @param postId
+	 * @param userId
+	 * @return boolean
+	 */
 	@GetMapping("/unlike")
-	public boolean unlikePost(
+	public boolean unlikePost(@RequestHeader HttpHeaders headers,
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.unlikePost(userId, postId);
-
 	}
 
+	/**
+	 * The Action of joining a post by a user
+	 * @param postId
+	 * @param userId
+	 * @return boolean
+	 */
 	@GetMapping("/join")
-	public boolean joinPost(
+	public boolean joinPost(@RequestHeader HttpHeaders headers,
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.joinPost(userId, postId);
 	}
 
+	/**
+	 * The action of unjoining a post by a user
+	 * @param postId
+	 * @param userId
+	 * @return boolean
+	 */
 	@GetMapping("/unjoin")
-	public boolean unjoinPost(
+	public boolean unjoinPost(@RequestHeader HttpHeaders headers,
 			@RequestParam(value = "postId") Long postId,
 			@RequestParam(value = "userId") Long userId)
 	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.unjoinPost(userId, postId);
 	}
 
+	/**
+	 * The action of searching for users by names, through keyword
+	 * @param keyword
+	 * @return List of userdata
+	 */
 	@GetMapping("/searchUser")
-	public List<UserData> searchUserByName(
+	public List<UserData> searchUserByName(@RequestHeader HttpHeaders headers,
 		@RequestParam(value = "keyword") String keyword
 	) {
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.searchUserByName(keyword);
 	}
-
-//	public static JsonNode sendSimpleMessage() throws UnirestException {
-//
-//		HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + YOUR_DOMAIN_NAME + "/messages")
-//				.basicAuth("api", API_KEY)
-//				.field("from", "Excited User <USER@YOURDOMAIN.COM>")
-//				.field("to", "artemis@example.com")
-//				.field("subject", "hello")
-//				.field("text", "testing")
-//				.asJson();
-//
-//		return request.getBody();
-//	}
 
 	/**
 	 * <p>Delete user from the system based on the ID. The method mapping is like the getUser with difference of

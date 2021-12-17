@@ -50,15 +50,17 @@ function Home() {
         console.log("ok...");
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        axios
-          .get(tagRecommendationURL)
-          .then((response) => {
-            console.log("fuck", response.data);
-            setTagRecommendation(response.data);
-          })
-          .catch((error) => {
-            console.error("There was an error!", error);
-          });
+        axios.get(tagRecommendationURL,{
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+          }
+        })
+        .then(response => {
+          setTagRecommendation(response.data)
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        }); 
       } else {
         // User is signed out
         // ...
@@ -70,24 +72,35 @@ function Home() {
 
     if ("geolocation" in navigator) {
       if (isNaN(lat) || isNaN(lng)) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          console.log(
-            "current position: ",
-            position.coords.latitude,
-            " - ",
-            position.coords.longitude
-          );
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-          sessionStorage.setItem("lat", position.coords.latitude);
-          sessionStorage.setItem("lng", position.coords.longitude);
-          setMapProps({
-            center: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-          });
-        });
+        // navigator.geolocation.getCurrentPosition(function (position) {
+        //   console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
+        //   setLat(position.coords.latitude);
+        //   setLng(position.coords.longitude);
+        //   sessionStorage.setItem("lat", position.coords.latitude);
+        //   sessionStorage.setItem("lng", position.coords.longitude);
+        //   setMapProps({
+        //     center: {
+        //       lat: position.coords.latitude,
+        //       lng: position.coords.longitude,
+        //     },
+        //   });
+        // });
+
+        axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc')
+          .then(function(response) {
+            const locationData = response.data.location
+            console.log("alternative position: ", locationData);
+            setLat(locationData.lat);
+            setLng(locationData.lng);
+            sessionStorage.setItem("lat", locationData.lat);
+            sessionStorage.setItem("lng", locationData.lng);
+            setMapProps({
+              center: {
+                lat: locationData.lat,
+                lng: locationData.lng,
+              },
+            });
+          })
       } else {
         setMapProps({
           center: {
@@ -202,7 +215,7 @@ function Home() {
                       key: googleMapKey,
                     }}
                     center={mapProps.center}
-                    zoom={14}
+                    zoom={12}
                   >
                     {recommendationList.map((post, index) => {
                       return (

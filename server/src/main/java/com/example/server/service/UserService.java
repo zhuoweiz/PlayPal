@@ -20,6 +20,7 @@ public interface UserService {
 	List<UserData> getUsersFollowing(final long userId);
 	boolean unlikePost(final long userId, final long postId);
 	List<PostData> getJoinedPosts(final long userId);
+	List<PostData> getArchivedPosts(final long userId);
 	boolean joinPost(final long userId, final long postId);
 	boolean unjoinPost(final long userId, final long postId);
 	Boolean getOtherUserById(long userId, long otherUserId);

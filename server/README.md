@@ -130,4 +130,6 @@ ADD bio VARCHAR(255);
 ALTER TABLE users
 ADD is_admin BIT;
 
+ALTER TABLE posts
+ADD archive BIT DEFAULT 0;
 ```

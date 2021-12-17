@@ -20,6 +20,7 @@ import {useNavigate} from 'react-router-dom';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 import SearchPopUp from './other/SearchPopUp';
+import axios from 'axios';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -83,21 +84,9 @@ export default function NavBar() {
   const handleSignOut = () => {
     signOut(auth);
     localStorage.removeItem("uid");
+    localStorage.removeItem("tmpToken");
     navigate("/")
   }
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      setEmail(user.email);
-    } else {
-      // User is signed out
-      // ...
-      setEmail("");
-    }
-  });
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -196,6 +185,34 @@ export default function NavBar() {
       </MenuItem>
     </Menu>
   );
+
+  React.useEffect(() => {
+    getAuth().onIdTokenChanged((user) => {
+      if (user) {
+        user.getIdToken().then(response => {
+          localStorage.setItem("tmpToken", response);
+        })
+      } else {
+        localStorage.removeItem("tmpToken");
+      }
+    })
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        setEmail(user.email);
+        user.getIdToken().then(response => {
+          console.log("update token")
+          localStorage.setItem("tmpToken", response);
+        })
+      } else {
+        // User is signed out
+        // ...
+        setEmail("");
+        localStorage.removeItem("tmpToken");
+      }
+    });
+  })
 
   return (
     <Box sx={{ flexGrow: 1 }}>

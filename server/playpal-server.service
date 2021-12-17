@@ -1,0 +1,13 @@
+[Unit]
+Description=PlayPal Server on Droplet
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/java -jar /artifact/server-0.0.1-SNAPSHOT.jar
+
+[Install]
+WantedBy=multi-user.target
