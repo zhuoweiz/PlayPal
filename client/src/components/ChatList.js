@@ -52,6 +52,7 @@ export default function ChatList(props) {
       sx={{ width: '100%', height: 423, bgcolor: 'background.paper' }}
     >
       <Button
+        size="small"
         onClick={()=> {
           if (scrollRef.current) {
           scrollRef.current.scrollIntoView({ behaviour: "smooth" });
@@ -64,7 +65,7 @@ export default function ChatList(props) {
           bgcolor: 'background.paper',
           position: 'relative',
           overflow: 'auto',
-          height: 420,
+          height: 390,
           '& ul': { padding: 0 },
         }}
       >
