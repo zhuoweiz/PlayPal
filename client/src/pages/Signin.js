@@ -69,7 +69,7 @@ export default function SignIn() {
       axios.get(serverUrl+"/users/uid", {
         params: {
           fid: user.uid
-        }
+        },
       })
       .then(function (response) {
         localStorage.setItem("uid", response.data)
