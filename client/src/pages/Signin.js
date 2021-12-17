@@ -54,37 +54,6 @@ export default function SignIn() {
         enqueueSnackbar("Fail")
         console.log(error);
       });
-    // 2. send email with my server
-    // Admin SDK API to generate the password reset link.
-    // const userEmail = 'user@example.com';
-    // auth.generatePasswordResetLink(email, actionCodeSettings)
-    //   .then((link) => {
-    //     // Construct password reset email template, embed the link and send
-    //     // using custom SMTP server.
-    //     const mg = require("mailgun-js")({
-    //       apiKey: process.env.REACT_APP_MAILGUN_API, 
-    //       domain: process.env.REACT_APP_MG_DOMAIN
-    //     });
-    //     const data = {
-    //       from: 'Playpal Team <service@playpal.com>',
-    //       to: email,
-    //       subject: 'Post Creation Confirmation',
-    //       text: link
-    //     };
-    //     mg.messages().send(data, function (error, body) {
-    //       if (error) {
-    //           console.log(error);
-    //           alert("email error")
-    //       }
-    //       console.log(body);
-    //     });
-
-    //     // return sendCustomPasswordResetEmail(userEmail, displayName, link);
-    //   })
-    //   .catch((error) => {
-    //     // Some error occurred.
-    //   });
-    
   }
 
   const handleSubmit = (event) => {
