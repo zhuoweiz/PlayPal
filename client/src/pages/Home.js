@@ -44,7 +44,6 @@ function Home() {
           }
         })
         .then(response => {
-          console.log("fuck", response.data);
           setTagRecommendation(response.data)
         })
         .catch(error => {
@@ -63,19 +62,35 @@ function Home() {
 
     if ("geolocation" in navigator) {
       if (isNaN(lat) || isNaN(lng)) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-          sessionStorage.setItem("lat", position.coords.latitude);
-          sessionStorage.setItem("lng", position.coords.longitude);
-          setMapProps({
-            center: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-          });
-        });
+        // navigator.geolocation.getCurrentPosition(function (position) {
+        //   console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
+        //   setLat(position.coords.latitude);
+        //   setLng(position.coords.longitude);
+        //   sessionStorage.setItem("lat", position.coords.latitude);
+        //   sessionStorage.setItem("lng", position.coords.longitude);
+        //   setMapProps({
+        //     center: {
+        //       lat: position.coords.latitude,
+        //       lng: position.coords.longitude,
+        //     },
+        //   });
+        // });
+
+        axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc')
+          .then(function(response) {
+            const locationData = response.data.location
+            console.log("alternative position: ", locationData);
+            setLat(locationData.lat);
+            setLng(locationData.lng);
+            sessionStorage.setItem("lat", locationData.lat);
+            sessionStorage.setItem("lng", locationData.lng);
+            setMapProps({
+              center: {
+                lat: locationData.lat,
+                lng: locationData.lng,
+              },
+            });
+          })
       } else {
         setMapProps({
           center: {
@@ -181,7 +196,7 @@ function Home() {
                       key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
                     }}
                     center={mapProps.center}
-                    zoom={14}
+                    zoom={12}
                   >
                     {recommendationList.map((post, index) => {
                       return (

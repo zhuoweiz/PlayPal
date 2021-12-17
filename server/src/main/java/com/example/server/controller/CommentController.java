@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://143.198.190.9"})
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
