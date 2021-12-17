@@ -125,5 +125,6 @@ ALTER TABLE posts
 ADD lng DOUBLE(11,7);  
 ALTER TABLE users
 ADD bio VARCHAR(255);
-
+ALTER TABLE posts
+ADD archive BIT DEFAULT 0;
 ```

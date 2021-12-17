@@ -67,6 +67,7 @@ export default function ViewPost() {
   const [postInfo, setPostInfo] = React.useState(null);
   const [checkLike , setCheckLike] = React.useState(null);
   const [checkJoin, setCheckJoin] = React.useState(null);
+  const [checkArchive, setCheckArchive] = React.useState(null);
   const [joinedUsers, setJoinedUsers] = React.useState([]);
   const [joinedUsersIdMap, setJoinedUsersIdMap] = React.useState(null);
   const [message, setMessage] = React.useState("");
@@ -84,6 +85,8 @@ export default function ViewPost() {
   const unlikeURL = serverUrl + '/users/unlike?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const joinURL = serverUrl + '/users/join?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
   const unjoinURL = serverUrl + '/users/unjoin?' + 'postId=' + postId + '&' + 'userId=' + localStorage.getItem("uid");
+  const archiveURL = serverUrl + '/posts/archive?' + 'postId=' + postId;
+  const unarchiveURL = serverUrl + '/posts/unarchive?' + 'postId=' + postId;
   const joinedUsersURL = serverUrl + '/posts/joined/' + postId;
 
   const mg = require("mailgun-js")({
@@ -162,6 +165,72 @@ export default function ViewPost() {
     }
   } 
 
+  const renderArchiveButton = ()=> {
+    if (postInfo && (parseInt(localStorage.getItem("uid")) === postInfo.creatorId)){
+      if (checkArchive === true) {
+        return (
+          <Button 
+            style={{
+              marginRight: 10,
+            }}
+            variant="outlined"
+            onClick = {
+              unarchiveHandler
+            }
+          >
+            unarchive
+          </Button>  
+        )
+      }
+      else if (checkArchive === false) {
+          return (
+            <Button
+              variant="contained"
+              style={{
+                marginRight: 10,
+              }}
+              onClick = {
+                archiveHandler
+              }
+            >
+              archive
+            </Button>
+          )
+      }
+      else {
+        return null
+      }
+    }
+  } 
+
+  const archiveHandler = ()=> {
+    axios.get(archiveURL)
+    .then(response => {
+      setCheckArchive(true)
+      // setPostInfo({
+      //   ...postInfo,
+      //   archive: true
+      // })
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
+
+  const unarchiveHandler = ()=> {
+    axios.get(unarchiveURL)
+    .then(response => {
+      setCheckArchive(false)
+      // setPostInfo({
+      //   ...postInfo,
+      //   archive: false
+      // })
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    }); 
+  }
+
   const likeHandler = ()=> {
     axios.get(likeURL, {
       headers: {
@@ -203,13 +272,25 @@ export default function ViewPost() {
       mg.messages().send({
           from: 'Playpal Team <service@playpal.com>',
           to: email,
-          subject: 'Actiivity Joined Confirmation',
+          subject: 'Activity Joined Confirmation',
           text: 'You just joined an activity!'
         }, function (error, body) {
         if (error) {
             console.log(error);
         }
         console.log(body);
+      });
+
+      mg.messages().send({
+        from: 'Playpal Team <service@playpal.com>',
+        to: postInfo.creator.email,
+        subject: 'Activity Joined Confirmation',
+        text: 'Someone just joined your activity!'
+        }, function (error, body) {
+        if (error) {
+            console.log(error);
+        }
+      console.log(body);
       });
     })
     .catch(error => {
@@ -362,7 +443,7 @@ export default function ViewPost() {
       .then(response => {
         console.log("fetch postDat: ", response.data);
         setPostInfo(response.data);
-
+        setCheckArchive(response.data.archive)
         setLatitude(response.data.lat)
         setLongitude(response.data.lng)
 
@@ -432,6 +513,9 @@ export default function ViewPost() {
         console.error('There was an error!', error);
       }); 
   }, [chatData]);
+  
+  // console.log("userId", localStorage.getItem("uid"))
+  // console.log("creatorId", postInfo ? postInfo.creatorId : "null")
 
   return (
     <Container maxWidth="md">
@@ -461,6 +545,9 @@ export default function ViewPost() {
             {
               renderJoinButton()
             }
+            {
+              renderArchiveButton()
+            } 
           </Grid>
         </Grid>
         <Grid container item style={{marginBottom: 12}}>

@@ -8,7 +8,9 @@ import com.example.server.service.TagService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -82,8 +84,22 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    public List<PostData> searchPosts(@RequestParam(value = "keyword") String keyword) {
+    public List<PostData> searchPosts(@RequestParam(value = "keyword") String keyword) throws ParseException {
         return postService.searchPosts(keyword);
+    }
+
+    @GetMapping("/archive")
+    public boolean archivePost(
+            @RequestParam(value = "postId") Long postId)
+    {
+        return postService.archivePost(postId);
+    }
+
+    @GetMapping("/unarchive")
+    public boolean unarchivePost(
+            @RequestParam(value = "postId") Long postId)
+    {
+        return postService.unarchivePost(postId);
     }
 
     @GetMapping("/searchPostByLatLng")
