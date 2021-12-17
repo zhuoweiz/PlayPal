@@ -249,9 +249,10 @@ public class DefaultUserService implements UserService {
 		Set<Post> tmp = user.getCreatedPosts();
 
 		for(Post element : tmp) {
-			responsePosts.add(populatePostData(element));
+			if (!element.getArchive()) {
+				responsePosts.add(populatePostData(element));
+			}
 		}
-
 		return responsePosts;
 	}
 
@@ -262,9 +263,10 @@ public class DefaultUserService implements UserService {
 		Set<Post> tmp = user.getLikedPosts();
 
 		for(Post element : tmp) {
-			responsePosts.add(populatePostData(element));
+			if (!element.getArchive()) {
+				responsePosts.add(populatePostData(element));
+			}
 		}
-
 		return responsePosts;
 	}
 
@@ -275,9 +277,24 @@ public class DefaultUserService implements UserService {
 		Set<Post> tmp = user.getJoinedPosts();
 
 		for(Post element : tmp) {
-			responsePosts.add(populatePostData(element));
+			if (!element.getArchive()) {
+				responsePosts.add(populatePostData(element));
+			}
 		}
+		return responsePosts;
+	}
 
+	@Override
+	public List<PostData> getArchivedPosts(long userId) {
+		List<PostData> responsePosts = new ArrayList<>();
+		User user = userRepo.getById(userId);
+		Set<Post> tmp = user.getCreatedPosts();
+
+		for(Post element : tmp) {
+			if (element.getArchive()) {
+				responsePosts.add(populatePostData(element));
+			}
+		}
 		return responsePosts;
 	}
 
@@ -371,6 +388,7 @@ public class DefaultUserService implements UserService {
 			});
 		}
 		postData.setTags(temp_tagList);
+		postData.setArchive(post.getArchive());
 
 		return postData;
 	}

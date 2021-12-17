@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CenteredTabsMyPost(props) {
   const [value, setValue] = React.useState(0);
-  const { createdPosts, likedPosts, joinedPosts, usersFollowing, ...otherProps } = props;
+  const { createdPosts, likedPosts, joinedPosts, archivedPosts, usersFollowing, ...otherProps } = props;
   const classes = useStyles();
   //console.log("test", likedposts);
 
@@ -35,6 +35,7 @@ export default function CenteredTabsMyPost(props) {
         <Tab label="Created" />
         <Tab label="Joined" />
         <Tab label="Liked" />
+        <Tab label="Archived" />
         <Tab label="Following" />
       </Tabs>
       <TabPanel value={value} index={0}>
@@ -89,6 +90,23 @@ export default function CenteredTabsMyPost(props) {
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>
+        Archived Posts List
+        <Grid
+          item
+          container
+          spacing={{ xs: 2}}
+          className={classes.gridContainer}
+        >
+          {
+            archivedPosts.map((element, index) => {
+              return <Grid item xs={6} md={4} key={index}>
+                <PostCard postData={element}/>
+              </Grid>
+            })
+          }
+        </Grid>
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         Users I Follow
         <Grid
           item

@@ -154,6 +154,12 @@ public class UserController {
 		return new ResponseEntity<List<PostData>>(userService.getJoinedPosts(id), HttpStatus.ACCEPTED);
 	}
 
+
+	@GetMapping("/user/archivedPosts/{id}")
+	public ResponseEntity<List<PostData>> getArchivedPosts(@PathVariable Long id) {
+		return new ResponseEntity<List<PostData>>(userService.getArchivedPosts(id), HttpStatus.ACCEPTED);
+	}
+
 	/**
 	 * Fetch the custom uid with the firebase provided uid
 	 * @param fid
