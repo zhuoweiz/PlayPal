@@ -105,7 +105,11 @@ function ViewUser() {
   React.useEffect(() => {
     // run when render/rerender
     // GET request using axios inside useEffect React hook
-    axios.get(userURL)
+    axios.get(userURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         console.log(response.data);
         setUser(response.data)
@@ -114,7 +118,11 @@ function ViewUser() {
         console.error('There was an error!', error);
       }); 
 
-    axios.get(createdPostsURL)
+    axios.get(createdPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         console.log(response.data);
         setCreatedPosts(response.data)
@@ -123,7 +131,11 @@ function ViewUser() {
         console.error('There was an error!', error);
       }); 
     
-    axios.get(joinedPostsURL)
+    axios.get(joinedPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         console.log(response.data);
         setJoinedPosts(response.data)
@@ -132,7 +144,11 @@ function ViewUser() {
         console.error('There was an error!', error);
       }); 
 
-    axios.get(checkFollowURL)
+    axios.get(checkFollowURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         console.log(response.data);
         setCheckFollow(response.data)
@@ -143,7 +159,11 @@ function ViewUser() {
   },[]);
   
   const followHandler = ()=> {
-    axios.post(followURL)
+    axios.post(followURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       console.log(response.data);
       setCheckFollow(true)
@@ -153,7 +173,11 @@ function ViewUser() {
     }); 
   }
   const unfollowHandler = ()=> {
-    axios.post(unfollowURL)
+    axios.post(unfollowURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       console.log(response.data);
       setCheckFollow(false)

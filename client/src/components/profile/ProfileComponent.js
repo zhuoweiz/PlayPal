@@ -43,6 +43,10 @@ export default function ProfileComponent(props) {
       id: localStorage.getItem("uid"),
       bio: bio,
       tags: tags,
+    },{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
     }).then(response => {
       setIsEditing(false);
       enqueueSnackbar("Successfully Saved!", {
