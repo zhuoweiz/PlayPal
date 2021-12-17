@@ -27,7 +27,7 @@ public class Post extends Auditable<String>{
     private Boolean isVirtual;
 
     @Type(type = "numeric_boolean")
-    private Boolean archive;
+    private Boolean archive = false;
 
     private String dateTime;
 

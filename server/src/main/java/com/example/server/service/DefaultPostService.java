@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.server.utils.DataMappingUtils;
@@ -168,11 +170,12 @@ public class DefaultPostService implements PostService {
     * return ArrayList<PostData>
      */
     @Override
-    public List<PostData> searchPosts(String searchKeyword) {
+    public List<PostData> searchPosts(String searchKeyword) throws ParseException {
         List<PostData> matchPosts = new ArrayList<>();
         List<Post> postList = postRepo.findByTitleContainingOrContentContaining(searchKeyword, searchKeyword);
         for (Post p: postList) {
-            if (!p.getArchive()) {
+            String activityTime = p.getDateTime();
+            if (!p.getArchive() && checkTime(activityTime)) {
                 matchPosts.add(populatePostData(p));
             }
         }
@@ -193,6 +196,17 @@ public class DefaultPostService implements PostService {
         return responseList;
     }
 
+    public boolean checkTime(String ActivityTime) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = sdf.parse(ActivityTime);
+        String formattedTime = output.format(d);
+        Date ActivityDate = output.parse(formattedTime);
+        Date now = new Date();
+
+        return ActivityDate.after(now);
+    }
+
     @Override
     public List<PostData> searchPostByUserInterest(long userId) {
         User user = userRepo.getById(userId);
@@ -205,22 +219,34 @@ public class DefaultPostService implements PostService {
         userTags.forEach(string -> {
             List<PostData> tmp = searchPostByTag(string);
             tmp.forEach(postData -> {
-                if (postData.getIsVirtual() && !postData.getArchive()) {
-                    responseSet.add(postData);
+                String activityTime = postData.getDateTime();
+                try {
+                    if (postData.getIsVirtual() && !postData.getArchive() && checkTime(activityTime)) {
+                        responseSet.add(postData);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             });
         });
         return new ArrayList<>(responseSet);
     }
 
+
+
     @Override
     public List<PostData> searchPostByLatLng(double lat, double lng) {
         List<Post> searchResult = postRepo.findByLatBetweenAndLngBetween(lat-0.2, lat+0.2, lng-0.2,lng+0.2);
         List<PostData> responseList = new ArrayList<>();
-
         searchResult.forEach(post -> {
-            if (!post.getArchive()) {
-                responseList.add(populatePostData(post));
+            String activityTime = post.getDateTime();
+            System.out.println(activityTime);
+            try {
+                if (!post.getArchive() && checkTime(activityTime)) {
+                    responseList.add(populatePostData(post));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         });
         return responseList;
