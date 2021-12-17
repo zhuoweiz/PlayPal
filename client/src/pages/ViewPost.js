@@ -232,7 +232,11 @@ export default function ViewPost() {
   }
 
   const likeHandler = ()=> {
-    axios.get(likeURL)
+    axios.get(likeURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       setCheckLike(true)
     })
@@ -242,7 +246,11 @@ export default function ViewPost() {
   }
 
   const unlikeHandler = ()=> {
-    axios.get(unlikeURL)
+    axios.get(unlikeURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       setCheckLike(false)
     })
@@ -252,7 +260,11 @@ export default function ViewPost() {
   }
 
   const joinHandler = ()=> {
-    axios.get(joinURL)
+    axios.get(joinURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       //console.log(response.data);
       setCheckJoin(true)
@@ -287,7 +299,11 @@ export default function ViewPost() {
   }
 
   const unjoinHandler = ()=> {
-    axios.get(unjoinURL)
+    axios.get(unjoinURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       //console.log(response.data);
       setCheckJoin(false);
@@ -371,6 +387,10 @@ export default function ViewPost() {
       postId: postId,
       creatorId: localStorage.getItem("uid"),
       content: comment
+    }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
     }).then(function(response) {
       enqueueSnackbar("Comment Sent :)", {
         variant: 'success'
@@ -415,7 +435,11 @@ export default function ViewPost() {
     
     if(postInfo === null){
       // fetch post info
-      axios.get(serverUrl+"/posts/fullPost/"+postId)
+      axios.get(serverUrl+"/posts/fullPost/"+postId, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+        }
+      })
       .then(response => {
         console.log("fetch postDat: ", response.data);
         setPostInfo(response.data);
@@ -441,7 +465,11 @@ export default function ViewPost() {
       })
     }
 
-    axios.get(checkLikeURL)
+    axios.get(checkLikeURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       //console.log(response.data);
       setCheckLike(response.data);
@@ -450,7 +478,11 @@ export default function ViewPost() {
       console.error('There was an error!', error);
     }); 
 
-    axios.get(checkJoinURL)
+    axios.get(checkJoinURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       //console.log(response.data);
       setCheckJoin(response.data);
@@ -464,7 +496,11 @@ export default function ViewPost() {
   },[])
 
   React.useEffect(() => {
-    axios.get(joinedUsersURL)
+    axios.get(joinedUsersURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         setJoinedUsers(response.data);
         var tmpMap = {};

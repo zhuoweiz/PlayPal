@@ -38,7 +38,11 @@ function Home() {
         console.log('ok...')
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        axios.get(tagRecommendationURL)
+        axios.get(tagRecommendationURL,{
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+          }
+        })
         .then(response => {
           console.log("fuck", response.data);
           setTagRecommendation(response.data)

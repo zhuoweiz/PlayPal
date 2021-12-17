@@ -32,7 +32,11 @@ function ViewMyPost() {
   React.useEffect(() => {
     // run when render/rerender
     // GET request using axios inside useEffect React hook
-    axios.get(createdPostsURL)
+    axios.get(createdPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         //console.log(response.data);
         setCreatedPosts(response.data)
@@ -41,7 +45,11 @@ function ViewMyPost() {
         console.error('There was an error!', error);
       }); 
     
-    axios.get(likedPostsURL)
+    axios.get(likedPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         //console.log(response.data);
         setLikedPosts(response.data)
@@ -50,7 +58,11 @@ function ViewMyPost() {
         console.error('There was an error!', error);
       }); 
     
-    axios.get(joinedPostsURL)
+    axios.get(joinedPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         //console.log(response.data);
         setJoinedPosts(response.data)
@@ -58,7 +70,7 @@ function ViewMyPost() {
       .catch(error => {
         console.error('There was an error!', error);
       }); 
-    
+
     axios.get(archivedPostsURL)
       .then(response => {
         //console.log(response.data);
@@ -69,7 +81,11 @@ function ViewMyPost() {
       }); 
     
     
-    axios.get(usersFollowingURL)
+    axios.get(usersFollowingURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         //console.log(response.data);
         setUsersFollowing(response.data)

@@ -1,6 +1,9 @@
 package com.example.server;
 
 import com.example.server.data.SpringSecurityAuditorAware;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @SpringBootApplication
@@ -27,7 +35,25 @@ public class ServerApplication {
         return new SpringSecurityAuditorAware();
     }
 
-    public static void main(String[] args) {
+    public void setUpFB() {
+
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        // Firebase admin sdk setup
+//        FileInputStream serviceAccount =
+//                new FileInputStream(ServerApplication.class
+//                        .getClassLoader()
+//                        .getResource("serviceAccount.json")
+//                        .getFile()
+//                );
+        InputStream serviceAccount = ServerApplication.class.getResourceAsStream("/serviceAccount.json");
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
+        FirebaseApp.initializeApp(options);
+
 
         SpringApplication.run(ServerApplication.class, args);
     }

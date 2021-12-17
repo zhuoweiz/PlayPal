@@ -15,6 +15,7 @@ import NotificationComponent from '../components/profile/NotificationComponent';
 import { Grow } from '@mui/material';
 
 import { useParams } from "react-router-dom";
+import { getAuth } from 'firebase/auth';
 
 const axios = require('axios');
 function TabPanel(props) {
@@ -46,6 +47,7 @@ function a11yProps(index) {
 
 const Profile = () => {
   const params = useParams();
+  const auth = getAuth();
 
   const [value, setValue] = React.useState(parseInt(params.profilePath));
   const [userData, setUserData] = React.useState(null);
@@ -86,7 +88,11 @@ const Profile = () => {
   React.useEffect(() => {
     if(userData === null && fecthingUserData === false) {
       fecthingUserData = true;
-      axios.get(serverUrl + "/users/user/" + parseInt(localStorage.getItem("uid")))
+      axios.get(serverUrl + "/users/user/" + parseInt(localStorage.getItem("uid")),{
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+        }
+      })
       .then(response => {
         console.log("response user data: ", response.data);
         setUserData(response.data);
