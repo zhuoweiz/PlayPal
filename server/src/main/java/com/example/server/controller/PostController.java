@@ -27,10 +27,10 @@ public class PostController {
      * pagination.</p>
      * @return List<UserData>
      */
-    @GetMapping
-    public List<PostData> getPosts() {
-        return postService.getAllPosts();
-    }
+//    @GetMapping
+//    public List<PostData> getPosts() {
+//        return postService.getAllPosts();
+//    }
 
     /**
      * Method to get the user data based on the ID.

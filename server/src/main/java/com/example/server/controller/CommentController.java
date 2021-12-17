@@ -16,10 +16,10 @@ public class CommentController {
     @Resource(name = "commentService")
     private CommentService commentService;
 
-    @GetMapping
-    public List<CommentData> getComments() {
-        return commentService.getAllComments();
-    }
+//    @GetMapping
+//    public List<CommentData> getComments() {
+//        return commentService.getAllComments();
+//    }
 
     @GetMapping("/comment/{id}")
     public CommentData getComment(@PathVariable Long id) {
