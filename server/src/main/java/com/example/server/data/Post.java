@@ -26,6 +26,9 @@ public class Post extends Auditable<String>{
     @Type(type = "numeric_boolean")
     private Boolean isVirtual;
 
+    @Type(type = "numeric_boolean")
+    private Boolean archive = false;
+
     private String dateTime;
 
     private Double lat;
@@ -54,12 +57,13 @@ public class Post extends Auditable<String>{
     public Post() {
     }
 
-    public Post(String title, String content,  String location, Boolean isVirtual, String dateTime) {
+    public Post(String title, String content,  String location, Boolean isVirtual, String dateTime, Boolean archive) {
         this.title = title;
         this.content = content;
         this.location = location;
         this.isVirtual = isVirtual;
         this.dateTime = dateTime;
+        this.archive = archive;
     }
 
     public void setId(Long id) {
@@ -83,9 +87,12 @@ public class Post extends Auditable<String>{
 
     public void setLocation(String location) { this.location = location; }
     public void setIsVirtual(Boolean isVirtual) {this.isVirtual = isVirtual; }
+    public void setArchive(Boolean archive) {this.archive = archive; }
     public void setDateTime(String dateTime) {this.dateTime = dateTime; }
     public String getLocation() {return location;}
     public Boolean getIsVirtual() {return isVirtual; }
+    public Boolean getArchive() {return archive;}
+
     public String getDateTime() {return dateTime; }
 
     public Set<User> getJoinedUsers() {

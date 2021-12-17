@@ -20,10 +20,13 @@ function ViewMyPost() {
   const [createdPosts, setCreatedPosts] = React.useState([]);
   const [likedPosts, setLikedPosts] = React.useState([]);
   const [joinedPosts, setJoinedPosts] = React.useState([]);
+  const [archivedPosts, setArchivedPosts] = React.useState([]);
   const [usersFollowing, setUsersFollowing] = React.useState([]);
+  
   const likedPostsURL = serverUrl + '/users/user/likedPosts/' + localStorage.getItem("uid");
   const createdPostsURL = serverUrl + '/users/user/createdPosts/' + localStorage.getItem("uid");
   const joinedPostsURL = serverUrl + '/users/user/joinedPosts/' + localStorage.getItem("uid");
+  const archivedPostsURL = serverUrl + '/users/user/archivedPosts/' + localStorage.getItem("uid");
   const usersFollowingURL = serverUrl + '/users/user/usersFollowing/' + localStorage.getItem("uid");
 
   React.useEffect(() => {
@@ -67,6 +70,16 @@ function ViewMyPost() {
       .catch(error => {
         console.error('There was an error!', error);
       }); 
+
+    axios.get(archivedPostsURL)
+      .then(response => {
+        //console.log(response.data);
+        setArchivedPosts(response.data)
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      }); 
+    
     
     axios.get(usersFollowingURL, {
       headers: {
@@ -100,6 +113,7 @@ function ViewMyPost() {
               createdPosts = {createdPosts}
               likedPosts={likedPosts}
               joinedPosts ={joinedPosts}
+              archivedPosts = {archivedPosts}
               usersFollowing = {usersFollowing}
             />
         </Paper>
