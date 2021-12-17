@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @SpringBootApplication
@@ -34,20 +35,24 @@ public class ServerApplication {
         return new SpringSecurityAuditorAware();
     }
 
+    public void setUpFB() {
+
+    }
+
     public static void main(String[] args) throws IOException {
 
         // Firebase admin sdk setup
-        FileInputStream serviceAccount =
-                new FileInputStream(ServerApplication.class
-                        .getClassLoader()
-                        .getResource("serviceAccount.json")
-                        .getFile()
-                );
+//        FileInputStream serviceAccount =
+//                new FileInputStream(ServerApplication.class
+//                        .getClassLoader()
+//                        .getResource("serviceAccount.json")
+//                        .getFile()
+//                );
+        InputStream serviceAccount = ServerApplication.class.getResourceAsStream("/serviceAccount.json");
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
         FirebaseApp.initializeApp(options);
-
 
 
         SpringApplication.run(ServerApplication.class, args);
