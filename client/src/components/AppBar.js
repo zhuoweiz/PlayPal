@@ -188,9 +188,13 @@ export default function NavBar() {
 
   React.useEffect(() => {
     getAuth().onIdTokenChanged((user) => {
-      user.getIdToken().then(response => {
-        localStorage.setItem("tmpToken", response);
-      })
+      if (user) {
+        user.getIdToken().then(response => {
+          localStorage.setItem("tmpToken", response);
+        })
+      } else {
+        localStorage.removeItem("tmpToken");
+      }
     })
     onAuthStateChanged(auth, (user) => {
       if (user) {
