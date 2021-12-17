@@ -34,7 +34,7 @@ const postsFromBackend = [
 ];
 
 function AlignItemsList(props) {
-  const { recommendationList } = props;
+  const { recommendationList, hoverId } = props;
   return (
     <List
       sx={{ width: "100%", bgcolor: "background.paper", height: "100%" }}
@@ -46,7 +46,7 @@ function AlignItemsList(props) {
         return (
           <React.Fragment key={index}>
             <Link href={"/post/"+ post.id} underline="hover">
-              <ListItem alignItems="flex-start">
+              <ListItem alignItems="flex-start" style={{border : post.id === hoverId? '3px solid orange' : "" }}>
                 <ListItemAvatar>
                   <Avatar src={"/post/" + post.id} />
                 </ListItemAvatar>

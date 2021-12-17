@@ -26,6 +26,7 @@ import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "fir
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import Admin from "./pages/admin";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -75,7 +76,7 @@ ReactDOM.render(
             >
               <Route index element={<Home />} />
               <Route path="signin" element={<Signin />} />
-
+              <Route path="admin" element={<Admin />} />
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Outlet />}>
                 <Route index element={

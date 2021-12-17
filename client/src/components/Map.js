@@ -4,7 +4,7 @@ import GoogleMapReact from "google-map-react";
 import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import PostCard from "./PostCard";
-
+import { googleMapKey } from "../constants/url";
 const postsFromBackend = [
   { text: "basketball", lat: "43.188947", lng: "-76.254480", id: "1" },
   { text: "soccer", lat: "43.088947", lng: "-76.354480", id: "2" },
@@ -62,7 +62,7 @@ function Map(props) {
   })
   return (
     <GoogleMapReact
-      bootstrapURLKeys={{ key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc" }}
+      bootstrapURLKeys={{ key: googleMapKey }}
       defaultCenter={mapProps.center}
       defaultZoom={mapProps.zoom}
     >

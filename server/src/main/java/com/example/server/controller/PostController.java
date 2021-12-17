@@ -29,10 +29,10 @@ public class PostController {
      * pagination.</p>
      * @return List<UserData>
      */
-    @GetMapping
-    public List<PostData> getPosts() {
-        return postService.getAllPosts();
-    }
+//    @GetMapping
+//    public List<PostData> getPosts() {
+//        return postService.getAllPosts();
+//    }
 
     /**
      * Method to get the user data based on the ID.
@@ -119,4 +119,9 @@ public class PostController {
     public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPostByTag(keyword);
     }
+//    1217
+//    @GetMapping("getAllPosts/{id}")
+//    public List<PostData> getAllPostsByIsAdmin(@PathVariable long userId){
+//        return postService.getAllPostsByIsAdmin(userId);
+//    }
 }

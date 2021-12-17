@@ -16,10 +16,10 @@ public class CommentController {
     @Resource(name = "commentService")
     private CommentService commentService;
 
-    @GetMapping
-    public List<CommentData> getComments() {
-        return commentService.getAllComments();
-    }
+//    @GetMapping
+//    public List<CommentData> getComments() {
+//        return commentService.getAllComments();
+//    }
 
     @GetMapping("/comment/{id}")
     public CommentData getComment(@PathVariable Long id) {
@@ -44,5 +44,10 @@ public class CommentController {
     public Boolean deleteComment(@PathVariable Long id) {
         return commentService.deleteComment(id);
     }
+//    1217
+//    @GetMapping("/getAllComments/{id}")
+//    public List<CommentData> getAllCommentsByIsAdmin(@PathVariable Long userId){
+//        return commentService.getAllCommentsByIsAdmin(userId);
+//    }
 }
 
