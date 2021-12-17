@@ -126,4 +126,8 @@ ADD lng DOUBLE(11,7);
 ALTER TABLE users
 ADD bio VARCHAR(255);
 
+-- Dec 17 2021
+ALTER TABLE users
+ADD is_admin BIT;
+
 ```

@@ -26,15 +26,16 @@ function Admin() {
       }));
       const classes = useStyles();
       React.useEffect(()=>{
+        //1217 changed the url
           if(posts.length === 0){
-            axios.get(serverUrl + '/posts/')
+            axios.get(serverUrl + '/posts/getAllPosts/'+localStorage.getItem("uid"))
             .then(response=>{
                 setPosts(response.data)
             })
             .catch(error=>{
                 console.log(error);
             })
-            axios.get(serverUrl+ '/comments/')
+            axios.get(serverUrl+ '/comments/getAllComments'+localStorage.getItem("uid"))
             .then(response=>{
                 setComments(response.data)
             })
@@ -68,6 +69,7 @@ function Admin() {
                         axios.delete(serverUrl + '/posts/post/'+ element.id)
                         .then(response=>{
                             console.log(response.status);
+                            //TODO
                         })
                         .catch(error=>{
                             console.log(error);

@@ -20,4 +20,6 @@ public interface PostService {
     List<PostData> searchPostByTag(final String searchString);
     List<PostData> searchPostByLatLng(final double lat, final double lng);
     List<PostData> searchPostByUserInterest(long userId);
+//    1217
+//    List<PostData> getAllPostsByIsAdmin(long userId);
 }

@@ -44,5 +44,10 @@ public class CommentController {
     public Boolean deleteComment(@PathVariable Long id) {
         return commentService.deleteComment(id);
     }
+//    1217
+//    @GetMapping("/getAllComments/{id}")
+//    public List<CommentData> getAllCommentsByIsAdmin(@PathVariable Long userId){
+//        return commentService.getAllCommentsByIsAdmin(userId);
+//    }
 }
 

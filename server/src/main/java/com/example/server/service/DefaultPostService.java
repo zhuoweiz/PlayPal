@@ -138,6 +138,7 @@ public class DefaultPostService implements PostService {
         return responseUsers;
     }
 
+
     /*
     * Search for posts match with the searchKeyword. return empty list if no posts found
     * @param searchKeyword
@@ -197,7 +198,20 @@ public class DefaultPostService implements PostService {
         });
         return responseList;
     }
-
+//    1217
+//    @Override
+//    public List<PostData> getAllPostsByIsAdmin(long userId){
+//        List<PostData> postData = new ArrayList<>();
+//        User currentUser = userRepo.getById(userId);
+//        if(currentUser.getIsAdmin().equals(true)){
+//            List<Post> postList = postRepo.findAll();
+//            postList.forEach(post -> {
+//                postData.add(populatePostData(post));
+//            });
+//
+//        }
+//        return postData;
+//    }
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data

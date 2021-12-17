@@ -103,4 +103,9 @@ public class PostController {
     public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPostByTag(keyword);
     }
+//    1217
+//    @GetMapping("getAllPosts/{id}")
+//    public List<PostData> getAllPostsByIsAdmin(@PathVariable long userId){
+//        return postService.getAllPostsByIsAdmin(userId);
+//    }
 }
