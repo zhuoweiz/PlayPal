@@ -1,0 +1,7 @@
+com.example.server
+com.example.server.controller
+com.example.server.data
+com.example.server.dto
+com.example.server.repository
+com.example.server.service
+com.example.server.utils

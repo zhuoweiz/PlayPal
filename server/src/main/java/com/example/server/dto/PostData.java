@@ -19,7 +19,7 @@ public class PostData {
     private UserData creator;
 
     private String location;
-//    @Type(type = "numeric_boolean")
+
     private Boolean isVirtual;
     private Boolean archive;
     private String dateTime;
@@ -28,9 +28,6 @@ public class PostData {
 
     private Double lat;
     private Double lng;
-
-//    private Set<CommentData> comments;
-//    private Set<TagData> tags;
 
     public PostData() {}
 

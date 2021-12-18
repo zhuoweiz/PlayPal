@@ -304,7 +304,10 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping("/user/{id}")
-	public Boolean deleteUser(@PathVariable Long id) {
+	public Boolean deleteUser(@RequestHeader HttpHeaders headers,
+							  @PathVariable Long id)
+	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.deleteUser(id);
 	}
 }
