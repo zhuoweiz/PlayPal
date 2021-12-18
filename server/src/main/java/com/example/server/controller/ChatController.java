@@ -9,6 +9,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
+	/**
+	 *
+	 * @param message
+	 * @return
+	 * @throws Exception
+	 */
 	@MessageMapping("/hello")
 	@SendTo("/topic/greetings")
 	public MessageData greeting(Message message) throws Exception {

@@ -25,18 +25,22 @@ public class MyExceptionHandler {
         }
     }
 
-    public static void TokenValidationHandler(HttpHeaders headers, String Fid) {
+    public static String TokenValidationWithFid(HttpHeaders headers) {
+        String Fid = null;
         try {
             String bearer = headers.getFirst(HttpHeaders.AUTHORIZATION);
             String idToken = bearer.split(" ")[1];
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-            String uid = decodedToken.getUid();
+            Fid = decodedToken.getUid();
+            return Fid;
         } catch (FirebaseAuthException e) {
             // Token invalid
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You Are Not Authorized for this resource");
         } catch (NullPointerException e) {
             // Token not found
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You Are Not Authorized for this resource");
+        } finally {
+            return Fid;
         }
     }
 }

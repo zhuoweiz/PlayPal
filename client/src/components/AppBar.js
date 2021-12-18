@@ -20,7 +20,6 @@ import {useNavigate} from 'react-router-dom';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 import SearchPopUp from './other/SearchPopUp';
-import axios from 'axios';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -188,9 +187,13 @@ export default function NavBar() {
 
   React.useEffect(() => {
     getAuth().onIdTokenChanged((user) => {
-      user.getIdToken().then(response => {
-        localStorage.setItem("tmpToken", response);
-      })
+      if (user) {
+        user.getIdToken().then(response => {
+          localStorage.setItem("tmpToken", response);
+        })
+      } else {
+        localStorage.removeItem("tmpToken");
+      }
     })
     onAuthStateChanged(auth, (user) => {
       if (user) {

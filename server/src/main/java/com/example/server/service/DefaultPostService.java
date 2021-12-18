@@ -11,6 +11,7 @@ import com.example.server.repository.PostRepository;
 import com.example.server.repository.TagRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -29,7 +30,7 @@ public class DefaultPostService implements PostService {
     private TagRepository tagRepo;
 
     /**
-     * Create a user based on the data sent to the service class.
+     * Create a post based on the data sent to the service class.
      * @param postData
      * @return DTO representation of the user
      */
@@ -44,7 +45,6 @@ public class DefaultPostService implements PostService {
             Tag temp_tag = new Tag();
             temp_tag.setLabel(tagData.getLabel());
             temp_tag.setPost(temp_post);
-//            temp_set.add(temp_tag);
             tagRepo.save(temp_tag);
         });
 
@@ -52,21 +52,25 @@ public class DefaultPostService implements PostService {
     }
 
     /**
-     * Delete pet based on the user ID.We can also use other option to delete user
+     * Delete post based on the postID.We can also use other option to delete user
      * based on the entity (passing JPA entity class as method parameter)
      * @param postId
      * @return boolean flag showing the request status
      */
     @Override
     public boolean deletePost(Long postId) {
+        Post post = postRepo.getById(postId);
+        post.setJoinedUsers(null);
         postRepo.deleteById(postId);
+
+        List<Post> postList = postRepo.findAll();
         return true;
     }
 
     /**
-     * Method to return the list of all the users in the system. This is a simple
+     * Method to return the list of all the post in the system. This is a simple
      * implementation but use pagination in the real world example.
-     * @return list of user
+     * @return List<PostData>
      */
     @Override
     public List<PostData> getAllPosts() {
@@ -91,13 +95,16 @@ public class DefaultPostService implements PostService {
         return populatePostData(post);
     }
 
+    /**
+     * Method to get the full post information by post Id.
+     * @param postId
+     * @return PostData
+     */
     @Override
     public PostData getFullPostById(long postId) {
         Post post = postRepo.findById(postId).orElseThrow(() ->
           new EntityNotFoundException("Post not found!"));
         PostData responsePostData = populatePostData(post);
-
-        // add comments
         if(post.getComments() != null) {
             List<CommentData> commentDataList = new ArrayList<>();
             post.getComments().forEach(comment -> {
@@ -107,11 +114,14 @@ public class DefaultPostService implements PostService {
             responsePostData.setComments(commentDataList);
         }
 
-        // can add chat and stuff later
-
         return responsePostData;
     }
 
+    /**
+     * Method to get the creator for a post.
+     * @param postId
+     * @return UserData
+     */
     @Override
     public UserData getPostCreator(long postId) {
         Post post = postRepo.findById(postId).orElseThrow(() ->
@@ -119,17 +129,13 @@ public class DefaultPostService implements PostService {
         return populatePostData(post).getCreator();
     }
 
+    /**
+     * Method to get all the users joined in a post.
+     * @param postId
+     * @return List<UserData>
+     */
     @Override
     public List<UserData> getJoinedUsers(long postId) {
-        /*List<User> joinedUsers= userRepo.findByPostId(postId);
-        List<UserData> result = new ArrayList<>();
-        joinedUsers.forEach(user -> {
-            UserData tmpuser = new UserData();
-            tmpuser.setName(user.getName());
-            tmpuser.setId(user.getId());
-            result.add(tmpuser);
-        });
-        return result;*/
         List<UserData> responseUsers = new ArrayList<>();
         Post post = postRepo.getById(postId);
         Set<User> tmp = post.getJoinedUsers();
@@ -140,6 +146,11 @@ public class DefaultPostService implements PostService {
         return responseUsers;
     }
 
+    /**
+     * Method to mark a post as archive.
+     * @param postId
+     * @return boolean
+     */
     public boolean archivePost(long postId) {
         Post post = postRepo.getById(postId);
         if (post.getArchive()) {
@@ -152,6 +163,11 @@ public class DefaultPostService implements PostService {
         }
     }
 
+    /**
+     * Method to unarchive a post.
+     * @param postId
+     * @return boolean
+     */
     public boolean unarchivePost(long postId) {
         Post post = postRepo.getById(postId);
         if (!post.getArchive()) {
@@ -185,6 +201,11 @@ public class DefaultPostService implements PostService {
         return matchPosts;
     }
 
+    /**
+     * Method to search for posts based on a tag.
+     * @param searchString
+     * @return List<PostData>
+     */
     @Override
     public List<PostData> searchPostByTag(String searchString) {
         List<PostData> responseList = new ArrayList<>();
@@ -196,6 +217,12 @@ public class DefaultPostService implements PostService {
         return responseList;
     }
 
+    /**
+     * Method for checking the activity against current time.
+     * @param ActivityTime
+     * @return boolean
+     * @throws ParseException
+     */
     public boolean checkTime(String ActivityTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -207,6 +234,11 @@ public class DefaultPostService implements PostService {
         return ActivityDate.after(now);
     }
 
+    /**
+     * Method to search for posts based on the user interest tags, check for archive and activity time.
+     * @param userId
+     * @return List<PostData>
+     */
     @Override
     public List<PostData> searchPostByUserInterest(long userId) {
         User user = userRepo.getById(userId);
@@ -233,7 +265,12 @@ public class DefaultPostService implements PostService {
     }
 
 
-
+    /**
+     * Method to search for post based on user location, check for archive and activity time.
+     * @param lat
+     * @param lng
+     * @return List<PostData>
+     */
     @Override
     public List<PostData> searchPostByLatLng(double lat, double lng) {
         List<Post> searchResult = postRepo.findByLatBetweenAndLngBetween(lat-0.2, lat+0.2, lng-0.2,lng+0.2);
@@ -242,7 +279,7 @@ public class DefaultPostService implements PostService {
             String activityTime = post.getDateTime();
             System.out.println(activityTime);
             try {
-                if (!post.getArchive() && checkTime(activityTime)) {
+                if (!(post.getArchive()) && checkTime(activityTime)) {
                     responseList.add(populatePostData(post));
                 }
             } catch (ParseException e) {
@@ -251,7 +288,20 @@ public class DefaultPostService implements PostService {
         });
         return responseList;
     }
-
+    @Override
+    public List<PostData> getAllPostsByIsAdmin(String fid, long userId){
+        List<PostData> postData = new ArrayList<>();
+        User currentUser = userRepo.getById(userId);
+        if(currentUser.getIsAdmin().equals(true) && currentUser.getFid().equals(fid)){
+            List<Post> postList = postRepo.findAll();
+            postList.forEach(post -> {
+                if(post.getArchive() == false) {
+                    postData.add(populatePostData(post));
+                }
+            });
+        }
+        return postData;
+    }
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
@@ -287,6 +337,11 @@ public class DefaultPostService implements PostService {
         return postData;
     }
 
+    /**
+     * Method to convert User JPA entity to DTO object for frontend.
+     * @param user
+     * @return UserData
+     */
     private UserData populateUserData(final User user){
         UserData userData = new UserData();
         userData.setId(user.getId());
@@ -305,7 +360,6 @@ public class DefaultPostService implements PostService {
         Post post = new Post();
         post.setTitle(postData.getTitle());
         post.setContent(postData.getContent());
-
         User user = userRepo.getById(postData.getCreatorId());
         post.setCreator(user);
         post.setLocation(postData.getLocation());

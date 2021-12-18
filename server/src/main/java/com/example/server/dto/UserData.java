@@ -13,17 +13,13 @@ public class UserData {
 	private String email;
 	private String fid;
 	private String bio;
+	private Boolean isAdmin;
 /*	@Temporal(value = TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Bogota")*/
 	private List<TagData> tags;
 
 	public UserData() {
 	}
-//	public UserData(Long id, String name, String email) {
-//		this.id = id;
-//		this.name = name;
-//		this.email = email;
-//	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -35,6 +31,7 @@ public class UserData {
 		this.email = email;
 	}
 	public void setFid(String fid) { this.fid = fid; }
+	public void setIsAdmin(Boolean isAdmin) {this.isAdmin = isAdmin;}
 
 	public Long getId() {
 		return id;
@@ -46,6 +43,7 @@ public class UserData {
 		return email;
 	}
 	public String getFid() { return fid; }
+	public Boolean getIsAdmin() {return isAdmin;}
 
 	public String getBio() { return bio; }
 	public void setBio(String bio) { this.bio = bio; }

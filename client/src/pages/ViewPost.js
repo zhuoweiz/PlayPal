@@ -31,7 +31,7 @@ import GoogleMapReact from "google-map-react";
 import MapIcon from "../components/MapIcon";
 import CommentBox from '../components/viewpost/CommentBox';
 
-import { serverUrl } from '../constants';
+import { serverUrl,googleMapKey } from '../constants/url';
 import axios from 'axios';
 import { set } from "lodash";
 const _ = require("lodash");
@@ -204,7 +204,11 @@ export default function ViewPost() {
   } 
 
   const archiveHandler = ()=> {
-    axios.get(archiveURL)
+    axios.get(archiveURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       setCheckArchive(true)
       // setPostInfo({
@@ -218,7 +222,11 @@ export default function ViewPost() {
   }
 
   const unarchiveHandler = ()=> {
-    axios.get(unarchiveURL)
+    axios.get(unarchiveURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
     .then(response => {
       setCheckArchive(false)
       // setPostInfo({
@@ -608,7 +616,7 @@ export default function ViewPost() {
                   mapProps ?
                     <GoogleMapReact
                       bootstrapURLKeys={{
-                        key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+                        key: googleMapKey,
                       }}
                       center={mapProps.center}
                       zoom={12}

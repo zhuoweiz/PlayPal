@@ -26,7 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.annotation.Resource;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://143.198.190.9"})
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -304,7 +304,10 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping("/user/{id}")
-	public Boolean deleteUser(@PathVariable Long id) {
+	public Boolean deleteUser(@RequestHeader HttpHeaders headers,
+							  @PathVariable Long id)
+	{
+		MyExceptionHandler.TokenValidationHandler(headers);
 		return userService.deleteUser(id);
 	}
 }

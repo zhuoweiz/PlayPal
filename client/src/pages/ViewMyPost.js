@@ -71,7 +71,11 @@ function ViewMyPost() {
         console.error('There was an error!', error);
       }); 
 
-    axios.get(archivedPostsURL)
+    axios.get(archivedPostsURL, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+      }
+    })
       .then(response => {
         //console.log(response.data);
         setArchivedPosts(response.data)

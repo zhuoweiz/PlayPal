@@ -1,41 +1,53 @@
 import React from "react";
-import { Container, Grid, Paper, Divider, IconButton, Skeleton} from "@mui/material";
+import {
+  Container,
+  Grid,
+  Paper,
+  Divider,
+  IconButton,
+  Skeleton,
+} from "@mui/material";
 // import Map from "../components/Map";
 import PostsList from "../components/PostsList";
 import PostCard from "../components/PostCard";
 import { Typography, Box, Tooltip } from "@mui/material";
 import FloatingActionButton from "../components/FloatingActionButton";
-import { serverUrl } from "../constants";
+import { serverUrl, googleMapKey } from "../constants/url";
 import GoogleMapReact from "google-map-react";
 import { IconContext } from "react-icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { useSnackbar } from 'notistack';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import InfoIcon from '@mui/icons-material/Info';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-
-
+import { useSnackbar } from "notistack";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import InfoIcon from "@mui/icons-material/Info";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import { Link } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const axios = require('axios');
+const axios = require("axios");
 
 function Home() {
-  const {enqueueSnackbar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const auth = getAuth();
-
+  const [hoverId, setHoverId] = React.useState();
   const [toolTip, setToolTip] = React.useState(false);
-  const [lat, setLat] = React.useState(parseFloat(sessionStorage.getItem("lat")));
-  const [lng, setLng] = React.useState(parseFloat(sessionStorage.getItem("lng")));
+  const [lat, setLat] = React.useState(
+    parseFloat(sessionStorage.getItem("lat"))
+  );
+  const [lng, setLng] = React.useState(
+    parseFloat(sessionStorage.getItem("lng"))
+  );
   const [recommendationList, setRecommendationList] = React.useState(null);
   const [mapProps, setMapProps] = React.useState(null);
   const [tagRecommendation, setTagRecommendation] = React.useState([]);
-  const tagRecommendationURL = serverUrl + '/posts/searchPostByUserInterest/' + localStorage.getItem("uid");
+  const tagRecommendationURL =
+    serverUrl +
+    "/posts/searchPostByUserInterest/" +
+    localStorage.getItem("uid");
   React.useEffect(() => {
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('ok...')
+        console.log("ok...");
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         axios.get(tagRecommendationURL,{
@@ -44,7 +56,6 @@ function Home() {
           }
         })
         .then(response => {
-          console.log("fuck", response.data);
           setTagRecommendation(response.data)
         })
         .catch(error => {
@@ -59,23 +70,37 @@ function Home() {
     // run when render/rerender
     // GET request using axios inside useEffect React hook
 
-
-
     if ("geolocation" in navigator) {
       if (isNaN(lat) || isNaN(lng)) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-          sessionStorage.setItem("lat", position.coords.latitude);
-          sessionStorage.setItem("lng", position.coords.longitude);
-          setMapProps({
-            center: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-          });
-        });
+        // navigator.geolocation.getCurrentPosition(function (position) {
+        //   console.log("current position: ", position.coords.latitude, " - ", position.coords.longitude);
+        //   setLat(position.coords.latitude);
+        //   setLng(position.coords.longitude);
+        //   sessionStorage.setItem("lat", position.coords.latitude);
+        //   sessionStorage.setItem("lng", position.coords.longitude);
+        //   setMapProps({
+        //     center: {
+        //       lat: position.coords.latitude,
+        //       lng: position.coords.longitude,
+        //     },
+        //   });
+        // });
+
+        axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc')
+          .then(function(response) {
+            const locationData = response.data.location
+            console.log("alternative position: ", locationData);
+            setLat(locationData.lat);
+            setLng(locationData.lng);
+            sessionStorage.setItem("lat", locationData.lat);
+            sessionStorage.setItem("lng", locationData.lng);
+            setMapProps({
+              center: {
+                lat: locationData.lat,
+                lng: locationData.lng,
+              },
+            });
+          })
       } else {
         setMapProps({
           center: {
@@ -86,30 +111,35 @@ function Home() {
       }
     } else {
       enqueueSnackbar("Geolocation IS NOT available", {
-        variant: "error"
-      })
+        variant: "error",
+      });
     }
-  },[]);
+  }, []);
 
-  const AnyReactComponent = ({ text }) => {
+  const AnyReactComponent = (props) => {
+    const { id } = props;
     const [color, setColor] = React.useState("blue");
     const [size, setSize] = React.useState("1.5rem");
     return (
       <IconContext.Provider value={{ color: color, size: size }}>
-        <div onMouseEnter={() => {
+        {/* <div 
           // set hover(id)
-        }}>
-          <FaMapMarkerAlt
-            onMouseEnter={() => {
-              setColor("red");
-              setSize("2rem");
-            }}
-            onMouseLeave={() => {
-              setColor("blue");
-              setSize("1.5rem");
-            }}
-          />
-        </div>
+        > */}
+        <Link href={"/post/"+ id}>
+        <FaMapMarkerAlt
+          onMouseEnter={() => {
+            setColor("red");
+            setSize("2rem");
+            setHoverId(id);
+          }}
+          onMouseLeave={() => {
+            setColor("blue");
+            setSize("1.5rem");
+            setHoverId();
+          }}
+        />
+        </Link>
+        {/* </div> */}
       </IconContext.Provider>
     );
   };
@@ -157,7 +187,7 @@ function Home() {
               container
               direction="row"
               spacing={0}
-              style={{ 
+              style={{
                 height: 300,
                 border: "solid 1px #ffe5b4",
                 borderRadius: "12px",
@@ -171,36 +201,45 @@ function Home() {
                 md={6}
                 lg={7}
                 xl={7}
-                style={{ height: "100%", maxHeight: "360px",
+                style={{
+                  height: "100%",
+                  maxHeight: "360px",
                   maxWidth: "60%",
-                borderRadius: "12px", overflow: "hidden" }}
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                }}
               >
                 {mapProps && lat && lng && recommendationList ? (
                   <GoogleMapReact
                     bootstrapURLKeys={{
-                      key: "AIzaSyB4K5drECUTwnS6LN4UFjutNxnoYtChJYc",
+                      key: googleMapKey,
                     }}
                     center={mapProps.center}
-                    zoom={14}
+                    zoom={12}
                   >
                     {recommendationList.map((post, index) => {
                       return (
-                        <AnyReactComponent
-                          key={post.id}
-                          lat={post.lat}
-                          lng={post.lng}
+                      
+                          <AnyReactComponent
+                            key={post.id}
+                            lat={post.lat}
+                            lng={post.lng}
+                            id={post.id}
+                          />
                         
-                        />
                       );
                     })}
                   </GoogleMapReact>
-                ) : <Skeleton variant="text"
+                ) : (
+                  <Skeleton
+                    variant="text"
                     style={{
-                      margin:"5%"
+                      margin: "5%",
                     }}
-                  width="90%" 
-                  height="90%"  
-                />}
+                    width="90%"
+                    height="90%"
+                  />
+                )}
               </Grid>
               <Grid
                 item
@@ -209,36 +248,40 @@ function Home() {
                 md={6}
                 lg={5}
                 xl={5}
-                style={{ height: "100%", maxHeight: "360px", overflow: "auto",
-                borderRadius: "12px",
-              }}
+                style={{
+                  height: "100%",
+                  maxHeight: "360px",
+                  overflow: "auto",
+                  borderRadius: "12px",
+                }}
               >
                 {/* <Paper variant> */}
-                  {recommendationList ? 
-                    <PostsList
+                {recommendationList ? (
+                  <PostsList
                     recommendationList={
                       recommendationList ? recommendationList : []
                     }
-                    // hoverid = {hoverid}
+                    hoverId={hoverId}
                     // style={border: {hover === thisid} : 2px solid black ? }
                   />
-                  :
-                  <Skeleton variant="text"
+                ) : (
+                  <Skeleton
+                    variant="text"
                     animation="wave"
                     style={{
-                      margin: "5%"
+                      margin: "5%",
                     }}
-                    width="90%" height="90%" 
+                    width="90%"
+                    height="90%"
                   />
-                  }
-                  
+                )}
+
                 {/* </Paper> */}
               </Grid>
             </Grid>
             <Box style={{ marginTop: "30px" }}>
               <Typography variant="h5" gutterBottom component="div">
                 Recommended Virtual Activities
-
                 <Tooltip
                   onOpen={() => {
                     setToolTip(true);
@@ -248,25 +291,24 @@ function Home() {
                   }}
                   title="These recommendations are generated based on your interest tags. Set your interest tags here 🙂"
                 >
-                  <IconButton size="small" aria-label="show 4 new mails" color="inherit"
+                  <IconButton
+                    size="small"
+                    aria-label="show 4 new mails"
+                    color="inherit"
                     href="/profile/0"
                   >
                     {/* <HelpCenterIcon
                       color={toolTip ? "primary" : "action"}
                       
                     /> */}
-                    {
-                      toolTip ?
-                      <LightbulbIcon color="primary"/>
-                      :<LightbulbIcon color="action"/>
-                    }
+                    {toolTip ? (
+                      <LightbulbIcon color="primary" />
+                    ) : (
+                      <LightbulbIcon color="action" />
+                    )}
                   </IconButton>
-                  
                 </Tooltip>
-                
               </Typography>
-
-              
             </Box>
             <Grid
               item
@@ -274,13 +316,13 @@ function Home() {
               spacing={{ xs: 2, md: 3 }}
               // columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              {
-                tagRecommendation.map((element, index) => {
-                  return <Grid item xs={12} sm={6} md={4} key={index}>
-                    <PostCard postData={element}/>
+              {tagRecommendation.map((element, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <PostCard postData={element} />
                   </Grid>
-                })
-              }
+                );
+              })}
             </Grid>
           </Grid>
         </Grid>

@@ -8,7 +8,6 @@ public class MessageData {
     private UserData sender;
     private Long postId;
     private PostData post;
-//    private Timestamp time;
     private String content;
 
     public MessageData() {}

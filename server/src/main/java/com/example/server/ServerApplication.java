@@ -40,14 +40,6 @@ public class ServerApplication {
     }
 
     public static void main(String[] args) throws IOException {
-
-        // Firebase admin sdk setup
-//        FileInputStream serviceAccount =
-//                new FileInputStream(ServerApplication.class
-//                        .getClassLoader()
-//                        .getResource("serviceAccount.json")
-//                        .getFile()
-//                );
         InputStream serviceAccount = ServerApplication.class.getResourceAsStream("/serviceAccount.json");
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
