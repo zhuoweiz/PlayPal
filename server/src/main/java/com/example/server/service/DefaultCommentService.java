@@ -92,6 +92,13 @@ public class DefaultCommentService implements CommentService {
 
         return commentsResponse;
     }
+
+    /**
+     * Method to get all the comments for admin
+     * @param Fid
+     * @param userId
+     * @return List<CommentData>
+     */
     @Override
     public List<CommentData> getAllCommentsByIsAdmin(String Fid, long userId){
         List<CommentData> commentData = new ArrayList<>();
