@@ -43,7 +43,8 @@ public class CommentController {
     }
 
     @DeleteMapping("/comment/{id}")
-    public Boolean deleteComment(@PathVariable Long id) {
+    public Boolean deleteComment(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
+        MyExceptionHandler.TokenValidationHandler(headers);
         return commentService.deleteComment(id);
     }
 

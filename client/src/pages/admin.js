@@ -6,13 +6,16 @@ import { serverUrl } from "../constants";
 import { makeStyles } from "@mui/styles";
 import { Tab } from "@mui/material";
 import { Tabs } from "@mui/material";
+import { useSnackbar } from 'notistack';
 
-const axios = require('axios')
+const axios = require('axios');
+const _ = require("lodash");
 
 function Admin() {
     const [posts, setPosts] = React.useState([])
     const [comments, setComments] = React.useState([])
     const [value,setValue] = React.useState(0);
+    const { enqueueSnackbar } = useSnackbar();
    
     const handleChange = (event, newvalue)=>{
         setValue(newvalue);
@@ -68,26 +71,38 @@ function Admin() {
             className={classes.gridContainer}
           >
             {
-                posts.map((element, index) => {
-                  return <Grid container item justifyContent="space-between" alignItems="center" xs={12} md={12} key={index}>
-                    <Grid item>{element.title}</Grid>
-                    <Grid item>{element.content} </Grid>
-                    <Grid item><Button variant="text" onClick={()=>{
-                        axios.get(serverUrl + '/posts/archive?'+ 'postId='+element.id,{
-                          headers: {
-                            'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
-                          }
-                        })
-                        .then(response=>{
-                            console.log(response.status);
-                            //TODO
-                        })
-                        .catch(error=>{
-                            console.log(error);
-                        })
-                    }}>ARCHIVE</Button></Grid>
-                  </Grid>
-                })
+              posts.map((element, index) => {
+                return <Grid container item justifyContent="space-between" alignItems="center" xs={12} md={12} key={index}>
+                  <Grid item>{element.title}</Grid>
+                  <Grid item>{element.content} </Grid>
+                  <Grid item><Button variant="text" onClick={()=>{
+                    axios.get(serverUrl + '/posts/archive?'+ 'postId='+element.id,{
+                      headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+                      }
+                    })
+                    .then(response=>{
+                      enqueueSnackbar("Archive Success", {
+                        variant: "success"
+                      })
+                      const currPosts = _.cloneDeep(posts);
+                      var newPosts = [];
+                      currPosts.forEach(item => {
+                        if (item.id !== element.id) {
+                          newPosts.push(item);
+                        }
+                      })
+                      setPosts(newPosts);
+                    })
+                    .catch(error=>{
+                      enqueueSnackbar("Archive Failed", {
+                        variant: "error"
+                      })
+                        console.log(error);
+                    })
+                  }}>ARCHIVE</Button></Grid>
+                </Grid>
+              })
               }
           </Grid>
       </TabPanel>
@@ -111,11 +126,22 @@ function Admin() {
                           }
                         })
                         .then(response=>{
-                            console.log('delete');
-                            console.log(response.status);
+                          enqueueSnackbar("Delete Success", {
+                            variant: "success"
+                          });
+                          const currComments = _.cloneDeep(comments);
+                          var newComments = [];
+                          currComments.forEach(item => {
+                            if (item.id !== element.id) {
+                              newComments.push(item);
+                            }
+                          });
+                          setComments(newComments);
                         })
                         .catch(error=>{
-                            console.log('there is an error');
+                          enqueueSnackbar("Delete Failed", {
+                            variant: "error"
+                          })
                             console.log(error);
                         })
                     }}>DELETE</Button></Grid>
@@ -129,7 +155,6 @@ function Admin() {
   </Container>
   )
 }
-
 
 function TabPanel(props) {
     const {children,value,index} = props;
