@@ -26,23 +26,30 @@ function Admin() {
       }));
       const classes = useStyles();
       React.useEffect(()=>{
-        //1217 changed the url
-          if(posts.length === 0){
-            axios.get(serverUrl + '/posts/getAllPosts/'+localStorage.getItem("uid"))
-            .then(response=>{
-                setPosts(response.data)
-            })
-            .catch(error=>{
-                console.log(error);
-            })
-            axios.get(serverUrl+ '/comments/getAllComments'+localStorage.getItem("uid"))
-            .then(response=>{
-                setComments(response.data)
-            })
-            .catch(error=>{
-                console.log(error);
-            })
-          }
+        if(posts.length === 0){
+          axios.get(serverUrl + '/posts/getAllPosts/'+localStorage.getItem("uid"), {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+            }
+          })
+          .then(response=>{
+              setPosts(response.data)
+          })
+          .catch(error=>{
+              console.log(error);
+          })
+          axios.get(serverUrl+ '/comments/getAllComments/'+localStorage.getItem("uid"), {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+            }
+          })
+          .then(response=>{
+              setComments(response.data)
+          })
+          .catch(error=>{
+              console.log(error);
+          })
+        }
       },[posts.length]);
   return (
     <Container maxWidth="md" style={{}}>
@@ -66,7 +73,11 @@ function Admin() {
                     <Grid item>{element.title}</Grid>
                     <Grid item>{element.content} </Grid>
                     <Grid item><Button variant="text" onClick={()=>{
-                        axios.delete(serverUrl + '/posts/post/'+ element.id)
+                        axios.get(serverUrl + '/posts/archive?'+ 'postId='+element.id,{
+                          headers: {
+                            'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+                          }
+                        })
                         .then(response=>{
                             console.log(response.status);
                             //TODO
@@ -74,7 +85,7 @@ function Admin() {
                         .catch(error=>{
                             console.log(error);
                         })
-                    }}>DELETE</Button></Grid>
+                    }}>ARCHIVE</Button></Grid>
                   </Grid>
                 })
               }
@@ -94,7 +105,11 @@ function Admin() {
                     <Grid item>{element.creatorName}</Grid>
                     <Grid item>{element.content} </Grid>
                     <Grid item><Button variant="text" onClick={()=>{
-                        axios.delete(serverUrl + '/comments/comment/'+ element.id)
+                        axios.delete(serverUrl + '/comments/comment/'+ element.id, {
+                          headers: {
+                            'Authorization': `Bearer ${localStorage.getItem("tmpToken")}`
+                          }
+                        })
                         .then(response=>{
                             console.log('delete');
                             console.log(response.status);

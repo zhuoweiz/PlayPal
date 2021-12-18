@@ -24,9 +24,8 @@ public class User extends Auditable<String>{
 	private String name;
 	private String email;
 	private String bio;
-//	1217
-//	@Type(type = "numeric_boolean")
-//	private Boolean isAdmin;
+	@Type(type = "numeric_boolean")
+	private Boolean isAdmin;
 
 	@OneToMany(mappedBy="creator",
 		fetch = FetchType.LAZY,
@@ -73,23 +72,20 @@ public class User extends Auditable<String>{
 	public User(String name, String email, Boolean isAdmin) {
 		this.name = name;
 		this.email = email;
-//		1217
-//		this.isAdmin = Boolean.FALSE;
+		this.isAdmin = Boolean.FALSE;
 	}
 
 	public void setId(Long id) { this.id = id; }
 	public void setName(String name) { this.name = name; }
 	public void setEmail(String email) { this.email = email; }
 	public void setFid(String fid) { this.fid = fid; }
-//	1217
-//	public void setIsAdmin(Boolean isAdmin) {this.isAdmin = isAdmin;}
+	public void setIsAdmin(Boolean isAdmin) {this.isAdmin = isAdmin;}
 
 	public Long getId() { return id; }
 	public String getName() { return name; }
 	public String getEmail() { return email; }
 	public String getFid() { return fid; }
-//	1217
-//	public Boolean getIsAdmin() {return isAdmin;}
+	public Boolean getIsAdmin() {return isAdmin;}
 	public Set<Post> getCreatedPosts() {return createdPosts; }
 	public Set<Post> getLikedPosts() { return likedPosts; }
 	public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }

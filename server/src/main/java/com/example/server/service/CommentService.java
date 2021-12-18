@@ -11,6 +11,5 @@ public interface CommentService {
     List<CommentData> getAllComments();
     CommentData getCommentById(final long commentId);
     List<CommentData> getCommentsByPostId(final long postId);
-//    1217
-//    List<CommentData> getAllCommentsByIsAdmin(long userId);
+    List<CommentData> getAllCommentsByIsAdmin(String Fid, long userId);
 }

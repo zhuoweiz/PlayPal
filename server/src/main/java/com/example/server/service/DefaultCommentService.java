@@ -68,18 +68,17 @@ public class DefaultCommentService implements CommentService {
 
         return commentsResponse;
     }
-//    1217
-//    @Override
-//    public List<CommentData> getAllCommentsByIsAdmin(long userId){
-//        List<CommentData> commentData = new ArrayList<>();
-//        User currentUser = userRepo.getById(userId);
-//        if(currentUser.getIsAdmin().equals(true)){
-//            List<Comment> commentList = commentRepo.findAll();
-//            commentList.forEach(comment -> {
-//                commentData.add(populateCommentData(comment));
-//            });
-//
-//        }
-//        return commentData;
-//    }
+    @Override
+    public List<CommentData> getAllCommentsByIsAdmin(String Fid, long userId){
+        List<CommentData> commentData = new ArrayList<>();
+        User currentUser = userRepo.getById(userId);
+        if(currentUser.getIsAdmin().equals(true) && currentUser.getFid().equals(Fid)){
+            List<Comment> commentList = commentRepo.findAll();
+            commentList.forEach(comment -> {
+                commentData.add(populateCommentData(comment));
+            });
+
+        }
+        return commentData;
+    }
 }

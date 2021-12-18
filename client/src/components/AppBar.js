@@ -20,7 +20,6 @@ import {useNavigate} from 'react-router-dom';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 import SearchPopUp from './other/SearchPopUp';
-import axios from 'axios';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

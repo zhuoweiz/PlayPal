@@ -2,6 +2,8 @@ package com.example.server.controller;
 
 import com.example.server.dto.CommentData;
 import com.example.server.service.CommentService;
+import com.example.server.utils.MyExceptionHandler;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -44,10 +46,11 @@ public class CommentController {
     public Boolean deleteComment(@PathVariable Long id) {
         return commentService.deleteComment(id);
     }
-//    1217
-//    @GetMapping("/getAllComments/{id}")
-//    public List<CommentData> getAllCommentsByIsAdmin(@PathVariable Long userId){
-//        return commentService.getAllCommentsByIsAdmin(userId);
-//    }
+
+    @GetMapping("/getAllComments/{userId}")
+    public List<CommentData> getAllCommentsByIsAdmin(@RequestHeader HttpHeaders headers, @PathVariable Long userId){
+        String Fid = MyExceptionHandler.TokenValidationWithFid(headers);
+        return commentService.getAllCommentsByIsAdmin(Fid, userId);
+    }
 }
 

@@ -350,6 +350,7 @@ public class DefaultUserService implements UserService {
 		userData.setName(user.getName());
 		userData.setEmail(user.getEmail());
 		userData.setBio(user.getBio());
+		userData.setIsAdmin(user.getIsAdmin());
 		Set<Tag> tags = user.getTags();
 
 		if(tags != null) {

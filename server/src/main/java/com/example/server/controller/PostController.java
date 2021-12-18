@@ -5,6 +5,8 @@ import com.example.server.dto.TagData;
 import com.example.server.dto.UserData;
 import com.example.server.service.PostService;
 import com.example.server.service.TagService;
+import com.example.server.utils.MyExceptionHandler;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -119,9 +121,9 @@ public class PostController {
     public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPostByTag(keyword);
     }
-//    1217
-//    @GetMapping("getAllPosts/{id}")
-//    public List<PostData> getAllPostsByIsAdmin(@PathVariable long userId){
-//        return postService.getAllPostsByIsAdmin(userId);
-//    }
+    @GetMapping("getAllPosts/{userId}")
+    public List<PostData> getAllPostsByIsAdmin(@RequestHeader HttpHeaders headers, @PathVariable long userId){
+        String Fid = MyExceptionHandler.TokenValidationWithFid(headers);
+        return postService.getAllPostsByIsAdmin(Fid, userId);
+    }
 }

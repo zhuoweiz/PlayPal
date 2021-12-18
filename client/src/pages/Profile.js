@@ -81,12 +81,12 @@ const Profile = () => {
         <NotificationComponent></NotificationComponent>
       )
       // 1217
-    // } else if (currentPath === 3 && userData.isAdmin){
-    //   return (
-    //     <Button variant='Contained'>
-    //       <Link href='/admin'>admin</Link>
-    //     </Button>
-    //   )
+    } else if (currentPath === 3 && userData.isAdmin){
+      return (
+        <Button variant='Contained'>
+          <Link href='/admin'>admin</Link>
+        </Button>
+      )
     
     } else {
       return (<></>)
@@ -151,11 +151,10 @@ const Profile = () => {
             setCurrentPath(2)
           }} label="Notifications" />
           {/* 1217 */}
-          {/* <Tab onClick={() => {
+          <Tab onClick={() => {
             setValue(3);
-            // navigate("notification");
             setCurrentPath(3)
-          }} label="Admin" /> */}
+          }} label="Admin" />
         </Tabs>
 
         <TabPanel>
