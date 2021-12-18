@@ -104,6 +104,23 @@ public class PostData {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof PostData))
+            return false;
+        PostData post = (PostData) o;
+        if (this.id == post.getId()){
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public int hashCode(){
+        return id.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Post: Id: " + id + " creatorId " + creatorId + " title: " + title + " content: " + content;
     }
