@@ -10,22 +10,13 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://143.198.190.9"})
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
 
     @Resource(name = "commentService")
     private CommentService commentService;
-
-    /**
-     * Method to get all the comments.
-     * @return List<CommentData>
-     */
-    @GetMapping
-    public List<CommentData> getComments() {
-        return commentService.getAllComments();
-    }
 
     /**
      * Method to get the comment based on id.
@@ -71,11 +62,19 @@ public class CommentController {
      * @return boolean
      */
     @DeleteMapping("/comment/{id}")
-    public Boolean deleteComment(@RequestHeader HttpHeaders headers,
-            @PathVariable Long id)
-    {
+    public Boolean deleteComment(@RequestHeader HttpHeaders headers, @PathVariable Long id) {
         MyExceptionHandler.TokenValidationHandler(headers);
         return commentService.deleteComment(id);
+    }
+  
+    /**
+     * Method to get all the comments.
+     * @return List<CommentData>
+     */
+    @GetMapping("/getAllComments/{userId}")
+    public List<CommentData> getAllCommentsByIsAdmin(@RequestHeader HttpHeaders headers, @PathVariable Long userId){
+        String Fid = MyExceptionHandler.TokenValidationWithFid(headers);
+        return commentService.getAllCommentsByIsAdmin(Fid, userId);
     }
 }
 

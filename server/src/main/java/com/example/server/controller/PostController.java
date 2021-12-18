@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://143.198.190.9"})
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -28,10 +28,10 @@ public class PostController {
      * pagination.</p>
      * @return List<UserData>
      */
-    @GetMapping
-    public List<PostData> getPosts() {
-        return postService.getAllPosts();
-    }
+//    @GetMapping
+//    public List<PostData> getPosts() {
+//        return postService.getAllPosts();
+//    }
 
     /**
      * Method to get the post data based on the ID.
@@ -175,5 +175,10 @@ public class PostController {
     @GetMapping("/searchPostByTag")
     public List<PostData> searchPostByTag(@RequestParam(value = "keyword") String keyword) {
         return postService.searchPostByTag(keyword);
+    }
+    @GetMapping("getAllPosts/{userId}")
+    public List<PostData> getAllPostsByIsAdmin(@RequestHeader HttpHeaders headers, @PathVariable long userId){
+        String Fid = MyExceptionHandler.TokenValidationWithFid(headers);
+        return postService.getAllPostsByIsAdmin(Fid, userId);
     }
 }

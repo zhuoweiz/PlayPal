@@ -428,6 +428,15 @@ public class DefaultUserService implements UserService {
 
 		return responseUserDataList;
 	}
+//	@Override
+//	public Boolean checkIsAdminById(long userId){
+//		User currentUser = userRepo.getById(userId);
+//		UserData currentUserData = populateUserData(currentUser);
+//
+//		return currentUserData.getIsAdmin();
+//
+//
+//	}
 
 	/**
 	 * Internal method to convert User JPA entity to the DTO object
@@ -441,6 +450,7 @@ public class DefaultUserService implements UserService {
 		userData.setName(user.getName());
 		userData.setEmail(user.getEmail());
 		userData.setBio(user.getBio());
+		userData.setIsAdmin(user.getIsAdmin());
 		Set<Tag> tags = user.getTags();
 
 		if(tags != null) {

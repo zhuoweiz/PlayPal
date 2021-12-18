@@ -5,15 +5,15 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useNavigate, Routes, Route, Outlet, Link, useMatch, useSearchParams, useLocation } from 'react-router-dom';
+import { useNavigate, Routes, Route, Outlet, useMatch, useSearchParams, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-
+import { Button } from '@mui/material';
 import { serverUrl } from '../constants';
 import ProfileComponent from '../components/profile/ProfileComponent';
 import SettingComponent from '../components/profile/SettingComponent';
 import NotificationComponent from '../components/profile/NotificationComponent';
 import { Grow } from '@mui/material';
-
+import { Link } from '@mui/material';
 import { useParams } from "react-router-dom";
 import { getAuth } from 'firebase/auth';
 
@@ -67,7 +67,7 @@ const Profile = () => {
     if (userData === null) {
       return null;
     }
-
+    console.log(userData)
     if (currentPath === 0) {
       return (
         <ProfileComponent userData={userData}></ProfileComponent>
@@ -80,8 +80,17 @@ const Profile = () => {
       return (
         <NotificationComponent></NotificationComponent>
       )
+      // 1217
+    } else if (currentPath === 3 && userData.isAdmin){
+      return (
+        <Button variant='Contained'>
+          <Link href='/admin'>admin</Link>
+        </Button>
+      )
+    
     } else {
       return (<></>)
+      
     }
   }
 
@@ -141,6 +150,11 @@ const Profile = () => {
             // navigate("notification");
             setCurrentPath(2)
           }} label="Notifications" />
+          {/* 1217 */}
+          <Tab onClick={() => {
+            setValue(3);
+            setCurrentPath(3)
+          }} label="Admin" />
         </Tabs>
 
         <TabPanel>

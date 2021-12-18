@@ -9,7 +9,6 @@ import PostCard from "./PostCard";
 import MemberBox from "./MemberBox"
 import { makeStyles } from '@mui/styles';
 
-const axios = require('axios');
 const useStyles = makeStyles((theme) => ({
   gridContainer: { 
     marginTop: "30px", 

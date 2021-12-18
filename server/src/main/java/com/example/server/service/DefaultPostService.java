@@ -11,6 +11,7 @@ import com.example.server.repository.PostRepository;
 import com.example.server.repository.TagRepository;
 import com.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -58,7 +59,11 @@ public class DefaultPostService implements PostService {
      */
     @Override
     public boolean deletePost(Long postId) {
+        Post post = postRepo.getById(postId);
+        post.setJoinedUsers(null);
         postRepo.deleteById(postId);
+
+        List<Post> postList = postRepo.findAll();
         return true;
     }
 
@@ -274,7 +279,7 @@ public class DefaultPostService implements PostService {
             String activityTime = post.getDateTime();
             System.out.println(activityTime);
             try {
-                if (!post.getArchive() && checkTime(activityTime)) {
+                if (!(post.getArchive()) && checkTime(activityTime)) {
                     responseList.add(populatePostData(post));
                 }
             } catch (ParseException e) {
@@ -283,7 +288,20 @@ public class DefaultPostService implements PostService {
         });
         return responseList;
     }
-
+    @Override
+    public List<PostData> getAllPostsByIsAdmin(String fid, long userId){
+        List<PostData> postData = new ArrayList<>();
+        User currentUser = userRepo.getById(userId);
+        if(currentUser.getIsAdmin().equals(true) && currentUser.getFid().equals(fid)){
+            List<Post> postList = postRepo.findAll();
+            postList.forEach(post -> {
+                if(post.getArchive() == false) {
+                    postData.add(populatePostData(post));
+                }
+            });
+        }
+        return postData;
+    }
     /**
      * Internal method to convert User JPA entity to the DTO object
      * for frontend data
